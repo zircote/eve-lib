@@ -1,25 +1,11 @@
 <?php
-/*
- 
-   <result>
-    <rowset name="alliances" key="allianceID" columns="name,shortName,allianceID,executorCorpID,memberCount,startDate">
-      <row name="Starbase Anchoring Alliance" shortName="MATT" allianceID="150382481"
-           executorCorpID="150279367" memberCount="4" startDate="2007-09-18 11:04:00">
-        <rowset name="memberCorporations" key="corporationID" columns="corporationID,startDate">
-          <row corporationID="150279367" startDate="2007-09-18 11:04:00" />
-          <row corporationID="150333466" startDate="2007-09-19 11:04:00" />
-        </rowset>
-      </row>
-      <row name="The Dead Rabbits" shortName="TL.DR" allianceID="150430947"
-           executorCorpID="150212025" memberCount="3" startDate="2007-11-12 16:00:00">
-        <rowset name="memberCorporations" key="corporationID" columns="corporationID,startDate">
-          <row corporationID="150212025" startDate="2007-11-12 16:00:00" />
-        </rowset>
-      </row>
-    </rowset>
- 
- */
 
+/**
+ * 
+ * 
+ * @author zircote
+ *
+ */
 class Zircote_Ccp_Api_Result_Abstract {
 	
 	public $xml;
@@ -27,24 +13,26 @@ class Zircote_Ccp_Api_Result_Abstract {
 	public $result = array();
 	
 	public function __construct($xml){
-		$this->loadXml($xml);
+		if($xml){
+			$this->loadXml($xml);
+		}
 	}
 	
 	public function loadXml($xml){
 		$this->xml = $xml;
 		$result = array();
 		$xml = simplexml_load_string($xml);
+		$key_name = $xml->getName();
 		if($xml->count()){
 			foreach ($xml as $value) {
 				if($value->getName() == 'result'){
-					$__result = $this->__result($value);
+					$result[$key_name] = array_merge($result[$key_name],$this->__basic($value));
 				} else {
-					$result[$value->getName()] = (string) $value;
+					$result[$key_name][$value->getName()] = (string) $value;
 				}
 			}
 		}
-		$result = array_merge($result, $__result);
-		$this->result = $result;
+		$this->result = $result['eveapi'];
 	}
 	
 	public function __get($name){
@@ -53,21 +41,25 @@ class Zircote_Ccp_Api_Result_Abstract {
 		}
 	}
 	
-	public function __result($xml){
-		$row = $rowset = $result = array();
-		if($xml->count()){
-			foreach ($xml as $value) {
-				if($value->getName() == 'row'){
-					$row = $this->__row($value);
-				} elseif($value->getName() == 'rowset'){
-					$rowset = $this->__rowSet($value);
-				} else {
-					$result[$value->getName()] = (string) $value;
+	public function __basic($xml){
+		$result = array($key = $xml->getName() => array());
+		foreach ($xml->children() as $value) {
+			if($value->count() == 1){
+				$result[$key][$value->getName()] = (string) $value;
+			} 
+			elseif($value->count() && $value->getName() == 'rowset'){
+				$result[$key] = array_merge($result[$key],$this->__rowSet($value));
+			} elseif($value->count() > 1){
+				foreach ($value->children() as $_value) {
+					$result[$key][$value->getName()][$_value->getName()] = (string) $_value;
 				}
-			}
-		}
-		$result = array_merge($result, $rowset);
+			} 
+		};
 		return $result;
+	}
+	
+	public function __element($xml){
+		return array($xml->getName() => (string) $xml);
 	}
 	
 	public function __rowSet(SimpleXMLElement $xml){
@@ -79,9 +71,16 @@ class Zircote_Ccp_Api_Result_Abstract {
 		$set_key = $data['meta']['name'];
 		$result[$set_key] = array('meta' => $data['meta'], $set_key => null);
 		if($xml->row->count()){
-			foreach ($xml->row as $_row) {
+			$i = 0;
+			$r_key = array_key_exists('key',$result[$set_key]['meta'] ) ?
+			$result[$set_key]['meta']['key']:
+			$result[$set_key]['meta'];
+			foreach ($xml->children() as $_row) {
 				$row = $this->__row($_row);
-				$result[$set_key][$set_key][$row[$result[$set_key]['meta']['key']]] = $row;
+				$r_key = array_key_exists('key',$result[$set_key]['meta'] ) ?
+				$row[$result[$set_key]['meta']['key']]:
+				++$i;
+				$result[$set_key][$set_key][$r_key] = $row;
 			}
 		}
 		unset($result[$set_key]['meta']);
@@ -95,10 +94,13 @@ class Zircote_Ccp_Api_Result_Abstract {
 		foreach ($xml->attributes() as $key => $value) {
 			$result[(string)$key] = (string)$value;
 		}
-		if($xml->rowset){
+		if($xml->count() > 1){
 			foreach ($xml->rowset as $rowset) {
 				$rs = $this->__rowSet($rowset);
+				$result = array_merge($result, $rs);
 			}
+		} elseif($xml->count() > 1){
+			$rs = $this->__basic($xml);
 			$result = array_merge($result, $rs);
 		}
 		return $result;
