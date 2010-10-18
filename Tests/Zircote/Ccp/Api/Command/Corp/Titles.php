@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Eve_Titles 
+class Tests_Zircote_Ccp_Api_Command_Corp_Titles 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -46,7 +46,7 @@ EOF;
  	 */
  	public function testTitles(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Eve/Titles.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/Titles.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->Titles();

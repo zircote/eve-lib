@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_StarbaseDetail 
+class Tests_Zircote_Ccp_Api_Command_Corp_StarbaseDetail 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -48,7 +48,7 @@ EOF;
  	 */
  	public function testStarbaseDetail(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/StarbaseDetail.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/StarbaseDetail.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->StarbaseDetail();

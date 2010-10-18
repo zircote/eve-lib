@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_WalletTransactions 
+class Tests_Zircote_Ccp_Api_Command_Corp_WalletTransactions 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -47,7 +47,7 @@ EOF;
  	 */
  	public function testWalletTransactions(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/WalletTransactions.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/WalletTransactions.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->WalletTransactions();

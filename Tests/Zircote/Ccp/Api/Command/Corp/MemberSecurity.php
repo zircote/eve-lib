@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_MemberSecurity 
+class Tests_Zircote_Ccp_Api_Command_Corp_MemberSecurity 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -36,7 +36,7 @@ EOF;
  	 */
  	public function testMemberSecurity(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/MemberSecurity.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/MemberSecurity.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->MemberSecurity();

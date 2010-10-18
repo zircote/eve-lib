@@ -8,9 +8,9 @@ set_include_path($addPath . PATH_SEPARATOR . get_include_path());
 		
 /**
  * 
- * @package Ibp_Api
+ * @package Zircote
  * Enter description here ...
- * @author rallen@ifbyphone.com
+ * @author zircote@gmail.com
  *
  */
 class Tests_AllTests {

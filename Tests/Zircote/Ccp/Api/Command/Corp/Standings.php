@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_Standings 
+class Tests_Zircote_Ccp_Api_Command_Corp_Standings 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -47,7 +47,7 @@ EOF;
  	 */
  	public function testStandings(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/Standings.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/Standings.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->Standings();

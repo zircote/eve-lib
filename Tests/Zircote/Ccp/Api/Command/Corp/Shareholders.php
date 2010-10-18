@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_Shareholders 
+class Tests_Zircote_Ccp_Api_Command_Corp_Shareholders 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -25,7 +25,7 @@ EOF;
  	 */
  	public function testShareholders(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/Shareholders.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/Shareholders.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->Shareholders();

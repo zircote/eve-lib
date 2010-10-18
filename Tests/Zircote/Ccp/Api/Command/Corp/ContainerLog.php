@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_ContainerLog 
+class Tests_Zircote_Ccp_Api_Command_Corp_ContainerLog 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -46,7 +46,7 @@ EOF;
  	 */
  	public function testContainerLog(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/ContainerLog.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/ContainerLog.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->ContainerLog();

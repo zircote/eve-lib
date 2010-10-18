@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_MemberTracking 
+class Tests_Zircote_Ccp_Api_Command_Corp_MemberTracking 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -33,7 +33,7 @@ EOF;
  	 */
  	public function testAllianceList(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Eve/MemberTracking.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/MemberTracking.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->MemberTracking();

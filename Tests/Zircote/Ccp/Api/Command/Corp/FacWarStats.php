@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_FacWarStats 
+class Tests_Zircote_Ccp_Api_Command_Corp_FacWarStats 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -33,7 +33,7 @@ EOF;
  	 */
  	public function testFacWarStats(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/FacWarStats.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/FacWarStats.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->FacWarStats();

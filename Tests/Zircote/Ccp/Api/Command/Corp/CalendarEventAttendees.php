@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Eve_OutpostList 
+class Tests_Zircote_Ccp_Api_Command_Corp_CalendarEventAttendees 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -13,13 +13,13 @@ EOF;
  	/**
  	 * @param Zircote_Ccp_Api $api
  	 */
- 	public function testOutpostList(){
+ 	public function testCalendarEventAttendees(){
  		$this->markTestIncomplete();
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Map/OutpostList.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/CalendarEventAttendees.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
- 			->OutpostList();
+ 			->CalendarEventAttendees();
 // 		print_r($out->result);
  	}
 }

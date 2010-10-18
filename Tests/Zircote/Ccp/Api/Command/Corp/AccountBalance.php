@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_AccountBalance 
+class Tests_Zircote_Ccp_Api_Command_Corp_AccountBalance 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -30,7 +30,7 @@ EOF;
  	 */
  	public function testAccountBalance(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/AccountBalance.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/AccountBalance.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->AccountBalance();

@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_Killlog 
+class Tests_Zircote_Ccp_Api_Command_Corp_Killlog 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -67,7 +67,7 @@ EOF;
  	 */
  	public function testKilllog(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/Killlog.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/Killlog.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->Killlog();

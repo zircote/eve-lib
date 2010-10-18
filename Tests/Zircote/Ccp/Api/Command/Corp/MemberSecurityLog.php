@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_MemberSecurityLog 
+class Tests_Zircote_Ccp_Api_Command_Corp_MemberSecurityLog 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -69,7 +69,7 @@ EOF;
  	 */
  	public function testMemberSecurityLog(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/MemberSecurityLog.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/MemberSecurityLog.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->MemberSecurityLog();

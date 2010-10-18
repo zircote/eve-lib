@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_CalendarEventAttendees 
+class Tests_Zircote_Ccp_Api_Command_Corp_AllianceList 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -13,13 +13,13 @@ EOF;
  	/**
  	 * @param Zircote_Ccp_Api $api
  	 */
- 	public function testCalendarEventAttendees(){
+ 	public function testAllianceList(){
  		$this->markTestIncomplete();
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/CalendarEventAttendees.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/AllianceList.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
- 			->CalendarEventAttendees();
+ 			->AllianceList();
 // 		print_r($out->result);
  	}
 }

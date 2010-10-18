@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Corporation_CorporationSheet 
+class Tests_Zircote_Ccp_Api_Command_Corp_CorporationSheet 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
@@ -102,7 +102,7 @@ EOF;
  	 */
  	public function testCorporationSheet(){
  		require_once 'Zircote/Ccp/Api.php';
- 		require_once 'Zircote/Ccp/Api/Result/Corporation/CorporationSheet.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Corp/CorporationSheet.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Corp')
  			->CorporationSheet();
