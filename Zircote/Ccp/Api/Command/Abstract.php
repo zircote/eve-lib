@@ -10,6 +10,8 @@ class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Command_Interf
 	 */
 	protected $_api;
 	
+	protected $_args;
+	
 	protected $_scope;
 	
 	protected $_command;
@@ -22,6 +24,7 @@ class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Command_Interf
 	
 	public function __construct(Zircote_Ccp_Api $api, $name, $args){
 		$this->_api = $api;
+		$this->_args = $args;
 	}
 	
 	protected function _parseResponse($response){

@@ -23,8 +23,9 @@ EOF;
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testServerStatus(){
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Server')
  			->ServerStatus();
+ 		print_r($out->result);
  	}
 }

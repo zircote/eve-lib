@@ -40,6 +40,23 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->AllianceList();
-// 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('alliances', $out->result['result']);
+		foreach ($out->result['result']['alliances'] as $allianceID => $alliance) {
+			$this->assertEquals($allianceID, $alliance['allianceID']);
+			$this->assertArrayHasKey('name', $alliance);
+			$this->assertArrayHasKey('shortName', $alliance);
+			$this->assertArrayHasKey('allianceID', $alliance);
+			$this->assertArrayHasKey('executorCorpID', $alliance);
+			$this->assertArrayHasKey('memberCount', $alliance);
+			$this->assertArrayHasKey('startDate', $alliance);
+			$this->assertArrayHasKey('memberCorporations', $alliance);
+			foreach ($alliance['memberCorporations'] as $corporationID => $memberCorporation) {
+				$this->assertArrayHasKey('corporationID', $memberCorporation);
+				$this->assertArrayHasKey('startDate', $memberCorporation);
+				$this->assertEquals($corporationID, $memberCorporation['corporationID']);
+			}
+		}
  	}
 }

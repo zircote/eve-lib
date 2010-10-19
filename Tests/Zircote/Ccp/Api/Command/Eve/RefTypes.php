@@ -125,6 +125,13 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->RefTypes();
-// 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+ 		foreach ($out->result['result'] as $key => $value) {
+ 			foreach ($value as $_key => $_value) {
+	 			$this->assertEquals($_key, $_value['refTypeID']);
+	 			$this->assertArrayHasKey('refTypeName', $_value);
+ 			}
+ 		}
  	}
 }

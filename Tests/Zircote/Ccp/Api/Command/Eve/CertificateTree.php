@@ -67,6 +67,41 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->CertificateTree();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('categories', $out->result['result']);
+		foreach ($out->result['result']['categories'] as $categoryID => $category) {
+			$this->assertEquals($categoryID, $category['categoryID']);
+			$this->assertArrayHasKey('categoryID', $category);
+			$this->assertArrayHasKey('categoryName', $category);
+			$this->assertArrayHasKey('classes', $category);
+			foreach ($category['classes'] as $classID => $class) {
+				$this->assertEquals($classID, $class['classID']);
+				$this->assertArrayHasKey('classID', $class);
+				$this->assertArrayHasKey('className', $class);
+				$this->assertArrayHasKey('certificates', $class);
+				foreach ($class['certificates'] as $certificateID => $certificate) {
+					$this->assertEquals($certificateID, $certificate['certificateID']);
+					$this->assertArrayHasKey('grade', $certificate);
+					$this->assertArrayHasKey('corporationID', $certificate);
+					$this->assertArrayHasKey('description', $certificate);
+					if(array_key_exists('requiredSkills', $certificate)) {
+						foreach ($certificate['requiredSkills'] as $typeID => $requiredSkill) {
+							$this->assertEquals($typeID, $requiredSkill['typeID']);
+							$this->assertArrayHasKey('typeID', $requiredSkill);
+							$this->assertArrayHasKey('level', $requiredSkill);
+						}
+					}
+					if(array_key_exists('requiredCertificates', $certificate)) {
+						foreach ($certificate['requiredCertificates'] as $certificateID => $requiredCertificate) {
+							$this->assertEquals($certificateID, $requiredCertificate['certificateID']);
+							$this->assertArrayHasKey('certificateID', $requiredCertificate);
+							$this->assertArrayHasKey('grade', $requiredCertificate);
+						}
+					}
+				}
+			}
+		}
 // 		print_r($out->result);
  	}
 }

@@ -21,3 +21,4 @@ class Zircote_Ccp_Api_Command_Server_ServerStatus extends Zircote_Ccp_Api_Comman
 		$this->_cache_key = md5($this->_command);
 	}
 }
+

@@ -26,7 +26,8 @@ class Zircote_Ccp_Api_Result_Abstract {
 		if($xml->count()){
 			foreach ($xml as $value) {
 				if($value->getName() == 'result'){
-					$result[$key_name] = array_merge($result[$key_name],$this->__basic($value));
+					$rs = $this->__basic($value);
+					$result[$key_name] = array_merge($result[$key_name],$rs);
 				} else {
 					$result[$key_name][$value->getName()] = (string) $value;
 				}
@@ -44,17 +45,16 @@ class Zircote_Ccp_Api_Result_Abstract {
 	public function __basic($xml){
 		$result = array($key = $xml->getName() => array());
 		foreach ($xml->children() as $value) {
-			if($value->count() == 1){
-				$result[$key][$value->getName()] = (string) $value;
-			} 
-			elseif($value->count() && $value->getName() == 'rowset'){
+			if($value->count() && $value->getName() == 'rowset'){
 				$result[$key] = array_merge($result[$key],$this->__rowSet($value));
 			} elseif($value->count() > 1){
 				foreach ($value->children() as $_value) {
 					$result[$key][$value->getName()][$_value->getName()] = (string) $_value;
 				}
-			} 
-		};
+			} else {
+				$result[$key][$value->getName()] = (string) $value;
+			}
+		}
 		return $result;
 	}
 	
@@ -94,10 +94,17 @@ class Zircote_Ccp_Api_Result_Abstract {
 		foreach ($xml->attributes() as $key => $value) {
 			$result[(string)$key] = (string)$value;
 		}
-		if($xml->count() > 1){
-			foreach ($xml->rowset as $rowset) {
-				$rs = $this->__rowSet($rowset);
-				$result = array_merge($result, $rs);
+		if($xml->count()){
+			foreach ($xml->children() as $value) {
+				if($value->count() && $value->getName() == 'rowset'){
+					$result = array_merge($result,$this->__rowSet($value));
+				} elseif($value->count() > 1){
+					foreach ($value->children() as $_value) {
+						$result[$value->getName()][$_value->getName()] = (string) $_value;
+					}
+				} else {
+					$result[$value->getName()] = (string) $value;
+				}
 			}
 		} elseif($xml->count() > 1){
 			$rs = $this->__basic($xml);

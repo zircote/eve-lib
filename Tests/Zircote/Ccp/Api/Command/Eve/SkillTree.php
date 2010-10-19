@@ -69,6 +69,23 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->SkillTree();
-// 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+ 		$this->assertArrayHasKey('skillGroups', $out->result['result']);
+ 		foreach ($out->result['result']['skillGroups'] as $groupID => $skillGroup) {
+ 			$this->assertArrayHasKey('groupName', $skillGroup);
+ 			$this->assertArrayHasKey('groupID', $skillGroup);
+ 			$this->assertEquals($groupID, $skillGroup['groupID']);
+ 			$this->assertArrayHasKey('skills', $skillGroup);
+ 			foreach ($skillGroup['skills'] as $typeID => $skills) {
+ 				$this->assertArrayHasKey('description', $skills);
+ 				$this->assertArrayHasKey('rank', $skills);
+ 				$this->assertArrayHasKey('primaryAttribute', $skills['requiredAttributes']);
+ 				$this->assertArrayHasKey('secondaryAttribute', $skills['requiredAttributes']);
+ 				$this->assertArrayHasKey('typeName', $skills);
+ 				$this->assertArrayHasKey('groupID', $skills);
+ 				$this->assertArrayHasKey('typeID', $skills);
+ 			}
+ 		}
  	}
 }
