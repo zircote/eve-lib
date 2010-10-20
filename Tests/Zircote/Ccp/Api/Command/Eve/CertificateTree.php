@@ -67,6 +67,7 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->CertificateTree();
+// 		print_r($out->result); return;
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
 		$this->assertArrayHasKey('categories', $out->result['result']);
@@ -85,12 +86,10 @@ EOF;
 					$this->assertArrayHasKey('grade', $certificate);
 					$this->assertArrayHasKey('corporationID', $certificate);
 					$this->assertArrayHasKey('description', $certificate);
-					if(array_key_exists('requiredSkills', $certificate)) {
-						foreach ($certificate['requiredSkills'] as $typeID => $requiredSkill) {
-							$this->assertEquals($typeID, $requiredSkill['typeID']);
-							$this->assertArrayHasKey('typeID', $requiredSkill);
-							$this->assertArrayHasKey('level', $requiredSkill);
-						}
+					foreach ($certificate['requiredSkills'] as $typeID => $requiredSkill) {
+						$this->assertEquals($typeID, $requiredSkill['typeID']);
+						$this->assertArrayHasKey('typeID', $requiredSkill);
+						$this->assertArrayHasKey('level', $requiredSkill);
 					}
 					if(array_key_exists('requiredCertificates', $certificate)) {
 						foreach ($certificate['requiredCertificates'] as $certificateID => $requiredCertificate) {
@@ -103,5 +102,6 @@ EOF;
 			}
 		}
 // 		print_r($out->result);
+ 		$api = $out = null;
  	}
 }

@@ -26,7 +26,12 @@ EOF;
  		require_once 'Zircote/Ccp/Api/Result/Eve/CharacterName.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
- 			->CharacterName();
-// 		print_r($out->result);
+ 			->CharacterName(array('144739728','1855232842'));
+		$this->assertArrayHasKey('characters', $out->result['result']);
+		foreach ($out->result['result']['characters'] as $characterID => $character) {
+			$this->assertArrayHasKey('name', $character);
+			$this->assertArrayHasKey('characterID', $character);
+			$this->assertEquals($characterID, $character['characterID']);
+		}
  	}
 }

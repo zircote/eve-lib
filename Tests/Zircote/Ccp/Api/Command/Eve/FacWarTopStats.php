@@ -63,6 +63,29 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->FacWarTopStats();
-// 		print_r($out->result);
+// 		print_r($out->result); return;
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('characters', $out->result['result']);
+			$this->assertArrayHasKey('KillsYesterday', $out->result['result']['characters']);
+			$this->assertArrayHasKey('KillsLastWeek', $out->result['result']['characters']);
+			$this->assertArrayHasKey('KillsTotal', $out->result['result']['characters']);
+			$this->assertArrayHasKey('VictoryPointsYesterday', $out->result['result']['characters']);
+			$this->assertArrayHasKey('VictoryPointsLastWeek', $out->result['result']['characters']);
+			$this->assertArrayHasKey('VictoryPointsTotal', $out->result['result']['characters']);
+		$this->assertArrayHasKey('corporations', $out->result['result']);
+			$this->assertArrayHasKey('KillsYesterday', $out->result['result']['corporations']);
+			$this->assertArrayHasKey('KillsLastWeek', $out->result['result']['corporations']);
+			$this->assertArrayHasKey('KillsTotal', $out->result['result']['corporations']);
+			$this->assertArrayHasKey('VictoryPointsYesterday', $out->result['result']['corporations']);
+			$this->assertArrayHasKey('VictoryPointsLastWeek', $out->result['result']['corporations']);
+			$this->assertArrayHasKey('VictoryPointsTotal', $out->result['result']['corporations']);
+		$this->assertArrayHasKey('factions', $out->result['result']);
+			$this->assertArrayHasKey('KillsYesterday', $out->result['result']['factions']);
+			$this->assertArrayHasKey('KillsLastWeek', $out->result['result']['factions']);
+			$this->assertArrayHasKey('KillsTotal', $out->result['result']['factions']);
+			$this->assertArrayHasKey('VictoryPointsYesterday', $out->result['result']['factions']);
+			$this->assertArrayHasKey('VictoryPointsLastWeek', $out->result['result']['factions']);
+			$this->assertArrayHasKey('VictoryPointsTotal', $out->result['result']['factions']);
  	}
 }

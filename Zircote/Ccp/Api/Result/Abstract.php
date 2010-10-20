@@ -7,113 +7,102 @@
  *
  */
 class Zircote_Ccp_Api_Result_Abstract {
-	
+
 	public $xml;
-	
-	public $result = array();
+	public $result;
 	
 	public function __construct($xml){
 		if($xml){
-			$this->loadXml($xml);
+			$this->loadXML($xml);
 		}
 	}
 	
-	public function loadXml($xml){
-		$this->xml = $xml;
+	public function loadXML($xml){
+			$this->xml = $xml;
+			;
+			if(!$sXml = @simplexml_load_string($this->xml)){
+				return;
+			}
+			$result = $this->parse($sXml);
+			$this->result = $result['eveapi'];
+	}
+	
+	public function parse(SimpleXMLElement $sXml){
 		$result = array();
-		$xml = simplexml_load_string($xml);
-		$key_name = $xml->getName();
-		if($xml->count()){
-			foreach ($xml as $value) {
-				if($value->getName() == 'result'){
-					$rs = $this->__basic($value);
-					$result[$key_name] = array_merge($result[$key_name],$rs);
+		switch ($sXml->getName()) {
+			case 'rowset':
+				$result = $this->rowset($sXml);
+			break;
+			
+			case 'row':
+				$result = $this->row($sXml);
+			break;
+			
+			case 'error':
+				$result = $this->error($sXml);
+			break;
+			
+			default:
+				$result[$sXml->getName()] = array();
+				if($sXml->count()){
+					foreach ($sXml as $xml) {
+						$rs = $this->parse($xml);
+						$result[$sXml->getName()] = array_merge($result[$sXml->getName()], $rs);
+					}
 				} else {
-					$result[$key_name][$value->getName()] = (string) $value;
+					$result[$sXml->getName()] = (string) $sXml;
 				}
-			}
+			break;
 		}
-		$this->result = $result['eveapi'];
+		return $result;
+	}
+
+	public function error($sXml){
+		$result = array($sXml->getName() => null);
+		foreach ($sXml->attributes() as $name => $attr) {
+			$result[$sXml->getName()][$name] = (string) $attr;
+		}
+		$result[$sXml->getName()]['text'] = (string) $sXml;
+		return $result;
 	}
 	
-	public function __get($name){
-		if(property_exists($this, $name)){
-			return $this->$name;
-		}
-	}
-	
-	public function __basic($xml){
-		$result = array($key = $xml->getName() => array());
-		foreach ($xml->children() as $value) {
-			if($value->count() && $value->getName() == 'rowset'){
-				$result[$key] = array_merge($result[$key],$this->__rowSet($value));
-			} elseif($value->count() > 1){
-				foreach ($value->children() as $_value) {
-					$result[$key][$value->getName()][$_value->getName()] = (string) $_value;
-				}
-			} else {
-				$result[$key][$value->getName()] = (string) $value;
+	public function row($sXml){
+		if($sXml->count()){
+			$result = $this->attr($sXml);
+			foreach ($sXml->children() as $child){
+				$r = $this->parse($child);
+				$result = array_merge($result, $r);
 			}
+		} else {
+			$result = $this->attr($sXml);
 		}
 		return $result;
 	}
 	
-	public function __element($xml){
-		return array($xml->getName() => (string) $xml);
-	}
-	
-	public function __rowSet(SimpleXMLElement $xml){
-		$data = array('meta' => null);
-		foreach ($xml->attributes() as $key => $value) {
-			$data['meta'][(string)$key] = (string)$value;
-		}
-		$data['meta']['columns'] = explode(',', $data['meta']['columns']);
-		$set_key = $data['meta']['name'];
-		$result[$set_key] = array('meta' => $data['meta'], $set_key => null);
-		if($xml->row->count()){
-			$i = 0;
-			$r_key = array_key_exists('key',$result[$set_key]['meta'] ) ?
-			$result[$set_key]['meta']['key']:
-			$result[$set_key]['meta'];
-			foreach ($xml->children() as $_row) {
-				$row = $this->__row($_row);
-				$r_key = array_key_exists('key',$result[$set_key]['meta'] ) ?
-				$row[$result[$set_key]['meta']['key']]:
-				++$i;
-				$result[$set_key][$set_key][$r_key] = $row;
-			}
-		}
-		unset($result[$set_key]['meta']);
-		return $result[$set_key];
-	}
-	
-	public function __row($xml){
-		$meta = array();
+	public function rowset($sXml){
 		$result = array();
-		$rs = array();
-		foreach ($xml->attributes() as $key => $value) {
-			$result[(string)$key] = (string)$value;
+		$result['meta'] = $this->attr($sXml);
+		$key_name = $result['meta']['name'];
+		$index_key = key_exists('key', $result['meta']) ? $result['meta']['key'] : 0;
+		$result[$key_name] = array();
+		foreach ($sXml->children() as $child) {
+			$ch = $this->parse($child);
+			$idx = is_numeric($index_key) ? $index_key++ : $ch[$index_key];
+			$result[$key_name][$idx] = $ch;
 		}
-		if($xml->count()){
-			foreach ($xml->children() as $value) {
-				if($value->count() && $value->getName() == 'rowset'){
-					$result = array_merge($result,$this->__rowSet($value));
-				} elseif($value->count() > 1){
-					foreach ($value->children() as $_value) {
-						$result[$value->getName()][$_value->getName()] = (string) $_value;
-					}
-				} else {
-					$result[$value->getName()] = (string) $value;
-				}
-			}
-		} elseif($xml->count() > 1){
-			$rs = $this->__basic($xml);
-			$result = array_merge($result, $rs);
+		unset($result['meta']);
+		return $result;
+	}
+	
+	public function attr($sXml){
+		$result = array();
+		foreach ($sXml->attributes() as $name => $attr) {
+			$result[(string) $name] = (string) $attr;
 		}
 		return $result;
 	}
 	
 	public function __wakeup(){
-		$this->loadXml($this->xml);
+		$this->loadXML($this->xml);
 	}
 }

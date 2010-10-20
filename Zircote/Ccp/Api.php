@@ -73,6 +73,7 @@ class Zircote_Ccp_Api {
 			'certificatetree' => 'Zircote_Ccp_Api_Command_Eve_CertificateTree',
 			'characterinfo' => 'Zircote_Ccp_Api_Command_Eve_CharacterInfo',
 			'charactername' => 'Zircote_Ccp_Api_Command_Eve_CharacterName',
+			'characterid' => 'Zircote_Ccp_Api_Command_Eve_CharacterID',
 			'conquerablestationlist' => 'Zircote_Ccp_Api_Command_Eve_ConquerableStationList',
 			'errorlist' => 'Zircote_Ccp_Api_Command_Eve_ErrorList',
 			'facwarstats' => 'Zircote_Ccp_Api_Command_Eve_FacWarStats',
@@ -119,7 +120,7 @@ class Zircote_Ccp_Api {
 	
 	protected $_cache;
 	protected $_server;
-	protected $_api;
+	public $_api;
 	protected $_connection;
 	protected $_scope;
 	

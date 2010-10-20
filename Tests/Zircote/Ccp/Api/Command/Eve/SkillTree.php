@@ -69,6 +69,7 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->SkillTree();
+// 		print_r($out->result); return;
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
  		$this->assertArrayHasKey('skillGroups', $out->result['result']);
@@ -87,5 +88,6 @@ EOF;
  				$this->assertArrayHasKey('typeID', $skills);
  			}
  		}
+ 		$api = $out = null;
  	}
 }

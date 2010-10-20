@@ -2,13 +2,13 @@
 
 require_once 'Zircote/Ccp/Api/Command/Interface.php';
 
-class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Command_Interface {
+abstract class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Command_Interface {
 	
 	/**
 	 * 
 	 * @var Zircote_Ccp_Api
 	 */
-	protected $_api;
+	public $_api;
 	
 	protected $_args;
 	
@@ -52,7 +52,8 @@ class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Command_Interf
 	}
 	
 	protected function isExpired($cachedValues){
-		return strtotime($cachedValues->cachedUntil) < strtotime(gmdate('Y-m-d H:i:s')) ? true : false;
+//		print_r($cachedValues);
+		return strtotime($cachedValues->result['cachedUntil']) < strtotime(gmdate('Y-m-d H:i:s')) ? true : false;
 	}
 	
 	public function write(){

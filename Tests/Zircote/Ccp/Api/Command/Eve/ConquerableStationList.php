@@ -42,6 +42,18 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->ConquerableStationList();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('outposts', $out->result['result']);
+		foreach ($out->result['result']['outposts'] as $stationID => $outpost) {
+			$this->assertArrayHasKey('stationID', $outpost);
+			$this->assertArrayHasKey('stationName', $outpost);
+			$this->assertArrayHasKey('stationTypeID', $outpost);
+			$this->assertArrayHasKey('solarSystemID', $outpost);
+			$this->assertArrayHasKey('corporationID', $outpost);
+			$this->assertArrayHasKey('corporationName', $outpost);
+			$this->assertEquals($stationID, $outpost['stationID']);
+		}
 // 		print_r($out->result);
  	}
 }

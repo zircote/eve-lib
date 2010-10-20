@@ -48,6 +48,35 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->FacWarStats();
-// 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('totals', $out->result['result']);
+			$this->assertArrayHasKey('killsYesterday', $out->result['result']['totals']);
+			$this->assertArrayHasKey('killsLastWeek', $out->result['result']['totals']);
+			$this->assertArrayHasKey('killsTotal', $out->result['result']['totals']);
+			$this->assertArrayHasKey('victoryPointsYesterday', $out->result['result']['totals']);
+			$this->assertArrayHasKey('victoryPointsLastWeek', $out->result['result']['totals']);
+			$this->assertArrayHasKey('victoryPointsTotal', $out->result['result']['totals']);
+		$this->assertArrayHasKey('factions', $out->result['result']);
+		foreach ($out->result['result']['factions'] as $factionID => $faction) {
+			$this->assertEquals($factionID, $faction['factionID']);
+			$this->assertArrayHasKey('factionID', $faction);
+			$this->assertArrayHasKey('factionName', $faction);
+			$this->assertArrayHasKey('pilots', $faction);
+			$this->assertArrayHasKey('systemsControlled', $faction);
+			$this->assertArrayHasKey('killsYesterday', $faction);
+			$this->assertArrayHasKey('killsLastWeek', $faction);
+			$this->assertArrayHasKey('killsTotal', $faction);
+			$this->assertArrayHasKey('victoryPointsYesterday', $faction);
+			$this->assertArrayHasKey('victoryPointsLastWeek', $faction);
+			$this->assertArrayHasKey('victoryPointsTotal', $faction);
+		}
+		$this->assertArrayHasKey('factionWars', $out->result['result']);
+		foreach ($out->result['result']['factionWars'] as $factionWar) {
+			$this->assertArrayHasKey('factionID', $factionWar);
+			$this->assertArrayHasKey('factionName', $factionWar);
+			$this->assertArrayHasKey('againstID', $factionWar);
+			$this->assertArrayHasKey('againstName', $factionWar);
+		}
  	}
 }

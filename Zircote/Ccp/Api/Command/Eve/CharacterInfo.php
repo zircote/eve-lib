@@ -20,7 +20,15 @@ class Zircote_Ccp_Api_Command_Eve_CharacterInfo extends Zircote_Ccp_Api_Command_
 	}
 	
 	public function _getRequest(){
-		return array();	
+		$args = array(
+			'characterID' => $this->_args[0]
+		);
+		if($this->_api->_api['apiKey']){
+			foreach ($this->_api->_api as $key => $value) {
+				$args[$key] = $value;
+			}
+		}
+		return $args;		
 	}
 	
 	public function set_cache_key(){

@@ -23,9 +23,15 @@ EOF;
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testServerStatus(){
- 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
+		require_once 'Zircote/Ccp/Api.php';
+ 		require_once 'Zircote/Ccp/Api/Result/Server/ServerStatus.php';
+ 		$api = new Zircote_Ccp_Api();
  		$out = $api->setScope('Server')
  			->ServerStatus();
- 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('serverOpen', $out->result['result']);
+		$this->assertArrayHasKey('onlinePlayers', $out->result['result']);
+// 		print_r($out->result);
  	}
 }

@@ -41,7 +41,7 @@ class Zircote_Ccp_Api_Connection {
 		if(is_array($options) && count($options)){
 			$params = null;
 			foreach ($options as $key => $value) {
-				$params .= "{$key}=".url_encode($value) . "&";
+				$params .= "{$key}=".urlencode($value) . "&";
 			}
 			$params = rtrim($params, '&');
 			curl_setopt($this->_curl, CURLOPT_POSTFIELDS, $params);

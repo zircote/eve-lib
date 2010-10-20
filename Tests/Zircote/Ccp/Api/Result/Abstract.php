@@ -13,35 +13,56 @@
 
 		$this->sharedFixture =<<<EOF
 <?xml version='1.0' encoding='UTF-8'?>
-<eveapi version="2"> 
-  <currentTime>2010-10-18 02:11:50</currentTime> 
-  <result> 
-    <totals> 
-      <killsYesterday>485</killsYesterday> 
-      <killsLastWeek>2708</killsLastWeek> 
-      <killsTotal>382544</killsTotal> 
-      <victoryPointsYesterday>30916</victoryPointsYesterday> 
-      <victoryPointsLastWeek>183355</victoryPointsLastWeek> 
-      <victoryPointsTotal>58876569</victoryPointsTotal> 
-    </totals> 
-    <rowset name="factions" key="factionID" columns="factionID,factionName,pilots,systemsControlled,killsYesterday,killsLastWeek,killsTotal,victoryPointsYesterday,victoryPointsLastWeek,victoryPointsTotal"> 
-      <row factionID="500001" factionName="Caldari State" pilots="6986" systemsControlled="20" killsYesterday="99" killsLastWeek="593" killsTotal="91309" victoryPointsYesterday="5283" victoryPointsLastWeek="31542" victoryPointsTotal="6526954" /> 
-      <row factionID="500002" factionName="Minmatar Republic" pilots="4933" systemsControlled="18" killsYesterday="152" killsLastWeek="808" killsTotal="92944" victoryPointsYesterday="5782" victoryPointsLastWeek="34656" victoryPointsTotal="5815901" /> 
-      <row factionID="500003" factionName="Amarr Empire" pilots="4004" systemsControlled="18" killsYesterday="141" killsLastWeek="746" killsTotal="97194" victoryPointsYesterday="6255" victoryPointsLastWeek="36722" victoryPointsTotal="5757077" /> 
-      <row factionID="500004" factionName="Gallente Federation" pilots="4501" systemsControlled="46" killsYesterday="93" killsLastWeek="561" killsTotal="101097" victoryPointsYesterday="4351" victoryPointsLastWeek="28968" victoryPointsTotal="6075373" /> 
-    </rowset> 
-    <rowset name="factionWars" columns="factionID,factionName,againstID,againstName"> 
-      <row factionID="500001" factionName="Caldari State" againstID="500002" againstName="Minmatar Republic" /> 
-      <row factionID="500001" factionName="Caldari State" againstID="500004" againstName="Gallente Federation" /> 
-      <row factionID="500002" factionName="Minmatar Republic" againstID="500001" againstName="Caldari State" /> 
-      <row factionID="500002" factionName="Minmatar Republic" againstID="500003" againstName="Amarr Empire" /> 
-      <row factionID="500003" factionName="Amarr Empire" againstID="500002" againstName="Minmatar Republic" /> 
-      <row factionID="500003" factionName="Amarr Empire" againstID="500004" againstName="Gallente Federation" /> 
-      <row factionID="500004" factionName="Gallente Federation" againstID="500001" againstName="Caldari State" /> 
-      <row factionID="500004" factionName="Gallente Federation" againstID="500003" againstName="Amarr Empire" /> 
-    </rowset> 
-  </result> 
-  <cachedUntil>2010-10-18 03:11:50</cachedUntil> 
+<eveapi version="2">
+  <currentTime>2007-12-22 21:51:40</currentTime>
+  <result>
+    <rowset name="skillGroups" key="groupID" columns="groupName,groupID">
+      <row groupName="Corporation Management" groupID="266">
+        <rowset name="skills" key="typeID" columns="typeName,groupID,typeID">
+          <row typeName="Anchoring" groupID="266" typeID="11584">
+            <description>Skill at Anchoring Deployables. Can not be trained on Trial Accounts.</description>
+            <rank>3</rank>
+            <rowset name="requiredSkills" key="typeID" columns="typeID,skillLevel" />
+            <requiredAttributes>
+              <primaryAttribute>memory</primaryAttribute>
+              <secondaryAttribute>charisma</secondaryAttribute>
+            </requiredAttributes>
+            <rowset name="skillBonusCollection" key="bonusType" columns="bonusType,bonusValue">
+              <row bonusType="canNotBeTrainedOnTrial" bonusValue="1" />
+            </rowset>
+          </row>
+          <row typeName="CFO Training" groupID="266" typeID="3369">
+            <description>Skill at managing corp finances. 5% discount on all fees at non-hostile NPC station if acting as CFO of a corp. </description>
+            <rank>3</rank>
+            <rowset name="requiredSkills" key="typeID" columns="typeID,skillLevel">
+              <row typeID="3363" skillLevel="2" />
+              <row typeID="3444" skillLevel="3" />
+            </rowset>
+            <requiredAttributes>
+              <primaryAttribute>memory</primaryAttribute>
+              <secondaryAttribute>charisma</secondaryAttribute>
+            </requiredAttributes>
+            <rowset name="skillBonusCollection" key="bonusType" columns="bonusType,bonusValue" />
+          </row>
+          <row typeName="Corporation Management" groupID="266" typeID="3363">
+            <description>Basic corporation operation. +10 corporation members allowed per level.
+ 
+Notice:  the CEO must update his corporation through the corporation user interface before the skill takes effect</description>
+            <rank>1</rank>
+            <rowset name="requiredSkills" key="typeID" columns="typeID,skillLevel" />
+            <requiredAttributes>
+              <primaryAttribute>memory</primaryAttribute>
+              <secondaryAttribute>charisma</secondaryAttribute>
+            </requiredAttributes>
+            <rowset name="skillBonusCollection" key="bonusType" columns="bonusType,bonusValue">
+              <row bonusType="corporationMemberBonus" bonusValue="10" />
+            </rowset>
+          </row>
+        </rowset>
+      </row>
+    </rowset>
+  </result>
+  <cachedUntil>2007-12-23 21:51:40</cachedUntil>
 </eveapi>
 EOF;
 

@@ -95,6 +95,13 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->ErrorList();
-// 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('errors', $out->result['result']);
+		foreach ($out->result['result']['errors'] as $errorCode => $value) {
+			$this->assertEquals($errorCode, $value['errorCode']);
+			$this->assertArrayHasKey('errorCode', $value);
+			$this->assertArrayHasKey('errorText', $value);
+		}
  	}
 }
