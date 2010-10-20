@@ -37,9 +37,18 @@ EOF;
  	public function testMemberSecurity(){
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/MemberSecurity.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->MemberSecurity();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('member', $out->result['result']);
+		$this->assertArrayHasKey('characterID', $out->result['result']['member']);
+		$this->assertArrayHasKey('name', $out->result['result']['member']);
+		$this->assertArrayHasKey('roles', $out->result['result']['member']);
+		$this->assertArrayHasKey('grantableRoles', $out->result['result']['member']);
+		$this->assertArrayHasKey('rolesAtBase', $out->result['result']['member']);
+		$this->assertArrayHasKey('grantableRolesAtBase', $out->result['result']['member']);
 // 		print_r($out->result);
  	}
 }

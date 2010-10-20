@@ -14,12 +14,14 @@ EOF;
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testOutpostList(){
- 		$this->markTestIncomplete();
+// 		$this->markTestIncomplete();
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/OutpostList.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->OutpostList();
-// 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+ 		print_r($out->result);
  	}
 }

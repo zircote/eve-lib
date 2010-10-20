@@ -60,9 +60,30 @@ EOF;
  	public function testWalletJournal(){
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/WalletJournal.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->WalletJournal();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('transactions', $out->result['result']);
+		foreach ($out->result['result']['entries'] as $refID => $entry) {
+			$this->assertArrayHasKey('date', $entry);
+			$this->assertArrayHasKey('refID', $entry);
+			$this->assertArrayHasKey('refTypeID', $entry);
+			$this->assertArrayHasKey('ownerName1', $entry);
+			$this->assertArrayHasKey('typeID', $entry);
+			$this->assertArrayHasKey('ownerID1', $entry);
+			$this->assertArrayHasKey('ownerName2', $entry);
+			$this->assertArrayHasKey('ownerID2', $entry);
+			$this->assertArrayHasKey('argName1', $entry);
+			$this->assertArrayHasKey('argID1', $entry);
+			$this->assertArrayHasKey('amount', $entry);
+			$this->assertArrayHasKey('balance', $entry);
+			$this->assertArrayHasKey('reason', $entry);
+			$this->assertArrayHasKey('taxReceiverID', $entry);
+			$this->assertArrayHasKey('taxAmount', $entry);
+			$this->assertEquals($refID, $entry['refID']);
+		}
 // 		print_r($out->result);
  	}
 }

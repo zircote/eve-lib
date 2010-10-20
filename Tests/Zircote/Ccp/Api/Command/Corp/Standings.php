@@ -48,9 +48,15 @@ EOF;
  	public function testStandings(){
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/Standings.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->Standings();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('corporationStandings', $out->result['result']);
+		$this->assertArrayHasKey('standingsTo', $out->result['result']['corporationStandings']);
+		$this->assertArrayHasKey('standingsFrom', $out->result['result']['corporationStandings']);
+		
 // 		print_r($out->result);
  	}
 }

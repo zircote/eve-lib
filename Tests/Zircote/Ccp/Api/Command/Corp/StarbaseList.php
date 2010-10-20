@@ -32,9 +32,22 @@ EOF;
  	public function testStarbaseList(){
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/StarbaseList.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->StarbaseList();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('starbases', $out->result['result']);
+		foreach ($out->result['result']['starbases'] as $itemID => $starbase) {
+			$this->assertArrayHasKey('itemID', $starbase);
+			$this->assertArrayHasKey('typeID', $starbase);
+			$this->assertArrayHasKey('locationID', $starbase);
+			$this->assertArrayHasKey('moonID', $starbase);
+			$this->assertArrayHasKey('state', $starbase);
+			$this->assertArrayHasKey('stateTimestamp', $starbase);
+			$this->assertArrayHasKey('onlineTimestamp', $starbase);
+			$this->assertEquals($itemID, $starbase['itemID']);
+		}
 // 		print_r($out->result);
  	}
 }

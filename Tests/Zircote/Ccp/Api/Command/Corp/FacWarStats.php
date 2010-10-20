@@ -32,11 +32,15 @@ EOF;
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testFacWarStats(){
+ 		$this->markTestSkipped();
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/FacWarStats.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->FacWarStats();
-// 		print_r($out->result);
+ 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('factionID', $out->result['result']);
  	}
 }

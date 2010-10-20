@@ -31,13 +31,6 @@ abstract class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Comma
 		return $response;
 	}
 	
-	protected function _getRequest(){
-		$options = array(
-			'path' => $this->path
-		);
-		
-		return $options;
-	}
 	
 	public function get_path(){
 		return $this->path;
@@ -75,7 +68,7 @@ abstract class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Comma
 	
 	public function set_cache_key(){
 		return $this->_command . PATH_SEPARATOR . 
-		implode(DIRECTORY_SEPARATOR, $this->_api->getApi());
+		implode(DIRECTORY_SEPARATOR, $this->_getRequest());
 	}
 	
 	public function get_cache_key(){

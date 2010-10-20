@@ -70,9 +70,12 @@ EOF;
  	public function testMemberSecurityLog(){
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/MemberSecurityLog.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->MemberSecurityLog();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('roleHistory', $out->result['result']);
 // 		print_r($out->result);
  	}
 }

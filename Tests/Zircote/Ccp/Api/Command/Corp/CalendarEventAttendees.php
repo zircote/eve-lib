@@ -14,12 +14,15 @@ EOF;
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testCalendarEventAttendees(){
- 		$this->markTestIncomplete();
+ 		$this->markTestSkipped();
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/CalendarEventAttendees.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->CalendarEventAttendees();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('corporateContactList', $out->result['result']);
 // 		print_r($out->result);
  	}
 }

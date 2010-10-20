@@ -48,9 +48,30 @@ EOF;
  	public function testWalletTransactions(){
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/WalletTransactions.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->WalletTransactions();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('transactions', $out->result['result']);
+		foreach ($out->result['result']['transactions'] as $transactionID => $transaction) {
+			$this->assertArrayHasKey('transactionDateTime', $transaction);
+			$this->assertArrayHasKey('transactionID', $transaction);
+			$this->assertArrayHasKey('quantity', $transaction);
+			$this->assertArrayHasKey('typeName', $transaction);
+			$this->assertArrayHasKey('typeID', $transaction);
+			$this->assertArrayHasKey('price', $transaction);
+			$this->assertArrayHasKey('clientID', $transaction);
+			$this->assertArrayHasKey('clientName', $transaction);
+			$this->assertArrayHasKey('characterID', $transaction);
+			$this->assertArrayHasKey('characterName', $transaction);
+			$this->assertArrayHasKey('stationID', $transaction);
+			$this->assertArrayHasKey('stationName', $transaction);
+			$this->assertArrayHasKey('transactionType', $transaction);
+			$this->assertArrayHasKey('transactionFor', $transaction);
+			$this->assertEquals($transactionID, $transaction['transactionID']);
+		}
+		
 // 		print_r($out->result);
  	}
 }

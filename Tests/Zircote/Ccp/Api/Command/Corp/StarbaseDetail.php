@@ -49,9 +49,36 @@ EOF;
  	public function testStarbaseDetail(){
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/StarbaseDetail.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->StarbaseDetail();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('state', $out->result['result']);
+		$this->assertArrayHasKey('stateTimestamp', $out->result['result']);
+		$this->assertArrayHasKey('onlineTimestamp', $out->result['result']);
+		$this->assertArrayHasKey('generalSettings', $out->result['result']);
+			$this->assertArrayHasKey('usageFlags', $out->result['result']['generalSettings']);
+			$this->assertArrayHasKey('deployFlags', $out->result['result']['generalSettings']);
+			$this->assertArrayHasKey('allowCorporationMembers', $out->result['result']['generalSettings']);
+			$this->assertArrayHasKey('allowAllianceMembers', $out->result['result']['generalSettings']);
+		$this->assertArrayHasKey('combatSettings', $out->result['result']);
+			$this->assertArrayHasKey('useStandingsFrom', $out->result['result']['combatSettings']);
+				$this->assertArrayHasKey('ownerID', $out->result['result']['combatSettings']['useStandingsFrom']);
+			$this->assertArrayHasKey('onStandingDrop', $out->result['result']['combatSettings']);
+				$this->assertArrayHasKey('standing', $out->result['result']['combatSettings']['onStandingDrop']);
+			$this->assertArrayHasKey('onStatusDrop', $out->result['result']['combatSettings']);
+				$this->assertArrayHasKey('enabled', $out->result['result']['combatSettings']['onStatusDrop']);
+				$this->assertArrayHasKey('standing', $out->result['result']['combatSettings']['onStatusDrop']);
+			$this->assertArrayHasKey('onCorporationWar', $out->result['result']['combatSettings']);
+				$this->assertArrayHasKey('enabled', $out->result['result']['combatSettings']['onCorporationWar']);
+		$this->assertArrayHasKey('fuel', $out->result['result']);
+		foreach ($out->result['result']['fuel'] as $typeID => $fuel) {
+			$this->assertArrayHasKey('typeID', $fuel);
+			$this->assertArrayHasKey('quantity', $fuel);
+			$this->assertEquals($typeID, $fuel['$fuel']);
+		}
+		$this->assertEquals($itemID, $out->result['itemID']);
 // 		print_r($out->result);
  	}
 }

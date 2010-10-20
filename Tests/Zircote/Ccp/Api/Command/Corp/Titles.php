@@ -47,9 +47,25 @@ EOF;
  	public function testTitles(){
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Corp/Titles.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->Titles();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('titles', $out->result['result']);
+		foreach ($out->result['result']['titles'] as $titleID => $title) {
+			$this->assertArrayHasKey('titleID', $title);
+			$this->assertArrayHasKey('titleName', $title);
+			$this->assertArrayHasKey('roles', $title);
+				$this->assertEquals($titleID, $title['titleID']);
+			$this->assertArrayHasKey('grantableRoles', $title);
+			$this->assertArrayHasKey('rolesAtHQ', $title);
+			$this->assertArrayHasKey('grantableRolesAtHQ', $title);
+			$this->assertArrayHasKey('rolesAtBase', $title);
+			$this->assertArrayHasKey('grantableRolesAtBase', $title);
+			$this->assertArrayHasKey('rolesAtOther', $title);
+			$this->assertArrayHasKey('grantableRolesAtOther', $title);
+		}
 // 		print_r($out->result);
  	}
 }
