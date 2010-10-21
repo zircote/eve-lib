@@ -36,10 +36,6 @@ abstract class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Comma
 		return $this->path;
 	}
 	
-	protected function isError($response){
-		return false;
-	}
-	
 	protected function setCacheTime($current, $cachedTill){
 		echo $this->_cacheTime =  (integer) strtotime($cachedTill) - strtotime($current);
 	}
@@ -61,9 +57,19 @@ abstract class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Comma
 		$result = $cache->load($key);
 		if(!$result || $this->isExpired($result)){
 			$result = $this->_api->getConnection()->handle($this);
-			$cache->save($result, $this->get_cache_key());
+			if(!$this->isError($result)){
+				$cache->save($result, $this->get_cache_key());
+			}
 		}
 		return $result;
+	}
+	
+	public function isError($result){
+		if(key_exists('error', $result)){
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public function set_cache_key(){

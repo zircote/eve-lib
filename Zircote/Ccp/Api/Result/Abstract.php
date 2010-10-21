@@ -11,19 +11,27 @@ class Zircote_Ccp_Api_Result_Abstract {
 	public $xml;
 	public $result;
 	
-	public function __construct($xml){
+	public function __construct($xml = null){
 		if($xml){
 			$this->loadXML($xml);
-		}
+		} 
 	}
 	
 	public function loadXML($xml){
 			$this->xml = $xml;
 			;
 			if(!$sXml = @simplexml_load_string($this->xml)){
+				require_once 'Zircote/Ccp/Api/Exception.php';
+				throw new Zircote_Ccp_Api_Exception('failed to load valid XML EVE-API Endpoint may be down', 500);
 				return;
+			}else {
 			}
 			$result = $this->parse($sXml);
+			if(key_exists('error',$result['eveapi'])){
+				extract($result['eveapi']['error']);
+				require_once 'Zircote/Ccp/Api/Exception.php';
+				throw new Zircote_Ccp_Api_Exception($text, $code);
+			}
 			$this->result = $result['eveapi'];
 	}
 	
@@ -51,6 +59,11 @@ class Zircote_Ccp_Api_Result_Abstract {
 					}
 				} else {
 					$result[$sXml->getName()] = (string) $sXml;
+				}
+				if(count($attr = $this->attr($sXml))){
+					foreach ($attr as $key => $value) {
+						$result[$sXml->getName()][$key] = $value;
+					}
 				}
 			break;
 		}

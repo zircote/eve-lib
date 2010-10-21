@@ -35,6 +35,7 @@ EOF;
  		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->StarbaseList();
+// 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
 		$this->assertArrayHasKey('starbases', $out->result['result']);
@@ -48,6 +49,5 @@ EOF;
 			$this->assertArrayHasKey('onlineTimestamp', $starbase);
 			$this->assertEquals($itemID, $starbase['itemID']);
 		}
-// 		print_r($out->result);
  	}
 }

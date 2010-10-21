@@ -2,6 +2,6 @@
 
 require_once 'Zircote/Ccp/Api/Result/Abstract.php';
 
-class Zircote_Ccp_Api_Result_Corp_MemerTracking extends Zircote_Ccp_Api_Result_Abstract {
+class Zircote_Ccp_Api_Result_Corp_MemberTracking extends Zircote_Ccp_Api_Result_Abstract {
 	
 }

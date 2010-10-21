@@ -43,11 +43,11 @@ class Tests_Zircote_Ccp_Api_Command_Corp_WalletJournal
       <row date="2010-04-08 09:26:00" refID="2561067466" refTypeID="19" ownerName1="" 
 		ownerID1="2" ownerName2="corpslave" ownerID2="150337897" argName1="17932" argID1="0" 
 		amount="112000.00" balance="209419031.81" reason="" taxReceiverID="" taxAmount="" />
-      <row date="2010-04-08 00:22:00" refID="2559771587" refTypeID="85" ownerName1="CONCORD" 
-		ownerID1="1000125" ownerName2="corpslave" ownerID2="150337897" argName1="XKH-6O" argID1="30000752" 
-		amount="393624.00" balance="209307031.81" reason="10019:3,22824:2," taxReceiverID="553239301" 
-		taxAmount="32376.00" />
+      <row date="2010-10-21 14:35:00" refID="3403127306" refTypeID="52" ownerName1="Achura StargazerF" 
+      	ownerID1="588896683" ownerName2="Rim Collection RC" ownerID2="440722254" argName1="VPLLost My Tengu to Gurista" 
+      	argID1="61000405" amount="5600.00" balance="1042921647.75" reason="" />
     </rowset>
+    <rowset name="entries" key="refID" columns="date,refID,refTypeID,ownerName1,ownerID1,ownerName2,ownerID2,argName1,argID1,amount,balance,reason">
   </result>
   <cachedUntil>2010-04-10 01:25:20</cachedUntil>
 </eveapi>
@@ -63,15 +63,14 @@ EOF;
  		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->WalletJournal();
+// 		print_r($out->xml);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
-		$this->assertArrayHasKey('transactions', $out->result['result']);
 		foreach ($out->result['result']['entries'] as $refID => $entry) {
 			$this->assertArrayHasKey('date', $entry);
 			$this->assertArrayHasKey('refID', $entry);
 			$this->assertArrayHasKey('refTypeID', $entry);
 			$this->assertArrayHasKey('ownerName1', $entry);
-			$this->assertArrayHasKey('typeID', $entry);
 			$this->assertArrayHasKey('ownerID1', $entry);
 			$this->assertArrayHasKey('ownerName2', $entry);
 			$this->assertArrayHasKey('ownerID2', $entry);
@@ -80,9 +79,6 @@ EOF;
 			$this->assertArrayHasKey('amount', $entry);
 			$this->assertArrayHasKey('balance', $entry);
 			$this->assertArrayHasKey('reason', $entry);
-			$this->assertArrayHasKey('taxReceiverID', $entry);
-			$this->assertArrayHasKey('taxAmount', $entry);
-			$this->assertEquals($refID, $entry['refID']);
 		}
 // 		print_r($out->result);
  	}

@@ -27,14 +27,16 @@ EOF;
 	}
  	
  	/**
+ 	 * @expectedException Zircote_Ccp_Api_Exception
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testCharacterInfo(){
- 		$this->markTestIncomplete();
+// 		$this->markTestIncomplete();
 		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Eve/CharacterInfo.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Eve')
  			->CharacterInfo('144739728');
+ 		print_r($out->result);
  	}
 }

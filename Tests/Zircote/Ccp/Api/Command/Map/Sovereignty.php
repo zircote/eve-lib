@@ -1,7 +1,7 @@
 <?php 
 
 
-class Tests_Zircote_Ccp_Api_Command_Eve_Sovereignty 
+class Tests_Zircote_Ccp_Api_Command_Map_Sovereignty 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){

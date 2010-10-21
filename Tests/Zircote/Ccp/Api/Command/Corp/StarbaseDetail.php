@@ -51,7 +51,9 @@ EOF;
  		require_once 'Zircote/Ccp/Api/Result/Corp/StarbaseDetail.php';
  		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
- 			->StarbaseDetail();
+ 			->StarbaseDetail('1328505245');
+// 		print_r($out->xml);
+// 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
 		$this->assertArrayHasKey('state', $out->result['result']);
@@ -76,9 +78,7 @@ EOF;
 		foreach ($out->result['result']['fuel'] as $typeID => $fuel) {
 			$this->assertArrayHasKey('typeID', $fuel);
 			$this->assertArrayHasKey('quantity', $fuel);
-			$this->assertEquals($typeID, $fuel['$fuel']);
+			$this->assertEquals($typeID, $fuel['typeID']);
 		}
-		$this->assertEquals($itemID, $out->result['itemID']);
-// 		print_r($out->result);
  	}
 }

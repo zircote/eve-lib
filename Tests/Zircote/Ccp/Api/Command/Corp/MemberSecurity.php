@@ -10,7 +10,22 @@ class Tests_Zircote_Ccp_Api_Command_Corp_MemberSecurity
 <eveapi version="2">
   <currentTime>2008-09-02 18:39:38</currentTime>
   <result>
-    <member characterID="123456789" name="Tester">
+<?xml version='1.0' encoding='UTF-8'?>
+<eveapi version="2">
+  <currentTime>2010-10-21 02:12:23</currentTime>
+  <result>
+    <member characterID="102407616" name="Tankero">
+      <rowset name="roles" key="roleID" columns="roleID,roleName" />
+      <rowset name="grantableRoles" key="roleID" columns="roleID,roleName" />
+      <rowset name="rolesAtHQ" key="roleID" columns="roleID,roleName" />
+      <rowset name="grantableRolesAtHQ" key="roleID" columns="roleID,roleName" />
+      <rowset name="rolesAtBase" key="roleID" columns="roleID,roleName" />
+      <rowset name="grantableRolesAtBase" key="roleID" columns="roleID,roleName" />
+      <rowset name="rolesAtOther" key="roleID" columns="roleID,roleName" />
+      <rowset name="grantableRolesAtOther" key="roleID" columns="roleID,roleName" />
+      <rowset name="titles" key="titleID" columns="titleID,titleName" />
+    </member>
+    <member characterID="111981123" name="Gharib Ghar">
       <rowset name="roles" key="roleID" columns="roleID,roleName" />
       <rowset name="grantableRoles" key="roleID" columns="roleID,roleName" />
       <rowset name="rolesAtHQ" key="roleID" columns="roleID,roleName" />
@@ -20,9 +35,7 @@ class Tests_Zircote_Ccp_Api_Command_Corp_MemberSecurity
       <rowset name="rolesAtOther" key="roleID" columns="roleID,roleName" />
       <rowset name="grantableRolesAtOther" key="roleID" columns="roleID,roleName" />
       <rowset name="titles" key="titleID" columns="titleID,titleName">
-        <row titleID="1" titleName="Member " />
-        <row titleID="512" titleName="Gas Attendant" />
-        <row titleID="16384" titleName="General Manager" />
+        <row titleID="2048" titleName="Rim Pilot" />
       </rowset>
     </member>
   </result>
@@ -40,15 +53,17 @@ EOF;
  		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->MemberSecurity();
+// 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
-		$this->assertArrayHasKey('member', $out->result['result']);
-		$this->assertArrayHasKey('characterID', $out->result['result']['member']);
-		$this->assertArrayHasKey('name', $out->result['result']['member']);
-		$this->assertArrayHasKey('roles', $out->result['result']['member']);
-		$this->assertArrayHasKey('grantableRoles', $out->result['result']['member']);
-		$this->assertArrayHasKey('rolesAtBase', $out->result['result']['member']);
-		$this->assertArrayHasKey('grantableRolesAtBase', $out->result['result']['member']);
+		foreach ($out->result['result'] as $member) {
+			$this->assertArrayHasKey('characterID', $member);
+			$this->assertArrayHasKey('name', $member);
+			$this->assertArrayHasKey('roles', $member);
+			$this->assertArrayHasKey('grantableRoles', $member);
+			$this->assertArrayHasKey('rolesAtBase', $member);
+			$this->assertArrayHasKey('grantableRolesAtBase', $member);
+		}
 // 		print_r($out->result);
  	}
 }

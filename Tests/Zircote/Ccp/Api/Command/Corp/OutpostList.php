@@ -22,6 +22,6 @@ EOF;
  			->OutpostList();
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
- 		print_r($out->result);
+// 		print_r($out->result);
  	}
 }
