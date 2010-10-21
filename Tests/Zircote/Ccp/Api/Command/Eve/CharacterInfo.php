@@ -27,16 +27,24 @@ EOF;
 	}
  	
  	/**
- 	 * @expectedException Zircote_Ccp_Api_Exception
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testCharacterInfo(){
 // 		$this->markTestIncomplete();
 		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Eve/CharacterInfo.php';
- 		$api = new Zircote_Ccp_Api;
+ 		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Eve')
- 			->CharacterInfo('144739728');
- 		print_r($out->result);
+ 			->CharacterInfo('1855232842');
+// 		print_r($out->result);
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('result', $out->result);
+			$this->assertArrayHasKey('characterID', $out->result['result']);
+			$this->assertArrayHasKey('characterName', $out->result['result']);
+			$this->assertArrayHasKey('corporationID', $out->result['result']);
+			$this->assertArrayHasKey('securityStatus', $out->result['result']);
+			$this->assertArrayHasKey('corporation', $out->result['result']);
+ 		$api = $out = null;
  	}
 }

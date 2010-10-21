@@ -18,7 +18,6 @@ class Zircote_Ccp_Api_Command_Account_AccountStatus extends Zircote_Ccp_Api_Comm
 			'path' => $this->path
 		);
 		$args = array_merge($args, $this->_api->_api);
-		print_r($args);
 		return $args;
 	}
 	

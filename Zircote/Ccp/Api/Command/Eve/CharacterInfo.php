@@ -25,13 +25,14 @@ class Zircote_Ccp_Api_Command_Eve_CharacterInfo extends Zircote_Ccp_Api_Command_
 		);
 		if($this->_api->_api['apiKey']){
 			foreach ($this->_api->_api as $key => $value) {
-				$args[$key] = $value;
+				$api[$key] = $value;
 			}
 		}
+		$args = array_merge($api,$args);
 		return $args;		
 	}
 	
 	public function set_cache_key(){
-		$this->_cache_key = md5($this->_command);
+		$this->_cache_key = md5($this->_command . PATH_SEPARATOR . implode(PATH_SEPARATOR,$this->_getRequest()));
 	}
 }

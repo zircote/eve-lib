@@ -35,15 +35,20 @@ EOF;
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testAccountStatus(){
- 		$this->markTestSkipped();
+// 		$this->markTestSkipped();
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Account/AccountStatus.php';
  		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Account')
  			->AccountStatus();
-// 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('result', $out->result);
+			$this->assertArrayHasKey('userID', $out->result['result']);
+			$this->assertArrayHasKey('paidUntil', $out->result['result']);
+			$this->assertArrayHasKey('createDate', $out->result['result']);
+			$this->assertArrayHasKey('logonCount', $out->result['result']);
+			$this->assertArrayHasKey('logonMinutes', $out->result['result']);
  		$api = $out = null;
  	}
 }
