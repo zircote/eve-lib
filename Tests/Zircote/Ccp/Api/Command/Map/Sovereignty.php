@@ -34,6 +34,11 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Map')
  			->Sovereignty();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('result', $out->result);
+		$this->assertArrayHasKey('solarSystems', $out->result['result']);
+		$this->assertArrayHasKey('solarSystemID', $out->result['result']['solarSystems']);
 // 		print_r($out->result);
  	}
 }

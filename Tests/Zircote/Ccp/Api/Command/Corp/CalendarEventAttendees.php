@@ -20,6 +20,7 @@ EOF;
  		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->CalendarEventAttendees();
+ 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
 		$this->assertArrayHasKey('corporateContactList', $out->result['result']);

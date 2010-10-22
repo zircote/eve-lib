@@ -52,11 +52,13 @@ EOF;
  		$out = $api->setScope('Corp')
  			->Standings();
 // 		print_r($out->result);
+// 		print_r($out->xml);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
-		$this->assertArrayHasKey('corporationStandings', $out->result['result']);
-		$this->assertArrayHasKey('standingsTo', $out->result['result']['corporationStandings']);
-		$this->assertArrayHasKey('standingsFrom', $out->result['result']['corporationStandings']);
+		$this->assertArrayHasKey('corporationNPCStandings', $out->result['result']);
+		$this->assertArrayHasKey('NPCCorporations', $out->result['result']['corporationNPCStandings']);
+		$this->assertArrayHasKey('agents', $out->result['result']['corporationNPCStandings']);
+		$this->assertArrayHasKey('factions', $out->result['result']['corporationNPCStandings']);
 		
 // 		print_r($out->result);
  	}

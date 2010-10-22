@@ -12,13 +12,14 @@ EOF;
  	
  	/**
  	 * @param Zircote_Ccp_Api $api
+ 	 * @see http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1228297
  	 */
  	public function testFacWarSystems(){
+ 		$this->markTestSkipped('This API call is disabled');
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Map/SovereigntyStatus.php';
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Map')
  			->SovereigntyStatus();
-// 		print_r($out->result);
  	}
 }

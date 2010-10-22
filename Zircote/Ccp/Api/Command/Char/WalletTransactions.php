@@ -17,6 +17,9 @@ class Zircote_Ccp_Api_Command_Char_WalletTransactions extends Zircote_Ccp_Api_Co
 		$args = array(
 			'path' => $this->path
 		);
+		if(isset($this->_args[0])){
+			$args['beforeTransID'] = $this->_args[0];
+		}
 		$api = $this->_api->_api;
 		$args = array_merge($args, $api);
 		return $args;

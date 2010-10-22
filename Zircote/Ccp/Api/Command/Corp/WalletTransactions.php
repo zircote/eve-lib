@@ -1,6 +1,19 @@
 <?php
 
 require_once 'Zircote/Ccp/Api/Command/Abstract.php';
+
+/**
+ * 
+ * Enter description here ...
+ * @author zircote
+ * 
+ * @example
+ *
+ * $api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
+ * $out = $api->setScope('Char')
+ * 		->WalletTransactions($accountKey, $beforeTransID);
+ *
+ */
 class Zircote_Ccp_Api_Command_Corp_WalletTransactions extends Zircote_Ccp_Api_Command_Abstract {
 	
 	public $path = '/corp/WalletTransactions.xml.aspx';
@@ -17,6 +30,12 @@ class Zircote_Ccp_Api_Command_Corp_WalletTransactions extends Zircote_Ccp_Api_Co
 		$args = array(
 			'path' => $this->path
 		);
+		if(isset($this->_args[0])){
+			$args['accountKey'] = $this->_args[0];
+		}
+		if(isset($this->_args[1])){
+			$args['beforeTransID'] = $this->_args[1];
+		}
 		$args = array_merge($args, $this->_api->_api);
 		return $args;
 	}

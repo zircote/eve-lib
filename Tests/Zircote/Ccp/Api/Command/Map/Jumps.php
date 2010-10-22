@@ -16,7 +16,7 @@ class Tests_Zircote_Ccp_Api_Command_Map_Jumps
     <dataTime>2007-12-12 11:50:38</dataTime>
   </result>
   <cachedUntil>2007-12-12 12:50:38</cachedUntil>
-</eveapi>	
+</eveapi>
 EOF;
 	}
  	
@@ -29,6 +29,12 @@ EOF;
  		$api = new Zircote_Ccp_Api;
  		$out = $api->setScope('Map')
  			->Jumps();
+		$this->assertArrayHasKey('cachedUntil', $out->result);
+		$this->assertArrayHasKey('currentTime', $out->result);
+		$this->assertArrayHasKey('result', $out->result);
+		$this->assertArrayHasKey('dataTime', $out->result['result']);
+		$this->assertArrayHasKey('solarSystems', $out->result['result']);
+		$this->assertArrayHasKey('solarSystemID', $out->result['result']['solarSystems']);
 // 		print_r($out->result);
  	}
 }

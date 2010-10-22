@@ -22,6 +22,6 @@ class Zircote_Ccp_Api_Command_Corp_CalendarEventAttendees extends Zircote_Ccp_Ap
 	}
 	
 	public function set_cache_key(){
-		$this->_cache_key = md5($this->_command . PATH_SEPARATOR . implode(PATH_SEPARATOR, $this->_api->_api));
+		$this->_cache_key = md5($this->_command . PATH_SEPARATOR . implode(PATH_SEPARATOR, $this->_getRequest()));
 	}
 }

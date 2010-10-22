@@ -51,7 +51,7 @@ EOF;
  		$api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
  		$out = $api->setScope('Corp')
  			->WalletTransactions();
- 		print_r($out->result);
+// 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
 		$this->assertArrayHasKey('transactions', $out->result['result']);
