@@ -2,4 +2,8 @@ TQ 1.2 API Compat
 Requirments:
 
 	Zend Framework
+		Zend_Cache_Core
+		Zend_Cache_Manager
 	PHPUnit: Facilitate Tests
+
+

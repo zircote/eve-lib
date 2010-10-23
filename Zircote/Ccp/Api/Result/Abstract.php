@@ -20,7 +20,7 @@ class Zircote_Ccp_Api_Result_Abstract {
 	public function loadXML($xml){
 			$this->xml = $xml;
 			;
-			if(!$sXml = @simplexml_load_string($this->xml)){
+			if(!$sXml = simplexml_load_string($this->xml)){
 				require_once 'Zircote/Ccp/Api/Exception.php';
 				throw new Zircote_Ccp_Api_Exception('failed to load valid XML EVE-API Endpoint may be down', 500);
 				return;

@@ -62,7 +62,7 @@ EOF;
  	public function testMemberSecurity(){
  		require_once 'Zircote/Ccp/Api/Result/Corp/MemberSecurity.php';
  		$out = new Zircote_Ccp_Api_Result_Corp_MemberSecurity($this->sharedFixture);
- 		print_r($out->result);
+// 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
 		$character = $out->result['result']['Gharib Ghar'];
