@@ -28,7 +28,7 @@ EOF;
  	public function testAllianceList(){
  		require_once 'Zircote/Ccp/Api/Result/Account/AccountStatus.php';
  		$out = new Zircote_Ccp_Api_Result_Account_AccountStatus($this->sharedFixture);
- 		print_r($out->result);
+// 		print_r($out->result);
  		
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

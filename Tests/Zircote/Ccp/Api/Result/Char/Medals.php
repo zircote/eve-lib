@@ -28,7 +28,7 @@ EOF;
  	public function testAccountStatus(){
  		require_once 'Zircote/Ccp/Api/Result/Char/Medals.php';
  		$out = new Zircote_Ccp_Api_Result_Char_Medals($this->sharedFixture);
- 		print_r($out->result); 
+// 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
 		$this->assertArrayHasKey('currentCorporation', $out->result['result']);

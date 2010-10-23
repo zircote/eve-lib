@@ -25,7 +25,7 @@ EOF;
  	public function testAccountStatus(){
  		require_once 'Zircote/Ccp/Api/Result/Char/Notifications.php';
  		$out = new Zircote_Ccp_Api_Result_Char_Notifications($this->sharedFixture);
- 		print_r($out->result); 
+// 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
 		$this->assertArrayHasKey('notifications', $out->result['result']);
