@@ -158,8 +158,8 @@ class Tests_Zircote_Ccp_Api_Result_AllTests {
 //		require_once 'Tests/Zircote/Ccp/Api/Result/Misc/';
 //		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Misc_');
 // Server
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Server/ServerStatus.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Server_ServerStatus');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Server/ServerStatus.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Server_ServerStatus');
 		
 		return $suite;
 	}
