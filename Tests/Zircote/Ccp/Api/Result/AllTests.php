@@ -2,14 +2,6 @@
 
 require_once 'PHPUnit/Framework.php';
 
-$addPath = realpath(dirname(__FILE__) . '/../');
-set_include_path($addPath . PATH_SEPARATOR . get_include_path());
-$filename = realpath(dirname(__FILE__)) . '/tests_config.xml';
-if(file_exists($filename)){
-	require_once 'Zend/Config/Xml.php';
-	$c = new Zend_Config_Xml($filename);
-	Tests_AllTests::$tests_config = $c->toArray();
-}
 		
 /**
  * 
@@ -19,7 +11,6 @@ if(file_exists($filename)){
  *
  */
 class Tests_Zircote_Ccp_Api_Result_AllTests {
-	public static $tests_config;
 	public static function suite(){
 		$suite = new PHPUnit_Framework_TestSuite('Tests_Zircote_Ccp_Api_Result');
 		// Results
@@ -126,33 +117,43 @@ class Tests_Zircote_Ccp_Api_Result_AllTests {
 
 		
 		//Eve
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/CharacterInfo.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_CharacterInfo');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/CharacterID.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_CharacterID');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/CharacterName.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_CharacterName');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/ErrorList.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_ErrorList');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/FacWarStats.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_FacWarStats');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/AllianceList.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_AllianceList');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/CertificateTree.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_CertificateTree');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/ConquerableStationList.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_ConquerableStationList');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/FacWarTopStats.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_FacWarTopStats');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/RefTypes.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_RefTypes');
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/SkillTree.php';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_SkillTree');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/CharacterInfo.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_CharacterInfo');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/CharacterID.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_CharacterID');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/CharacterName.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_CharacterName');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/ErrorList.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_ErrorList');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/FacWarStats.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_FacWarStats');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/AllianceList.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_AllianceList');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/CertificateTree.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_CertificateTree');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/ConquerableStationList.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_ConquerableStationList');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/FacWarTopStats.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_FacWarTopStats');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/RefTypes.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_RefTypes');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Eve/SkillTree.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Eve_SkillTree');
 
 		
 		//Map
-//		require_once 'Tests/Zircote/Ccp/Api/Result/Map/';
-//		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Map_');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Map/FacWarSystems.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Map_FacWarSystems');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Map/Jumps.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Map_Jumps');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Map/Kills.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Map_Kills');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Map/Sovereignty.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Map_Sovereignty');
+		require_once 'Tests/Zircote/Ccp/Api/Result/Map/SovereigntyStatus.php';
+		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Map_SovereigntyStatus');
+		
+		
 		//Misc
 //		require_once 'Tests/Zircote/Ccp/Api/Result/Misc/';
 //		$suite->addTestSuite('Tests_Zircote_Ccp_Api_Result_Misc_');
