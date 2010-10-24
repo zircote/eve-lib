@@ -1,0 +1,37 @@
+<?php
+
+
+
+
+/**
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<Api>
+		<userID>------</userID>
+		<apiKey>-------------------------------------------------</apiKey>
+		<characterID>-----</characterID>
+	</Api>
+	<Scope>corp</Scope>
+	<Cache>
+		<backend>
+			<name>Memcached</name>
+			<options>
+				<host>localhost</host>
+				<port>11211</port>
+				<persistent>true</persistent>
+				<weight>1</weight>
+				<timeout>5</timeout>
+				<retry_interval>15</retry_interval>
+				<status>true</status>
+				<failure_callback/>
+			</options>
+		</backend>
+	</Cache>
+	<Connection>
+		<host>apitest.eve-online.com</host>
+		<port>80</port>
+		<protocol>http</protocol>
+	</Connection>
+</config>
+
+*/
