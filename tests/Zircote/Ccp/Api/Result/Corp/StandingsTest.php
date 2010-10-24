@@ -60,7 +60,8 @@ EOF;
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testStandings(){
- 		$this->markTestSkipped();
+ 		$this->markTestSkipped('Appears there is a difference in TQ1.1 and'.
+ 			' TQ1.2 data return skipping until more in known');
  		require_once 'Zircote/Ccp/Api/Result/Corp/Standings.php';
  		$out = new Zircote_Ccp_Api_Result_Corp_Standings($this->sharedFixture);
 // 		print_r($out->result);

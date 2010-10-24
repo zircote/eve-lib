@@ -28,7 +28,8 @@ EOF;
  	 * @param Zircote_Ccp_Api $api
  	 */
  	public function testOutpostServiceDetail(){
- 		$this->markTestIncomplete();
+ 		$this->markTestSkipped('There is currently no documentation for this api'.
+ 			' call as of yet it is scheduled for TQ1.2 Patch');
  		require_once 'Zircote/Ccp/Api/Result/Corp/OutpostServiceDetail.php';
  		$out = new Zircote_Ccp_Api_Result_Corp_OutpostServiceDetail($this->sharedFixture);
  		print_r($out->result);
