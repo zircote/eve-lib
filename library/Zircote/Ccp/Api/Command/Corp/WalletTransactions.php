@@ -23,7 +23,7 @@ require_once 'Zircote/Ccp/Api/Command/Abstract.php';
  * 
  * @example
  *
- * $api = new Zircote_Ccp_Api(Tests_AllTests::$tests_config);
+ * $api = new Zircote_Ccp_Api(AllTests::$config);
  * $out = $api->setScope('Char')
  * 		->WalletTransactions($accountKey, $beforeTransID);
  *
