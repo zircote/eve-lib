@@ -1,0 +1,25 @@
+INSTALLATION
+------------
+
+The eve-lib has no special requirements for installation. Simple acquire the 
+library, place in the include path. While it is not required it is recommended
+a bootstrap instantiate an autoloader of your own making or the utilization of
+the Zend_Loader. 
+
+
+SYSTEM REQUIREMENTS
+-------------------
+
+The eve-lib requires PHP5 or later as well as he Zend Framework to function.
+
+
+CONFIGURING THE INCLUDE PATH
+----------------------------
+
+Point your include path to the classes that are under the ./library 
+directory in this project. It will also be necasary that the Zend Framework
+also be in the include path.
+
+http://www.php.net/manual/en/ini.core.php#ini.include-path
+
+http://www.php.net/manual/en/configuration.changes.php

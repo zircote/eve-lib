@@ -1,9 +1,44 @@
-TQ 1.2 API Compat
-Requirments:
+Welcome to the eve-lib library.
 
-	Zend Framework
-		Zend_Cache_Core
-		Zend_Cache_Manager
-	PHPUnit: Facilitate Tests
+RELEASE INFORMATION
+---------------------
+
+eve-lib development release
+
+This is a PP5/Zend Framework EVE API library, it is intended tp 
+provide since API funcitonality with a simple data response in clear
+concise reponse returns. It is designed to not be dependant on specific
+XML response formats and is intended to not fail should the raw 
+response format change over time.
 
 
+NEW FEATURES
+-------------------
+TQ 1.2 API calls have been included but will not work on TQ server calls
+untill CCP has released that patch.
+
+
+SYSTEM REQUIREMENTS
+----------------------
+
+PHP5
+Zend Framework
+
+
+INSTALLATION
+----------------
+
+see INSTALL
+
+
+QUESTIONS AND ISSUES
+----------------------
+
+http://github.com/zircote/eve-lib/wiki
+http://github.com/zircote/eve-lib/issues
+
+
+LICENSE
+---------------
+
+see LICENSE
