@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 /**
  * @license Copyright 2010 Robert Allen
@@ -14,3 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */-->
+<minerals> 
+ <mineral> 
+ <name>Tritanium</name> <price>2.2000000000000002</price> </mineral> 
+ <mineral> 
+ <name>Pyerite</name> <price>3.6499999999999999</price> </mineral> 
+ <mineral> 
+ <name>Mexallon</name> <price>29.965</price> </mineral> 
+ <mineral> 
+ <name>Isogen</name> <price>57.504999999999995</price> </mineral> 
+ <mineral> 
+ <name>Nocxium</name> <price>280.20999999999998</price> </mineral> 
+ <mineral> 
+ <name>Zydrine</name> <price>1000.01</price> </mineral> 
+ <mineral> 
+ <name>Megacyte</name> <price>2422.6999999999998</price> </mineral> 
+ <mineral> 
+ <name>Morphite</name> <price>3801.1100000000001</price> </mineral> 
+</minerals> 
