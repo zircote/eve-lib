@@ -5,9 +5,9 @@ RELEASE INFORMATION
 
 eve-lib development release
 
-This is a PP5/Zend Framework EVE API library, it is intended tp 
-provide since API funcitonality with a simple data response in clear
-concise reponse returns. It is designed to not be dependant on specific
+This is a PHP5/Zend Framework EVE API library, it is intended tp 
+provide since API funcitonality with a simple data response in a clear
+concise response format. It is designed to not be dependant on specific
 XML response formats and is intended to not fail should the raw 
 response format change over time.
 
