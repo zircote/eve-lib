@@ -37,7 +37,7 @@ if (is_readable($zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php'))
 }
 
 if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&
-version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
+			version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
 
 	PHPUnit_Util_Filter::addDirectoryToWhitelist($zircCoreLibrary);
 
@@ -45,8 +45,6 @@ version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
 	foreach (array('.php', '.phtml', '.csv', '.inc') as $suffix) {
 		PHPUnit_Util_Filter::addDirectoryToFilter($zircCoreTests, $suffix);
 	}
-	PHPUnit_Util_Filter::addDirectoryToFilter(PEAR_INSTALL_DIR);
-	PHPUnit_Util_Filter::addDirectoryToFilter(PHP_LIBDIR);
 }
 
 unset($zircRoot, $zircCoreLibrary, $zircCoreTests, $path);

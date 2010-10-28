@@ -224,6 +224,14 @@ class Zircote_Ccp_Api {
     /**
      * 
      * Enter description here ...
+     * @return array
+     */
+    public function getCommands(){
+    	return self::$_commands;
+    }
+    /**
+     * 
+     * Enter description here ...
      * @param mixed $options
      * @return Zircote_Ccp_Api
      */
