@@ -24,10 +24,10 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group disable
  	 */
- 	public function testAccountStatus(){
- 		$this->markTestIncomplete('There is currently no documentation for this api'.
+ 	public function testCalendarEventAttendees(){
+ 		$this->markTestSkipped('There is currently no documentation for this api'.
  			' call as of yet it is scheduled for TQ1.2 Patch');
  		require_once 'Zircote/Ccp/Api.php';
  		require_once 'Zircote/Ccp/Api/Result/Char/CalendarEventAttendees.php';

@@ -25,7 +25,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group disable
  	 * @see http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1228297
  	 */
  	public function testSovereigntyStatus(){

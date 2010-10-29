@@ -1,37 +1,23 @@
 <?php
 
+define('TESTS_GENERATE_REPORT', true);
 
+define('TESTS_API_USERID','');
+define('TESTS_API_APIKEY','');
+define('TESTS_API_CHARACTERID','');
 
+define('TESTS_SCOPE_SCOPE','eve');
 
-/**
-<?xml version="1.0" encoding="UTF-8"?>
-<config>
-	<Api>
-		<userID>------</userID>
-		<apiKey>-------------------------------------------------</apiKey>
-		<characterID>-----</characterID>
-	</Api>
-	<Scope>corp</Scope>
-	<Cache>
-		<backend>
-			<name>Memcached</name>
-			<options>
-				<host>localhost</host>
-				<port>11211</port>
-				<persistent>true</persistent>
-				<weight>1</weight>
-				<timeout>5</timeout>
-				<retry_interval>15</retry_interval>
-				<status>true</status>
-				<failure_callback/>
-			</options>
-		</backend>
-	</Cache>
-	<Connection>
-		<host>apitest.eve-online.com</host>
-		<port>80</port>
-		<protocol>http</protocol>
-	</Connection>
-</config>
+define('TESTS_CACHE_BACKEND_NAME','Memcached');
+define('TESTS_CACHE_BACKEND_OPTIONS_HOST','localhost');
+define('TESTS_CACHE_BACKEND_OPTIONS_PORT','1211');
+define('TESTS_CACHE_BACKEND_OPTIONS_PERSISTANT',true);
+define('TESTS_CACHE_BACKEND_OPTIONS_WEIGHT','1');
+define('TESTS_CACHE_BACKEND_OPTIONS_TIMEOUT','5');
+define('TESTS_CACHE_BACKEND_OPTIONS_RETRY_INTERVAL','15');
+define('TESTS_CACHE_BACKEND_OPTIONS_STATUS',true);
+define('TESTS_CACHE_BACKEND_OPTIONS_FAILURE_CALLBACK',null);
 
-*/
+define('TESTS_CONNECTION_HOST','apitest.eve-online.com');
+define('TESTS_CONNECTION_PORT','80');
+define('TESTS_CONNECTION_PROTOCOL','http');

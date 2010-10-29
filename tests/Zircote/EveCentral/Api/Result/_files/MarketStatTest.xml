@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/**
+ * @license Copyright 2010 Robert Allen
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */-->
+  
+ 
+<!-- Automatically generated data from EVE-Central.com --> 
+<!-- This is the new API :-) --> 
+ 
+ 
+ 
+<evec_api version="2.0" method="marketstat_xml"> 
+<marketstat> 
+ 
+ 
+ 
+<type id="34"> 
+ 
+  <all> 
+    <volume>68493921796.00</volume> 
+<avg>3.98</avg> 
+<max>211.00</max> 
+<min>0.22</min> 
+<stddev>12.57</stddev> 
+<median>2.25</median> 
+ 
+  </all> 
+  <buy> 
+    <volume>39020633513.00</volume> 
+<avg>1.97</avg> 
+<max>2.50</max> 
+<min>0.22</min> 
+<stddev>0.36</stddev> 
+<median>2.01</median> 
+ 
+  </buy> 
+  <sell> 
+    <volume>29473288283.00</volume> 
+<avg>2.44</avg> 
+<max>211.00</max> 
+<min>2.07</min> 
+<stddev>14.81</stddev> 
+<median>2.37</median> 
+ 
+  </sell> 
+</type> 
+ 
+ 
+ 
+<type id="35"> 
+ 
+  <all> 
+    <volume>16876755859.00</volume> 
+<avg>4.33</avg> 
+<max>9.97</max> 
+<min>1.00</min> 
+<stddev>1.16</stddev> 
+<median>4.20</median> 
+ 
+  </all> 
+  <buy> 
+    <volume>8918959784.00</volume> 
+<avg>3.50</avg> 
+<max>4.20</max> 
+<min>1.00</min> 
+<stddev>0.66</stddev> 
+<median>3.31</median> 
+ 
+  </buy> 
+  <sell> 
+    <volume>7957796075.00</volume> 
+<avg>5.24</avg> 
+<max>9.97</max> 
+<min>3.80</min> 
+<stddev>0.96</stddev> 
+<median>4.68</median> 
+ 
+  </sell> 
+</type> 
+ 
+ 
+</marketstat> 
+</evec_api> 

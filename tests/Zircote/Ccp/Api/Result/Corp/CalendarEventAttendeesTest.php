@@ -25,10 +25,11 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group disable
  	 */
  	public function testCalendarEventAttendees(){
- 		$this->markTestIncomplete();
+ 		$this->markTestSkipped('There is currently no documentation for this api'.
+ 			' call as of yet it is scheduled for TQ1.2 Patch');
  		require_once 'Zircote/Ccp/Api/Result/Corp/CalendarEventAttendees.php';
  		$api = new Zircote_Ccp_Api_Result_Corp_CalendarEventAttendees($this->sharedFixture);
 // 		print_r($out->result);

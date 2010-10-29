@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/**
+ * @license Copyright 2010 Robert Allen
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */-->
+ 
+<!-- Automatically generated data from EVE-Central.com --> 
+ 
+ 
+<evec_api version="2.0" method="upload_suggest_xml"> 
+<upload_suggest> 
+<item id="3994">Large EMP Smartbomb I Blueprint</item> 
+<item id="6252">F-43 Repetitive LADAR Backup Sensors</item> 
+<item id="18636">Discovery Survey Probe I Blueprint</item> 
+<item id="17649">Antimatter Charge XL Blueprint</item> 
+<item id="30029">Combat Scanner Probe I Blueprint</item> 
+<item id="20008">Arch Angel EMP M</item> 
+<item id="18638">Gaze Survey Probe I Blueprint</item> 
+<item id="31976">Jackal Delta</item> 
+<item id="16187">Khanid Warbird Insignia</item> 
+<item id="6276">F-43 Repetitive RADAR Backup Sensors</item> 
+<item id="27233">Hardwiring - Zainou 'Gypsy' KRB-25</item> 
+<item id="825">220mm Vulcan AutoCannon I Blueprint</item> 
+<item id="13321">Cruise Missile Launcher I Blueprint</item> 
+<item id="28647">Covert Cynosural Field Generator I Blueprint</item> 
+<item id="28471">Compressed Fiery Kernite Blueprint</item> 
+<item id="28017">Amarr Basic Outpost Refinery Platform</item> 
+<item id="2759">Heat Dissipation Array Blueprint</item> 
+<item id="25737">Large Anti-EM Pump I Blueprint</item> 
+<item id="27513">Caldari Navy Serpent F.O.F. Light Missile I</item> 
+<item id="21038">Capital Construction Parts Blueprint</item> 
+</upload_suggest> 
+</evec_api> 

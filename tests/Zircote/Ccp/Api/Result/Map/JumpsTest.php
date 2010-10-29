@@ -35,7 +35,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Map
  	 */
  	public function testJumps(){
  		require_once 'Zircote/Ccp/Api/Result/Map/Jumps.php';

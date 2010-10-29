@@ -34,7 +34,7 @@ EOF;
 	
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Server
  	 */
  	public function testServerStatus(){
  		require_once 'Zircote/Ccp/Api/Result/Server/ServerStatus.php';
