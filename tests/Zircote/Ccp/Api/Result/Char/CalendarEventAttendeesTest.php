@@ -24,7 +24,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group disable
  	 */
  	public function testCalendarEventAttendees(){
  		$this->markTestSkipped('There is currently no documentation for this api'.

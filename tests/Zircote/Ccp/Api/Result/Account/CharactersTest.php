@@ -39,7 +39,8 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Account
+ 	 * Enter description here ...
  	 */
  	public function testAllianceList(){
  		require_once 'Zircote/Ccp/Api/Result/Account/Characters.php';

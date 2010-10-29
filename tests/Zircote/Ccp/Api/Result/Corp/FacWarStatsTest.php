@@ -43,7 +43,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Corp
  	 */
  	public function testFacWarStats(){
  		require_once 'Zircote/Ccp/Api/Result/Corp/FacWarStats.php';

@@ -37,7 +37,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Account
  	 */
  	public function testAllianceList(){
  		require_once 'Zircote/Ccp/Api/Result/Account/AccountStatus.php';

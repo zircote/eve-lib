@@ -57,7 +57,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group disable
  	 */
  	public function testStandings(){
  		$this->markTestSkipped('Appears there is a difference in TQ1.1 and'.

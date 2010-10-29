@@ -34,7 +34,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Char
  	 * @see http://wiki.eve-id.net/APIv2_Char_Notifications_XML
  	 * @see http://wiki.eve-id.net/APIv2_Char_ContactNotifications_XML
  	 */

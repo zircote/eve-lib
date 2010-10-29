@@ -54,7 +54,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Eve
  	 */
  	public function testFacWarStats(){
  		require_once 'Zircote/Ccp/Api/Result/Eve/FacWarStats.php';

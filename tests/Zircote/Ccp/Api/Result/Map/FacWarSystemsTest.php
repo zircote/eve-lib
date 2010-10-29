@@ -36,7 +36,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Map
  	 */
  	public function testFacWarSystems(){
  		require_once 'Zircote/Ccp/Api/Result/Map/FacWarSystems.php';

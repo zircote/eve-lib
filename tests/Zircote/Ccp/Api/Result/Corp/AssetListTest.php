@@ -74,7 +74,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Corp
  	 */
  	public function testAssetList(){
  		require_once 'Zircote/Ccp/Api/Result/Corp/AssetList.php';

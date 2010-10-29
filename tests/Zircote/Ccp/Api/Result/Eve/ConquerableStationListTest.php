@@ -48,7 +48,7 @@ EOF;
 	}
  	
  	/**
- 	 * @param Zircote_Ccp_Api $api
+ 	 * @group Zircote_Ccp_Api_Result_Eve
  	 */
  	public function testConquerableStationList(){
  		require_once 'Zircote/Ccp/Api/Result/Eve/ConquerableStationList.php';

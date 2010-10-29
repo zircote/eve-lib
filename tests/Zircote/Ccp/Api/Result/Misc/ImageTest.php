@@ -23,7 +23,10 @@ class Zircote_Ccp_Api_Command_Misc_ImageTest
 
 EOF;
 	}
- 	
+ 	/**
+ 	 * 
+ 	 * @group disable
+ 	 */
  	public function testImage(){
  		$this->markTestIncomplete('code is not completed to begin using this test.');
  		require_once 'Zircote/Ccp/Api/Result/Misc/Image.php';
