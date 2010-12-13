@@ -16,17 +16,48 @@
  */
 class Zircote_Ccp_Api {
 	
+	/**
+	 * 
+	 * The desired port number to make the api request to.
+	 * @var string
+	 */
 	const SERVER_DEFAULT_PORT = '80';
+	
+	/**
+	 * 
+	 * API endpoint hostname the request is directed to.
+	 * @var string
+	 */
 	const SERVER_DEFAULT_HOST = 'api.eve-online.com';
+	
+	/**
+	 * 
+	 * API request protocol: http|https
+	 * @var string (http|https)
+	 */
 	const SERVER_DEFAULT_PROTOCOL = 'http';
+	
+	/**
+	 * 
+	 * cache key namespace designation
+	 * @var string
+	 */
 	const CACHE_KEY = 'eve_api';
 	
 	/**
 	 * 
-	 * Enter description here ...
-	 * @var Zend_Cache
+	 * Zend_Cache_Manager 
+	 * @link http://framework.zend.com/manual/en/zend.cache.cache.manager.html
+	 * @var Zend_Cache_Manager
 	 */
 	protected $cacheManager;
+	
+	/**
+	 * 
+	 * Designation of the standard API commands; this provides short name keys mapping 
+	 * to classnames
+	 * @var array
+	 */
 	protected static $_commands = array (
 		'account' => array (
 			'accountstatus' => 'Zircote_Ccp_Api_Command_Account_AccountStatus',
@@ -110,6 +141,11 @@ class Zircote_Ccp_Api {
 		)
 	);
 	
+	/**
+	 * 
+	 * Basic config data for simple API requests
+	 * @var array
+	 */
 	protected $_options = array(
 		'Scope' => array( 'scope' => 'server' ),
 		'Api' => array (
@@ -132,10 +168,25 @@ class Zircote_Ccp_Api {
 		)
 	);
 	
-	protected $_cache;
-	protected $_server;
+	/**
+	 * 
+	 * Character API details for requests
+	 * @var array
+	 */
 	public $_api;
+	
+	/**
+	 * 
+	 * API Endpoint connection handler
+	 * @var Zircote_Ccp_Api_Connection
+	 */
 	protected $_connection;
+	
+	/**
+	 * 
+	 * The endpoint type the request will be called against
+	 * @var string (Account|Char|Corp|Eve|Map|Misc|Server)
+	 */
 	protected $_scope;
 	
 	public function __construct(array $options = array()){
@@ -162,45 +213,79 @@ class Zircote_Ccp_Api {
         return $this;
     }
 
+    /**
+     * 
+     * Enter description here ...
+     * @param string $name
+     * @param string $value
+     * @return Zircote_Ccp_Api
+     */
     public function setOption($name, $value) {
     	$lowerName = '_' . strtolower($name);
 
         if (!property_exists($this, $lowerName)) {
         	require_once 'Zircote/Ccp/Api/Exception.php';
-            throw new Zircote_Ccp_Api_Exception("'{$scope['scope']}' is not a valid Api scope.");
+            throw new Zircote_Ccp_Api_Exception("'{$name}' is not a valid Option.");
         }
         $this->$lowerName = $value;
         return $this;
     }
     
+    /**
+     * 
+     * Connection option/config method.
+     * @param array $options
+     * @return Zircote_Ccp_Api
+     */
     public function setConnection($options){
  		require_once 'Zircote/Ccp/Api/Connection.php';
     	$this->_connection = new Zircote_Ccp_Api_Connection($options);
     	return $this;
     }
     
+    /**
+     * returns the API request connection
+     * @return Zircote_Ccp_Api_Connection
+     */
     public function getConnection(){
     	return $this->_connection;
     }
     
+    /**
+     * 
+     * Defines the character API configuration values for the API request
+     * @param array $options
+     * @return Zircote_Ccp_Api
+     */
     public function setApi(array $options){
     	$this->_api = $options;
     	return $this;
     }
     
+    /**
+     * 
+     * returns the API config values
+     * @return @array
+     */
     public function getApi(){
     	return $this->_api;
     }
     
     /**
      * 
-     * Enter description here ...
+     * returns the Zend_Cache_Core for direct access to read/write the cache.
      * @return Zend_Cache_Core
      */
     public function getCache(){
     	return $this->cacheManager->getCache(self::CACHE_KEY);
     }
     
+    /**
+     * 
+     * Establishes the cache, the frontend is set in stone due to the reliance of a Core frontend
+     * @param array $options
+     * @return Zircote_Ccp_Api
+     */
     public function setCache(array $options){
     	$frontend = array(
 			'frontend' => array(
@@ -223,15 +308,16 @@ class Zircote_Ccp_Api {
 
     /**
      * 
-     * Enter description here ...
+     * returns the commands key/class pair array.
      * @return array
      */
     public function getCommands(){
     	return self::$_commands;
     }
+    
     /**
      * 
-     * Enter description here ...
+     * Method to set the request scope
      * @param mixed $options
      * @return Zircote_Ccp_Api
      */
@@ -252,11 +338,17 @@ class Zircote_Ccp_Api {
     	return $this;
     }
 
+    /**
+     * 
+     * returns the current scope
+     * @return string
+     */
     public function getScope(){
     	return $this->_scope;
     }
     
     /**
+     * Create and Execute the command request.
      * 
      * @throws Zircote_Ccp_Api_Exception
      * @param string $name      Command name 
@@ -281,6 +373,14 @@ class Zircote_Ccp_Api {
         return new self::$_commands[$this->getScope()][$lowerName]($this, $name, $args);
     }
     
+    /**
+     * 
+     * command request overload
+     * 
+     * @param string $name
+     * @param mixed $args
+     * @return mixed
+     */
     public function __call($name, $args) {
         $command = $this->getCommand($name, $args);
         $command->write();

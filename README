@@ -12,11 +12,6 @@ XML response formats and is intended to not fail should the raw
 response format change over time.
 
 
-NEW FEATURES
--------------------
-TQ 1.2 API calls have been included but will not work on TQ server calls
-untill CCP has released that patch.
-
 
 SYSTEM REQUIREMENTS
 ----------------------
