@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class Zircote_Ccp_Api {
+class Zircote_EveCentral_Api {
 	
 	const SERVER_DEFAULT_PORT = '80';
 	const SERVER_DEFAULT_HOST = 'api.eve-central.com';
@@ -82,7 +82,7 @@ class Zircote_Ccp_Api {
 
         if (!property_exists($this, $lowerName)) {
         	require_once 'Zircote/EveCentral/Api/Exception.php';
-            throw new Zircote_EveCentral_Api_Exception("'{$scope['scope']}' is not a valid Api scope.");
+            throw new Zircote_EveCentral_Api_Exception("'[$lowerName]' is not a valid property/option.");
         }
         $this->$lowerName = $value;
         return $this;

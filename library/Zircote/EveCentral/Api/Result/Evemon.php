@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @license Copyright 2010 Robert Allen
  * 
@@ -14,3 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+require_once 'Zircote/EveCentral/Api/Result/Abstract.php';
+
+class Zircote_EveCentral_Api_Result_Evemon extends Zircote_EveCentral_Api_Result_Abstract {
+
+	
+	public function parse(SimpleXMLElement $sXml){
+		$result = array();
+		$result[$sXml->getName()] = array();
+			foreach ($sXml as $xml) {
+				$result[$sXml->getName()][(string)$xml->name] = (string)$xml->price;
+			}
+		return $result;
+	}
+}
