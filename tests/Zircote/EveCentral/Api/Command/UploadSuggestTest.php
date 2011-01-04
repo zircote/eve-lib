@@ -29,7 +29,7 @@ EOF;
  	public function testUploadSuggest(){
  		$api = new Zircote_EveCentral_Api();
 		$data = $api->UploadSuggest(array('region' => '10000002'));
-//		print_r($data->result); exit;
+		print_r($data->result); exit;
 		$this->assertArrayHasKey('upload_suggest', $data->result);
 		foreach ($data->result['upload_suggest'] as $key => $value) {
 			$this->assertArrayHasKey('id', $data->result['upload_suggest'][$key]);
