@@ -34,7 +34,7 @@ abstract class Zircote_EveCentral_Api_Command_Abstract implements Zircote_EveCen
 	
 	protected $_cache_key;
 	
-	protected $_cache_time = 14400;
+	protected $_cache_time = 2;
 	
 	public function __construct(Zircote_EveCentral_Api $api, $name, $args){
 		$this->_api = $api;
@@ -50,15 +50,6 @@ abstract class Zircote_EveCentral_Api_Command_Abstract implements Zircote_EveCen
 		return $this->path;
 	}
 	
-	protected function setCacheTime($current, $cachedTill){
-		echo $this->_cacheTime =  (integer) strtotime($cachedTill) - strtotime($current);
-	}
-	
-	protected function isExpired($cachedValues){
-//		print_r($cachedValues);
-		return strtotime($cachedValues->result['cachedUntil']) < strtotime(gmdate('Y-m-d H:i:s')) ? true : false;
-	}
-	
 	public function write(){
 		$this->set_cache_key();
 		$this->_api->getCache()
@@ -69,11 +60,13 @@ abstract class Zircote_EveCentral_Api_Command_Abstract implements Zircote_EveCen
 		$cache = $this->_api->getCache();
 		$key = $this->get_cache_key();
 		$result = $cache->load($key);
-		if(!$result || $this->isExpired($result)){
+		if(!$result){
 			$result = $this->_api->getConnection()->handle($this);
 			if(!$this->isError($result)){
 				$cache->save($result, $this->get_cache_key());
 			}
+		} else {
+//			echo 'cached',PHP_EOL;
 		}
 		return $result;
 	}

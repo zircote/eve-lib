@@ -15,29 +15,26 @@
  * limitations under the License.
  */
 require_once 'Zircote/EveCentral/Api/Command/Abstract.php';
-class Zircote_EveCentral_Api_Command_Evemon extends Zircote_EveCentral_Api_Command_Abstract {
+class Zircote_EveCentral_Api_Command_QuickLook extends Zircote_EveCentral_Api_Command_Abstract {
 	
 	public $path = '/api/quicklook';
 
 	protected $_command = 'QuickLook';
 	
 	public function _parseResponse($response){
-		require_once 'Zircote/EveCentral/Api/Result/Evemon.php';
-		$response = new Zircote_EveCentral_Api_Result_Evemon($response);
+		require_once 'Zircote/EveCentral/Api/Result/QuickLook.php';
+		$response = new Zircote_EveCentral_Api_Result_QuickLook($response);
 		return $response;
 	}
 	
 	public function _getRequest(){
-		$args = array(
-			'path' => $this->path
-		);
-		if(is_array($this->_args[0])){
-			$this->_args = $this->_args[0];
+		if(is_array($this->_args[0]) && array_key_exists('typeid', $this->_args[0])){
+			return $this->_args[0];
 		}
 		if(isset($this->_args[0])){
 			$args['typeid'] = $this->_args[0];
 		} else {
-			throw new Zircote_Ccp_Api_Exception('typeid [The type ID to be queried] is required', 500);
+			throw new Zircote_EveCentral_Api_Exception('typeid [The type ID to be queried] is required', 500);
 		}
 		if(isset($this->_args[1])){
 			$args['sethours'] = $this->_args[1];

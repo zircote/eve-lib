@@ -14,3 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+class Zircote_EveCentral_Api_Command_EvemonTest
+	extends PHPUnit_Framework_TestCase {
+		
+	public function setup(){
+		$this->sharedFixture =<<<EOF
+EOF;
+	}
+ 	
+ 	/**
+ 	 * @group Zircote_EveCentral_Api_Command
+ 	 */
+ 	public function testEveMon(){
+ 		$api = new Zircote_EveCentral_Api();
+		$data = $api->Evemon();
+		$this->assertArrayHasKey('minerals',$data->result);
+		$this->assertArrayHasKey('Tritanium',$data->result['minerals']);
+		$this->assertArrayHasKey('Pyerite',$data->result['minerals']);
+		$this->assertArrayHasKey('Mexallon',$data->result['minerals']);
+		$this->assertArrayHasKey('Isogen',$data->result['minerals']);
+		$this->assertArrayHasKey('Nocxium',$data->result['minerals']);
+		$this->assertArrayHasKey('Zydrine',$data->result['minerals']);
+		$this->assertArrayHasKey('Megacyte',$data->result['minerals']);
+		$this->assertArrayHasKey('Morphite',$data->result['minerals']);
+		$this->assertTrue(is_array($data->result));
+ 	}
+}

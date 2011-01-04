@@ -14,3 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+class Zircote_EveCentral_Api_Command_MarketStatTest
+	extends PHPUnit_Framework_TestCase {
+		
+	public function setup(){
+		$this->sharedFixture =<<<EOF
+EOF;
+	}
+ 	
+ 	/**
+ 	 * @group Zircote_EveCentral_Api_Command
+ 	 */
+ 	public function testMarketStat(){
+ 		$api = new Zircote_EveCentral_Api();
+//		$data = $api->MarketStat(array('typeid' => 34, 'regionlimit' => 10000002));
+		$data = $api->MarketStat(array('typeid' => 34));
+		$this->assertArrayHasKey('marketstat',$data->result);
+		$this->assertArrayHasKey('all',$data->result['marketstat'][34]);
+		$this->assertArrayHasKey('buy',$data->result['marketstat'][34]);
+		$this->assertArrayHasKey('sell',$data->result['marketstat'][34]);
+		$this->assertArrayHasKey('volume',$data->result['marketstat'][34]['all']);
+		$this->assertArrayHasKey('volume',$data->result['marketstat'][34]['buy']);
+		$this->assertArrayHasKey('volume',$data->result['marketstat'][34]['sell']);
+ 	}
+}

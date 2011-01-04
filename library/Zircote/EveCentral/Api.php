@@ -135,10 +135,6 @@ class Zircote_EveCentral_Api {
      * @return Zircote_EveCentral_Api_Command_Abstract
      */
     public function getCommand($name, $args) {
-    	if(!$this->getScope()){
-        	require_once 'Zircote/EveCentral/Api/Exception.php';
-            throw new Zircote_EveCentral_Api_Exception("Unable to determine a scope for execution.");
-    	}
 		$lowerName = strtolower($name);
         if (!isset(self::$_commands[$lowerName])) {
         	require_once 'Zircote/EveCentral/Api/Exception.php';
@@ -149,7 +145,7 @@ class Zircote_EveCentral_Api {
         	require_once $file_path ='Zircote/EveCentral/Api/Command/'. 
         		substr(self::$_commands[$lowerName], strlen($classParent)) . '.php';
         }
-        return new self::$_commands[$this->getScope()][$lowerName]($this, $name, $args);
+        return new self::$_commands[$lowerName]($this, $name, $args);
     }
     
     public function __call($name, $args) {

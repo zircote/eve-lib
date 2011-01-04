@@ -17,22 +17,19 @@
 require_once 'Zircote/EveCentral/Api/Command/Abstract.php';
 class Zircote_EveCentral_Api_Command_MarketStat extends Zircote_EveCentral_Api_Command_Abstract {
 	
-	public $path = '/api/marketstat ';
+	public $path = '/api/marketstat';
 
 	protected $_command = 'MarketStat';
 	
 	public function _parseResponse($response){
-		require_once 'Zircote/EveCentral/Api/Result/Evemon.php';
-		$response = new Zircote_EveCentral_Api_Result_Evemon($response);
+		require_once 'Zircote/EveCentral/Api/Result/MarketStat.php';
+		$response = new Zircote_EveCentral_Api_Result_MarketStat($response);
 		return $response;
 	}
 	
 	public function _getRequest(){
-		$args = array(
-			'path' => $this->path
-		);
-		if(is_array($this->_args[0])){
-			$this->_args = $this->_args[0];
+		if(is_array($this->_args[0] )&& array_key_exists('typeid', $this->_args[0])){
+			return $this->_args[0];
 		}
 		if(isset($this->_args[0])){
 			$args['typeid'] = $this->_args[0];

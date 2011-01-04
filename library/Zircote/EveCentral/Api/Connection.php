@@ -28,7 +28,6 @@ class Zircote_EveCentral_Api_Connection {
 	
 	public function get_curl($url){
 		$this->_curl = curl_init($url);
-		curl_setopt($this->_curl, CURLOPT_POST, true);
 		curl_setopt($this->_curl, CURLOPT_HEADER, false);
 		curl_setopt($this->_curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($this->_curl, CURLOPT_FOLLOWLOCATION, false);
@@ -51,15 +50,15 @@ class Zircote_EveCentral_Api_Connection {
 	
 	public function handle(Zircote_EveCentral_Api_Command_Abstract $command){
 		$options = $command->_getRequest();
-		$this->get_curl($this->get_uri() . $command->path);
+		$params = '?';
 		if(is_array($options) && count($options)){
-			$params = null;
 			foreach ($options as $key => $value) {
 				$params .= "{$key}=".urlencode($value) . "&";
 			}
 			$params = rtrim($params, '&');
-			curl_setopt($this->_curl, CURLOPT_POSTFIELDS, $params);
 		}
+//		echo $this->get_uri() . $command->path . $params; exit;
+		$this->get_curl($this->get_uri() . $command->path . $params );
 		return $command->_parseResponse(curl_exec($this->_curl));
 	}
 }

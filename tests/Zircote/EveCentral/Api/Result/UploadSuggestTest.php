@@ -54,11 +54,9 @@ EOF;
  	public function testUploadSuggest(){
  		require_once 'Zircote/EveCentral/Api/Result/UploadSuggest.php';
  		$out = new Zircote_EveCentral_Api_Result_UploadSuggest($this->sharedFixture);
-		$this->assertArrayHasKey('quicklook', $out->result);
-		$this->assertArrayHasKey('hours', $out->result['quicklook']);
-		$this->assertArrayHasKey('minqty', $out->result['quicklook']);
-		$this->assertArrayHasKey('sell_orders', $out->result['quicklook']);
-		$this->assertArrayHasKey('buy_orders', $out->result['quicklook']);
+		$this->assertArrayHasKey('upload_suggest', $out->result);
+		$this->assertArrayHasKey('id', $out->result['upload_suggest']['12346']);
+		$this->assertArrayHasKey('name', $out->result['upload_suggest']['12346']);
  		$api = $out = null;
  	}
 }

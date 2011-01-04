@@ -24,7 +24,6 @@ class Zircote_EveCentral_Api_Result_UploadSuggest extends Zircote_EveCentral_Api
 		foreach ($sXml->upload_suggest->children() as $item) {
 			$result['upload_suggest'][(string)$item['id']] = array('id' => (string)$item['id'] , 'name' => (string) $item);
 		}
-		print_r($result); exit;
 		return $result;
 	}
 	
