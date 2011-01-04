@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @license Copyright 2010 Robert Allen
  * 
@@ -14,3 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+require_once 'Zircote/EveCentral/Api/Result/Abstract.php';
+
+class Zircote_EveCentral_Api_Result_UploadSuggest extends Zircote_EveCentral_Api_Result_Abstract {
+
+	
+	public function parse(SimpleXMLElement $sXml){
+		$result = array();
+		foreach ($sXml->upload_suggest->children() as $item) {
+			$result['upload_suggest'][(string)$item['id']] = array('id' => (string)$item['id'] , 'name' => (string) $item);
+		}
+		print_r($result); exit;
+		return $result;
+	}
+	
+	private function _parseOrder($sXml){
+		$result = array();
+		foreach ($sXml as $order) {
+			foreach ($order->children() as $_key => $xml) {
+				$result[(string) $order['id'] ][(string)$_key] = (string) $xml;
+			}
+		}
+		return $result;
+	}
+}

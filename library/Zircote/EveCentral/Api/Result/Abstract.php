@@ -28,7 +28,6 @@ class Zircote_EveCentral_Api_Result_Abstract {
 	
 	public function loadXML($xml){
 			$this->xml = $xml;
-			;
 			if(!$sXml = simplexml_load_string($this->xml)){
 				require_once 'Zircote/Ccp/Api/Exception.php';
 				throw new Zircote_Ccp_Api_Exception('failed to load valid XML EVE-API Endpoint may be down', 500);
@@ -40,45 +39,9 @@ class Zircote_EveCentral_Api_Result_Abstract {
 	}
 	
 	public function parse(SimpleXMLElement $sXml){
-		$result = array();
-		switch ($sXml->getName()) {
-			default:
-				$result[$sXml->getName()] = array();
-				if($sXml->count()){
-					foreach ($sXml as $xml) {
-						$rs = $this->parse($xml);
-						$result[$sXml->getName()] = array_merge($result[$sXml->getName()], $rs);
-					}
-				} else {
-					$result[$sXml->getName()] = (string) $sXml;
-				}
-				if(count($attr = $this->attr($sXml))){
-					foreach ($attr as $key => $value) {
-						$result[$sXml->getName()][$key] = $value;
-					}
-				}
-			break;
-		}
-		return $result;
+		return array();
 	}
 
-	public function error($sXml){
-		$result = array($sXml->getName() => null);
-		foreach ($sXml->attributes() as $name => $attr) {
-			$result[$sXml->getName()][$name] = (string) $attr;
-		}
-		$result[$sXml->getName()]['text'] = (string) $sXml;
-		return $result;
-	}
-	
-	public function attr($sXml){
-		$result = array();
-		foreach ($sXml->attributes() as $name => $attr) {
-			$result[(string) $name] = (string) $attr;
-		}
-		return $result;
-	}
-	
 	public function __wakeup(){
 		$this->loadXML($this->xml);
 	}
