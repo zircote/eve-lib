@@ -107,12 +107,12 @@ EOF;
  	public function testMarketStat(){
  		require_once 'Zircote/EveCentral/Api/Result/MarketStat.php';
  		$out = new Zircote_EveCentral_Api_Result_MarketStat($this->sharedFixture);
-		$this->assertArrayHasKey('evec_api', $out->result);
-		$this->assertArrayHasKey('marketstat', $out->result['evec_api']);
-		$this->assertArrayHasKey('34', $out->result['evec_api']['marketstat']);
-		$this->assertArrayHasKey('all', $out->result['evec_api']['marketstat']['34']);
-		$this->assertArrayHasKey('volume', $out->result['evec_api']['marketstat']['34']['all']);
-		$this->assertEquals($out->result['evec_api']['marketstat']['34']['all']['volume'], '78111403658.00');
+		$this->assertArrayHasKey('marketstat', $out->result);
+		$this->assertArrayHasKey('marketstat', $out->result);
+		$this->assertArrayHasKey('34', $out->result['marketstat']);
+		$this->assertArrayHasKey('all', $out->result['marketstat']['34']);
+		$this->assertArrayHasKey('volume', $out->result['marketstat']['34']['all']);
+		$this->assertEquals($out->result['marketstat']['34']['all']['volume'], '78111403658.00');
  		$api = $out = null;
  	}
 }

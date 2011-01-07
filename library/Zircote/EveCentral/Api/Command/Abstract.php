@@ -34,7 +34,7 @@ abstract class Zircote_EveCentral_Api_Command_Abstract implements Zircote_EveCen
 	
 	protected $_cache_key;
 	
-	protected $_cache_time = 2;
+	protected $_cache_time = 3600;
 	
 	public function __construct(Zircote_EveCentral_Api $api, $name, $args){
 		$this->_api = $api;
