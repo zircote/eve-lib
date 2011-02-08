@@ -22,17 +22,14 @@ class Zircote_Ccp_Api_Command_Char_CharacterSheet extends Zircote_Ccp_Api_Comman
 	protected $_command = 'CharacterSheet';
 	
 	public function _parseResponse($response){
-		require_once 'Zircote/Ccp/Api/Result/Account/CharacterSheet.php';
-		$response = new Zircote_Ccp_Api_Result_Char_($response);
+		require_once 'Zircote/Ccp/Api/Result/Char/CharacterSheet.php';
+		$response = new Zircote_Ccp_Api_Result_Char_CharacterSheet($response);
 		return $response;
 	}
 	
 	public function _getRequest(){
-		$args = array(
-			'path' => $this->path
-		);
 		$api = $this->_api->_api;
-		$args = array_merge($args, $api);
+		$args = array_merge(array(), $api);
 		return $args;
 	}
 	

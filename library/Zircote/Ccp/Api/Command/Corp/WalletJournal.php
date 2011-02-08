@@ -24,26 +24,28 @@ class Zircote_Ccp_Api_Command_Corp_WalletJournal extends Zircote_Ccp_Api_Command
 	public function _parseResponse($response){
 		require_once 'Zircote/Ccp/Api/Result/Corp/WalletJournal.php';
 		$response = new Zircote_Ccp_Api_Result_Corp_WalletJournal($response);
+//		print_r( $response ); 
 		return $response;
 	}
 	
 	public function _getRequest(){
-		$args = array(
-			'path' => $this->path
-		);
 		if(isset($this->_args[0])){
 			$args['accountKey'] = $this->_args[0];
 		} else {
 			throw new Zircote_Ccp_Api_Exception('accountKey [1000..1006] is required to execute this method', 500);
 		}
-		if(isset($this->_args[1])){
-			$args['beforeTransID'] = $this->_args[1];
+		if(isset($this->_args[1]) && $this->_args[1] !== null){
+			$args['fromID'] = $this->_args[1];
 		}
+		if(isset($this->_args[2]) && $this->_args[2] !== null){
+			$args['rowCount'] = $this->_args[2];
+		}
+		
 		$args = array_merge($args, $this->_api->_api);
 		return $args;
 	}
 	
 	public function set_cache_key(){
-		$this->_cache_key = md5($this->_command . PATH_SEPARATOR . implode(PATH_SEPARATOR, $this->_api->_api));
+		$this->_cache_key = md5($this->_command . PATH_SEPARATOR . implode(PATH_SEPARATOR, $this->_getRequest()));
 	}
 }

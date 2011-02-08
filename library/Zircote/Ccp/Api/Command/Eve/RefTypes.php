@@ -27,7 +27,7 @@ class Zircote_Ccp_Api_Command_Eve_RefTypes extends Zircote_Ccp_Api_Command_Abstr
 	}
 	
 	public function _getRequest(){
-		return array();	
+//		return array();	
 	}
 	
 	public function set_cache_key(){

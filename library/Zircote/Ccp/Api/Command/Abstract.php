@@ -71,7 +71,7 @@ abstract class Zircote_Ccp_Api_Command_Abstract implements Zircote_Ccp_Api_Comma
 		$result = $cache->load($key);
 		if(!$result || $this->isExpired($result)){
 			$result = $this->_api->getConnection()->handle($this);
-			if(!$this->isError($result)){
+			if($result && !$this->isError($result)){
 				$cache->save($result, $this->get_cache_key());
 			}
 		}
