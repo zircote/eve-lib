@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function ZircoteTest_Autoloader($class) 
+function EveLibTest_Autoloader($class) 
 {
     $class = ltrim($class, '\\');
 
-    if (!preg_match('#^(Zircote(Test)?|PHPUnit)(\\\\|_)#', $class)) {
+    if (!preg_match('#^(EveLib(Test)?|PHPUnit)(\\\\|_)#', $class)) {
         return false;
     }
 
@@ -27,11 +27,11 @@ function ZircoteTest_Autoloader($class)
     $ns       = array_shift($segments);
 
     switch ($ns) {
-        case 'Zircote':
-            $file = dirname(__DIR__) . '/library/Zircote/';
+        case 'EveLib':
+            $file = dirname(__DIR__) . '/library/EveLib/';
             break;
-        case 'ZircoteTest':
-            $file = __DIR__ . '/Zircote/';
+        case 'EveLibTest':
+            $file = __DIR__ . '/EveLib/';
             break;
         default:
             $file = false;
@@ -51,8 +51,8 @@ function ZircoteTest_Autoloader($class)
     switch ($ns) {
         case 'PHPUnit':
             return include_once str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
-        case 'Zircote':
-            $file = dirname(__DIR__) . '/library/Zircote/';
+        case 'EveLib':
+            $file = dirname(__DIR__) . '/library/EveLib/';
             break;
         default:
             return false;
@@ -64,5 +64,5 @@ function ZircoteTest_Autoloader($class)
 
     return false;
 }
-spl_autoload_register('ZircoteTest_Autoloader', true, true);
+spl_autoload_register('EveLibTest_Autoloader', true, true);
 
