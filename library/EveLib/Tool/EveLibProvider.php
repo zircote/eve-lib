@@ -15,7 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract implements Zend_Tool_Framework_Provider_Pretendable {
+/*
+ * zircote@flame:~$ zf enable config.provider EveLib_Tool_EveLibProvider
+ * Provider/Manifest 'EveLib_Tool_EveLibProvider' was enabled for usage with Zend Tool.
+ */
+require_once 'Zend/Tool/Project/Provider/Abstract.php';
+require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
+
+class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract 
+	implements Zend_Tool_Framework_Provider_Pretendable {
 	protected $_evelibRegistry;
 	
 	protected $_apiKey;
@@ -62,6 +70,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract imp
 		$applicationConfigResource = $profile->search ( 'ApplicationConfigFile' );
 		
 		if (! $applicationConfigResource) {
+			require_once 'Zend/Tool/Project/Exception.php';
 			throw new Zend_Tool_Project_Exception ( 'A project with an application config file is required to use this provider.' );
 		}
 		
@@ -97,6 +106,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract imp
 		$configsDirectory = $profile->search ( array ('configsDirectory' ) );
 		
 		if ($configsDirectory == null) {
+			require_once 'Zend/Tool/Project/Exception.php';
 			throw new Exception ( "No Config directory in Zend Tool Project." );
 		}
 		
