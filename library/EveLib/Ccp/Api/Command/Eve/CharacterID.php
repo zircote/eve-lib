@@ -35,13 +35,12 @@ class EveLib_Ccp_Api_Command_Eve_CharacterID extends EveLib_Ccp_Api_Command_Abst
 	
 	public function _getRequest(){
 		$args = array(
-			'names' => implode(',', $this->_args[0]),
-			'path' => $this->path
+			'names' => implode(',', $this->_args[0])
 		);
 		return $args;	
 	}
 	
 	public function set_cache_key(){
-		$this->_cache_key = md5($this->_command);
+		$this->_cache_key = md5($this->_command . PATH_SEPARATOR . implode(PATH_SEPARATOR, $this->_getRequest()));
 	}
 }

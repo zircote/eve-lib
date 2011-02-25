@@ -22,8 +22,7 @@
 require_once 'Zend/Tool/Project/Provider/Abstract.php';
 require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
 
-class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract 
-	implements Zend_Tool_Framework_Provider_Pretendable {
+class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract implements Zend_Tool_Framework_Provider_Pretendable {
 	protected $_evelibRegistry;
 	
 	protected $_apiKey;
@@ -31,87 +30,160 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract
 	protected $_userID;
 	protected $_scope;
 	
+	public function initialize (){
+		require_once 'Zend/Loader/Autoloader.php';
+		$autoloader = Zend_Loader_Autoloader::getInstance()
+			->registerNamespace('EveLib_');
+		parent::initialize();
+	}
+	
 	private function _loadConfig() {
 	
 	}
-	
-	public function setConfig($userID = null, $apiKey = null, $characterID = null) {
-		if ($userID === null) {
-			$userID = $this->_registry->getClient ()->promptInteractiveInput ( "Enter the EvE Api userID" );
-		}
-		$this->_registry->getConfig ()->evelib_userid = $userID;
-		if ($apiKey === null) {
-			$apiKey = $this->_registry->getClient ()->promptInteractiveInput ( "Enter the EvE Api apiKey" );
-		}
-		$this->_registry->getConfig ()->evelib_apikey = $apiKey;
-		if ($characterID === null) {
-			$characterID = $this->_registry->getClient ()->promptInteractiveInput ( "Enter the EvE Api characterID" );
-		}
-		$this->_registry->getConfig ()->evelib_characterid = $characterID;
+	/*
+	 * evelib.Api.userID = "666413"
+	 * evelib.Api.apiKey = "7E87B3A4DC214E08A35B8722C844AC40CD898FE3692A4E85982D45F640EC5A3F"
+	 * evelib.Api.characterID = "543321"
+	 * evelib.Cache.backend.name = "File"
+	 * evelib.Cache.backend.options.cache_dir = "/tmp"
+	 * evelib.Connection.host = "api.eve-central.com"
+	 * evelib.Connection.port = "80"
+	 * evelib.Connection.protocol = "http"
+	 * 
+	 */
+	public function setConfig() {
+		$userID = $this->_registry->getClient ()
+			->promptInteractiveInput ( "Enter the EvE Api userID" );
+		$apiKey = $this->_registry->getClient ()
+			->promptInteractiveInput ( "Enter the EvE Api apiKey", "54312" );
+		$this->_registry->getConfig ()
+			->evelib = array('Api' => array(
+				'userID' => $userID->getContent(),
+				'apiKey' => $apiKey->getContent(),
+			));
+		$this->_registry->getConfig ()->save ();
+		$this->setCharacterId();
+		echo "EveLib Api Configuration Saved\n";
 	}
 	
-	public function getConfig() {
-		$characterID = $this->_registry->getConfig ()->evelib_characterid;
-		echo "characterID::{$characterID}", PHP_EOL;
-		$userID = $this->_registry->getConfig ()->evelib_userid;
-		echo "userID::{$userID}", PHP_EOL;
-		$apiKey = $this->_registry->getConfig ()->evelib_apikey;
-		echo "apiKey::{$apiKey}", PHP_EOL;
+	public function setCharacterId(){
+		require_once 'EveLib/Ccp/Api.php';
+		$_api = $this->_registry->getConfig ()
+				->getConfigInstance()->toArray();
+		$config = array(
+	        'Scope' => array( 'scope' => 'account' ),
+	        'Api' => $_api['evelib']['Api']
+			);
+		$api = new EveLib_Ccp_Api($config);
+		$data = $api->Characters();
+		$characters = $data->result['result']['characters'];
+		$string = "Select the Character:\n";
+		$i = 1;
+		foreach ($characters as $cID => $character) {
+			$c[$i] = $cID;
+			$string .= PHP_EOL . $i++ . ")\t" . $character['name'] . "::" .
+				$character['corporationName'] . PHP_EOL;
+		}
+		$success = null;
+		while(!$success){
+			$characterID = $this->_registry->getClient ()
+				->promptInteractiveInput ( $string );
+			if(array_key_exists($characterID->getContent(), $c)){
+				$evelib = $this->_registry->getConfig ()
+					->evelib;
+				$evelib->Api->characterID = $c[$characterID->getContent()];
+				$this->_registry->getConfig ()
+					->evelib = $evelib;
+				$this->_registry->getConfig ()->save ();
+				$success = true;
+			}
+		}
+	}
+	/**
+	 * @todo decide how I intend to handle options...need more reading time on Zend_Tool_Framework..
+	 * Enter description here ...
+	 */
+	public function setCache(){
+		
+	}
+
+	public function charInfo($characterID){
+		if(!is_numeric($characterID)){
+			$getCharId = $this->_getCharId($characterID);
+			foreach ($getCharId->result['result']['characters'] as $id => $list) {
+				if($characterID == $list['name']){
+					$characterID =  $id;
+				}
+			}
+		}
+		$evelib = $this->_registry->getConfig ()
+			->getConfigInstance()->toArray();
+		$config = array(
+	        'Scope' => array( 'scope' => 'eve' ),
+	        'Api' => $evelib['evelib']['Api']
+		);
+		$api = new EveLib_Ccp_Api($config);
+		$data = $api->CharacterInfo($characterID);
+//		print_r($data->result['result']);
+		$table = new Zend_Text_Table(array('columnWidths' => array(25, 30), 'padding' => 1,'decorator' => 'ascii' ));
+		foreach ($data->result['result'] as $key => $value) {
+			$table->appendRow(array($key, $value));
+		}
+		echo $table;
+	}
+	
+	public function charSheet(){
+		$evelib = $this->_registry->getConfig ()
+			->getConfigInstance()->toArray();
+		$config = array(
+	        'Scope' => array( 'scope' => 'char' ),
+	        'Api' => $evelib['evelib']['Api']
+		);
+		$api = new EveLib_Ccp_Api($config);
+		$data = $api->CharacterSheet();
+		unset($data->result['result']['skills']);
+		unset($data->result['result']['certificates']);
+		unset($data->result['result']['corporationRolesAtHQ']);
+		unset($data->result['result']['corporationRoles']);
+		unset($data->result['result']['corporationRolesAtBase']);
+		unset($data->result['result']['corporationRolesAtOther']);
+		unset($data->result['result']['corporationTitles']);
+		unset($data->result['result']['attributeEnhancers']);
+		unset($data->result['result']['attributes']);
+		print_r($data->result['result']);
+	}
+	
+	protected function _getCharId($characterName){
+		$evelib = $this->_registry->getConfig ()
+			->getConfigInstance()->toArray();
+		$config = array(
+	        'Scope' => array( 'scope' => 'eve' ),
+	        'Api' => $evelib['evelib']['Api']
+		);
+		$api = new EveLib_Ccp_Api($config);
+		$characterName = explode (',',$characterName);
+		$data = $api->CharacterID($characterName);
+		return $data;
+	}
+	
+	public function getCharId($characterName){
+		$data = $this->_getCharID($characterName);
+		print_r($data->result['result']['characters']);
 	}
 	
 	/**
-	 * @param  string $dsn
-	 * @param  bool $withResourceDirectories
-	 * @return void
+	 * @todo probably next task.
+	 * Enter description here ...
 	 */
-	public function createProject($api = 'default') {
-		$profile = $this->_loadProfileRequired ();
-		
-		$applicationConfigResource = $profile->search ( 'ApplicationConfigFile' );
-		
-		if (! $applicationConfigResource) {
-			require_once 'Zend/Tool/Project/Exception.php';
-			throw new Zend_Tool_Project_Exception ( 'A project with an application config file is required to use this provider.' );
-		}
-		
-		$zc = $applicationConfigResource->getAsZendConfig ();
-		
-		if (isset ( $zc->resources ) && isset ( $zf->resources->doctrine )) {
-			$this->_registry->getResponse ()->appendContent ( 'A EveLib resource already exists in this project\'s application configuration file.' );
-			return;
-		}
-		
-		if ($userID === null) {
-			$userID = $this->_registry->getClient ()->promptInteractiveInput ( "Enter the EvE Api userID" );
-		}
-		if ($apiKey === null) {
-			$apiKey = $this->_registry->getClient ()->promptInteractiveInput ( "Enter the EvE Api apiKey" );
-		}
-		if ($characterID === null) {
-			$characterID = $this->_registry->getClient ()->promptInteractiveInput ( "Enter the EvE Api characterID" );
-		}
-		
-		if ($this->_registry->getRequest ()->isPretend ()) {
-			$this->_print ( 'Would enable EveLib support by adding resource string.' );
-		} else {
-			/* @var $applicationConfigResource Zend_Tool_Project_Context_Zf_ApplicationConfigFile */
-			$applicationConfigResource->addStringItem ( 'resources.evelib.api.apikey', $apikey, 'production', '"' . $apikey . "'" );
-			$applicationConfigResource->create ();
-			$applicationConfigResource->addStringItem ( 'resources.evelib.api.characterID', $characterID, 'production', '"' . $characterID . "'" );
-			$applicationConfigResource->addStringItem ( 'resources.evelib.api.userID', $userID, 'production', '"' . $userID . "'" );
-			$applicationConfigResource->create ();
-			$this->_print ( 'Enabled EveLib Zend_Application resource in project.', array ('color' => 'green' ) );
-		}
-		
-		$configsDirectory = $profile->search ( array ('configsDirectory' ) );
-		
-		if ($configsDirectory == null) {
-			require_once 'Zend/Tool/Project/Exception.php';
-			throw new Exception ( "No Config directory in Zend Tool Project." );
-		}
-		
-		if ($changes) {
-			$profile->storeToFile ();
-		}
+	public function setConnection(){
 	}
+	
+	public function getConfig() {
+		$evelib = $this->_registry->getConfig ()
+				->getConfigInstance()->toArray();
+		echo "characterID::{$evelib['evelib']['Api']['characterID']}", PHP_EOL;
+		echo "userID::{$evelib['evelib']['Api']['userID']}", PHP_EOL;
+		echo "apiKey::{$evelib['evelib']['Api']['apiKey']}", PHP_EOL;
+	}
+	
 }
