@@ -28,13 +28,9 @@ class EveLib_Ccp_Api_Command_Account_Characters extends EveLib_Ccp_Api_Command_A
 	}
 	
 	public function _getRequest(){
-		$args = array(
-			'path' => $this->path
-		);
 		$api = $this->_api->_api;
 		unset($api['characterID']);
-		$args = array_merge($args, $api);
-		return $args;
+		return $api;
 	}
 	
 	public function set_cache_key(){
