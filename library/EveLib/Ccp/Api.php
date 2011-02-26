@@ -18,31 +18,10 @@ class EveLib_Ccp_Api {
 	
 	/**
 	 * 
-	 * The desired port number to make the api request to.
-	 * @var string
-	 */
-	const SERVER_DEFAULT_PORT = '80';
-	
-	/**
-	 * 
-	 * API endpoint hostname the request is directed to.
-	 * @var string
-	 */
-	const SERVER_DEFAULT_HOST = 'api.eve-online.com';
-	
-	/**
-	 * 
-	 * API request protocol: http|https
-	 * @var string (http|https)
-	 */
-	const SERVER_DEFAULT_PROTOCOL = 'http';
-	
-	/**
-	 * 
 	 * cache key namespace designation
 	 * @var string
 	 */
-	const CACHE_KEY = 'eve_api';
+	const CACHE_KEY = 'eve_lib';
 	
 	/**
 	 * 
@@ -143,33 +122,6 @@ class EveLib_Ccp_Api {
 	
 	/**
 	 * 
-	 * Basic config data for simple API requests
-	 * @var array
-	 */
-	protected $_options = array(
-		'Scope' => array( 'scope' => 'server' ),
-		'Api' => array (
-			'apiKey' => null,
-			'characterID' => null,
-			'userID' => null
-		),
-		'Connection' => array (
-			'host' => self::SERVER_DEFAULT_HOST,
-			'port' => self::SERVER_DEFAULT_PORT,
-			'protocol' => self::SERVER_DEFAULT_PROTOCOL
-		),
-		'Cache' => array (
-		    'backend' => array(
-		        'name' => 'File',
-		        'options' => array(
-		            'cache_dir' => '/tmp'
-		        )
-		    )
-		)
-	);
-	
-	/**
-	 * 
 	 * Character API details for requests
 	 * @var array
 	 */
@@ -182,6 +134,8 @@ class EveLib_Ccp_Api {
 	 */
 	protected $_connection;
 	
+	protected $_dsn;
+	
 	/**
 	 * 
 	 * The endpoint type the request will be called against
@@ -189,11 +143,51 @@ class EveLib_Ccp_Api {
 	 */
 	protected $_scope;
 	
-	public function __construct(array $options = array()){
-    	$options = array_change_key_case($options, CASE_LOWER);
-        $options = array_merge($this->_options, $options);
-        
-        $this->setOptions($options);
+	protected $_options;
+	
+	public function __construct($dsn){
+		$this->setDsn($dsn);
+	}
+	
+	public function setDsn($dsn){
+		$this->_dsn = $dsn;
+		$this->_fromDsn($this->_dsn);
+		return $this;
+	}
+	
+	public function getDsn(){
+		return $this->_dsn;
+	}
+	
+	protected function _fromDsn($dsn){
+		$options = array();
+		foreach (parse_url($dsn) as $key => $value) {
+			switch ($key) {
+				case 'scheme':
+					$options['Connection']['protocol'] = $value;
+				break;
+				case 'host':
+					$options['Connection']['host'] = $value;
+				break;
+				case 'port':
+					$options['Connection']['port'] = $value;
+				break;
+				case 'user':
+					$options['Api']['userID'] = $value;
+				break;
+				case 'pass':
+					$options['Api']['apiKey'] = $value;
+				break;
+				case 'path':
+					$options['Api']['characterID'] = str_replace('/', '', $value);
+				break;
+				case 'query':
+					parse_str($value, $options);
+				break;
+			}
+		}
+		$this->_options = $options;
+		$this->setOptions($options);
 	}
 	
     /**
@@ -222,7 +216,6 @@ class EveLib_Ccp_Api {
      */
     public function setOption($name, $value) {
     	$lowerName = '_' . strtolower($name);
-
         if (!property_exists($this, $lowerName)) {
         	require_once 'EveLib/Ccp/Api/Exception.php';
             throw new EveLib_Ccp_Api_Exception("'{$name}' is not a valid Option.");
@@ -271,6 +264,9 @@ class EveLib_Ccp_Api {
     	return $this->_api;
     }
     
+    public function get_options(){
+    	return $this->_options;
+    }
     /**
      * 
      * returns the Zend_Cache_Core for direct access to read/write the cache.
@@ -286,18 +282,28 @@ class EveLib_Ccp_Api {
      * @param array $options
      * @return EveLib_Ccp_Api
      */
-    public function setCache(array $options){
+    public function setCache($backend = null){
+    	if($backend === null){
+			$backend = array (
+			    'backend' => array(
+			        'name' => 'File',
+			        'options' => array(
+			            'cache_dir' => '/tmp'
+			        )
+			    )
+			);
+    	}
     	$frontend = array(
 			'frontend' => array(
 		        'name' => 'Core',
 		        'options' => array(
-    				'cache_id_prefix' => 'eve_api',
+    				'cache_id_prefix' => 'EveLib' . str_replace(array('-','.'),'_',$this->_options['Connection']['host']),
 		            'lifetime' => null,
 		            'automatic_serialization' => true
 		        )
 		    )
 	    );
-    	$options = array_merge($frontend, $options);
+    	$options = array_merge($frontend, $backend);
     	require_once 'Zend/Cache/Manager.php';
     	$this->cacheManager = new Zend_Cache_Manager;
     	if(!$this->cacheManager->hasCache(self::CACHE_KEY)){
@@ -305,7 +311,7 @@ class EveLib_Ccp_Api {
     	}
 		return $this;
     }
-
+    
     /**
      * 
      * returns the commands key/class pair array.
@@ -321,15 +327,9 @@ class EveLib_Ccp_Api {
      * @param mixed $options
      * @return EveLib_Ccp_Api
      */
-    public function setScope($options){
-    	if(is_array($options)){
-    		$options = array_change_key_case($options, CASE_LOWER);
-    		$scope = $options['scope'];
-    	} else {
-    		$scope = $options;
-    	}
+    public function setScope($scope){
     	$scope = strtolower($scope);
-    	if(key_exists($scope, self::$_commands)){
+    	if(in_array($scope, array('eve','char','map','corp','server','account','misc'))){
     		$this->_scope = $scope;
     	} else {
         	require_once 'EveLib/Ccp/Api/Exception.php';
@@ -356,6 +356,7 @@ class EveLib_Ccp_Api {
      * @return EveLib_Ccp_Api_Command_Abstract
      */
     public function getCommand($name, $args) {
+    	$this->setCache();
     	if(!$this->getScope()){
         	require_once 'EveLib/Ccp/Api/Exception.php';
             throw new EveLib_Ccp_Api_Exception("Unable to determine a scope for execution.");

@@ -29,7 +29,6 @@ class EveLib_Ccp_Api_Command_Corp_StarbaseDetail extends EveLib_Ccp_Api_Command_
 	
 	public function _getRequest(){
 		$args = array(
-			'path' => $this->path,
 			'itemID' => $this->_args[0]
 		);
 		$args = array_merge($args, $this->_api->_api);

@@ -22,7 +22,8 @@
 require_once 'Zend/Tool/Project/Provider/Abstract.php';
 require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
 
-class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract implements Zend_Tool_Framework_Provider_Pretendable {
+class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract 
+	implements Zend_Tool_Framework_Provider_Pretendable {
 	protected $_evelibRegistry;
 	
 	protected $_apiKey;
@@ -30,32 +31,40 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract imp
 	protected $_userID;
 	protected $_scope;
 	
-	public function initialize (){
+	public function __construct (){
 		require_once 'Zend/Loader/Autoloader.php';
 		$autoloader = Zend_Loader_Autoloader::getInstance()
 			->registerNamespace('EveLib_');
-		parent::initialize();
+		parent::__construct();
 	}
 	
 	private function _loadConfig() {
 	
 	}
 	/*
-	 * evelib.Api.userID = "666413"
-	 * evelib.Api.apiKey = "7E87B3A4DC214E08A35B8722C844AC40CD898FE3692A4E85982D45F640EC5A3F"
-	 * evelib.Api.characterID = "543321"
-	 * evelib.Cache.backend.name = "File"
-	 * evelib.Cache.backend.options.cache_dir = "/tmp"
-	 * evelib.Connection.host = "api.eve-central.com"
-	 * evelib.Connection.port = "80"
-	 * evelib.Connection.protocol = "http"
-	 * 
+	 * @var $dsn
 	 */
+	public function setDsn($dsnId = 'default'){
+		/*
+		 * evelib.dsn.default = http[s]://userID:apiKey@host:port/characterID
+		 */
+		$dsn = $this->_registry->getClient ()
+			->promptInteractiveInput ( "Provide the EvE Api Dsn in the following format:\n".
+			"http[s]://userID:apiKey@host:port/characterID\n",array('color' => 'green') );
+		require_once 'EveLib/Ccp/Api.php';
+		$api = new EveLib_Ccp_Api($dsn->getContent());
+		$options = $api->get_options();
+		$_dsn = $this->_registry->getConfig ()->getConfigInstance()->toArray();
+		$_dsn['eve_lib']['dsn'][$dsnId]['dsn'] = $dsn->getContent();
+		$this->_registry->getConfig ()->eve_lib = $_dsn['eve_lib'];
+		$this->_registry->getConfig ()->save ();
+	}
+	
 	public function setConfig() {
 		$userID = $this->_registry->getClient ()
 			->promptInteractiveInput ( "Enter the EvE Api userID" );
 		$apiKey = $this->_registry->getClient ()
-			->promptInteractiveInput ( "Enter the EvE Api apiKey", "54312" );
+			->promptInteractiveInput ( "Enter the EvE Api apiKey");
 		$this->_registry->getConfig ()
 			->evelib = array('Api' => array(
 				'userID' => $userID->getContent(),
@@ -65,66 +74,50 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract imp
 		$this->setCharacterId();
 		echo "EveLib Api Configuration Saved\n";
 	}
-	
-	public function setCharacterId(){
-		require_once 'EveLib/Ccp/Api.php';
-		$_api = $this->_registry->getConfig ()
-				->getConfigInstance()->toArray();
-		$config = array(
-	        'Scope' => array( 'scope' => 'account' ),
-	        'Api' => $_api['evelib']['Api']
-			);
-		$api = new EveLib_Ccp_Api($config);
-		$data = $api->Characters();
-		$characters = $data->result['result']['characters'];
-		$string = "Select the Character:\n";
-		$i = 1;
-		foreach ($characters as $cID => $character) {
-			$c[$i] = $cID;
-			$string .= PHP_EOL . $i++ . ")\t" . $character['name'] . "::" .
-				$character['corporationName'] . PHP_EOL;
-		}
-		$success = null;
-		while(!$success){
-			$characterID = $this->_registry->getClient ()
-				->promptInteractiveInput ( $string );
-			if(array_key_exists($characterID->getContent(), $c)){
-				$evelib = $this->_registry->getConfig ()
-					->evelib;
-				$evelib->Api->characterID = $c[$characterID->getContent()];
-				$this->_registry->getConfig ()
-					->evelib = $evelib;
-				$this->_registry->getConfig ()->save ();
-				$success = true;
-			}
-		}
-	}
 	/**
 	 * @todo decide how I intend to handle options...need more reading time on Zend_Tool_Framework..
 	 * Enter description here ...
 	 */
-	public function setCache(){
-		
+	public function setCache($name_backend, $options_backend = null, $customBackendNaming = false, $autoload = false ){
+		if(strlen($options_backend) && is_array(explode('&', $options_backend))){
+			Zend_Tool_Framework_Client_Console_ResponseDecorator_Blockize();
+		} else {
+                $this->_print("options_backend should be provided in the following format:", array('color' => 'green'));
+                $this->_print("cache_dir=/tmp&read_control=0&read_control_type=crc32&file_name_prefix=eve-lib-cache", 
+                	array('color' => 'green'));
+			return;
+		}
 	}
 
-	public function charInfo($characterID){
+	protected function _getChars($dsnId = 'default'){
+		require_once 'EveLib/Ccp/Api.php';
+		$api = new EveLib_Ccp_Api($this->getDsn($dsnId));
+		return $result = $api->setScope('account')->Characters();
+	}
+	
+	public function getChars($dsnId = 'default'){
+		
+		$table = new Zend_Text_Table(array('columnWidths' => array(25, 25, 25, 25), 
+			'padding' => 1,'decorator' => 'ascii'));
+		$table->appendRow(array('characterID', 'name', 'corporationName', 'corporationID'));
+		foreach ($this->_getChars($dsnId)->result['result']['characters'] as $key => $value) {
+			$table->appendRow(array($value['characterID'], $value['name'], $value['corporationName'], $value['corporationID']));
+		}
+		echo $table;
+	}
+	
+	public function charInfo($characterID, $dsnId = 'default'){
 		if(!is_numeric($characterID)){
 			$getCharId = $this->_getCharId($characterID);
 			foreach ($getCharId->result['result']['characters'] as $id => $list) {
-				if($characterID == $list['name']){
-					$characterID =  $id;
+				if($characterID == strtolower($list['name'])){
+					$characterID = $id;
 				}
 			}
 		}
-		$evelib = $this->_registry->getConfig ()
-			->getConfigInstance()->toArray();
-		$config = array(
-	        'Scope' => array( 'scope' => 'eve' ),
-	        'Api' => $evelib['evelib']['Api']
-		);
-		$api = new EveLib_Ccp_Api($config);
-		$data = $api->CharacterInfo($characterID);
-//		print_r($data->result['result']);
+		require_once 'EveLib/Ccp/Api.php';
+		$api = new EveLib_Ccp_Api($this->getDsn($dsnId));
+		$data = $api->setScope('eve')->CharacterInfo($characterID);
 		$table = new Zend_Text_Table(array('columnWidths' => array(25, 30), 'padding' => 1,'decorator' => 'ascii' ));
 		foreach ($data->result['result'] as $key => $value) {
 			$table->appendRow(array($key, $value));
@@ -132,15 +125,16 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract imp
 		echo $table;
 	}
 	
-	public function charSheet(){
+	public function getDsn($dsnId = 'default'){
 		$evelib = $this->_registry->getConfig ()
 			->getConfigInstance()->toArray();
-		$config = array(
-	        'Scope' => array( 'scope' => 'char' ),
-	        'Api' => $evelib['evelib']['Api']
-		);
-		$api = new EveLib_Ccp_Api($config);
-		$data = $api->CharacterSheet();
+		return  (string) $evelib['eve_lib']['dsn'][$dsnId]['dsn'];
+	}
+	
+	public function charSheet($characterID, $dsnId = 'default'){
+		require_once 'EveLib/Ccp/Api.php';
+		$api = new EveLib_Ccp_Api($this->getDsn($dsnId));
+		$data = $api->setScope('char')->CharacterSheet($characterID);
 		unset($data->result['result']['skills']);
 		unset($data->result['result']['certificates']);
 		unset($data->result['result']['corporationRolesAtHQ']);
@@ -153,22 +147,23 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract imp
 		print_r($data->result['result']);
 	}
 	
-	protected function _getCharId($characterName){
-		$evelib = $this->_registry->getConfig ()
-			->getConfigInstance()->toArray();
-		$config = array(
-	        'Scope' => array( 'scope' => 'eve' ),
-	        'Api' => $evelib['evelib']['Api']
-		);
-		$api = new EveLib_Ccp_Api($config);
+	protected function _getCharId($characterName, $dsnId = 'default'){
+		require_once 'EveLib/Ccp/Api.php';
+		$api = new EveLib_Ccp_Api($this->getDsn($dsnId));
 		$characterName = explode (',',$characterName);
-		$data = $api->CharacterID($characterName);
+		$data = $api->setScope('eve')->CharacterID($characterName);
 		return $data;
 	}
 	
 	public function getCharId($characterName){
 		$data = $this->_getCharID($characterName);
-		print_r($data->result['result']['characters']);
+		$table = new Zend_Text_Table(array('columnWidths' => array(25, 30), 
+			'padding' => 1,'decorator' => 'ascii'));
+		$table->appendRow(array('characterName', 'characterID'));
+		foreach ($data->result['result']['characters'] as $key => $value) {
+			$table->appendRow(array($value['name'], $value['characterID']));
+		}
+		echo $table;
 	}
 	
 	/**
@@ -178,12 +173,19 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract imp
 	public function setConnection(){
 	}
 	
-	public function getConfig() {
+	public function getConfig($dsnId = 'default') {
 		$evelib = $this->_registry->getConfig ()
 				->getConfigInstance()->toArray();
-		echo "characterID::{$evelib['evelib']['Api']['characterID']}", PHP_EOL;
-		echo "userID::{$evelib['evelib']['Api']['userID']}", PHP_EOL;
-		echo "apiKey::{$evelib['evelib']['Api']['apiKey']}", PHP_EOL;
+		echo $dsn = $_api['eve_lib']['dsn'][$dsnId]['dsn'];
 	}
-	
+
+
+    /**
+     * @param string $line
+     * @param array $decoratorOptions
+     */
+    protected function _print($line, array $decoratorOptions = array())
+    {
+        $this->_registry->getResponse()->appendContent("[EveLib] " . $line, $decoratorOptions);
+    }
 }

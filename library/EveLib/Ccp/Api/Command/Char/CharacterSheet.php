@@ -28,8 +28,8 @@ class EveLib_Ccp_Api_Command_Char_CharacterSheet extends EveLib_Ccp_Api_Command_
 	}
 	
 	public function _getRequest(){
-		$api = $this->_api->_api;
-		$args = array_merge(array(), $api);
+		$args = $this->_api->_api;
+		$args['characterID'] = strlen($this->_args[0]) ? $this->_args[0] : $api['characterID'];
 		return $args;
 	}
 	
