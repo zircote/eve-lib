@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-    http://pear.php.net/dtd/tasks-1.0.xsd
-    http://pear.php.net/dtd/package-2.0
-    http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
  <name>EveLib</name>
  <channel>pear.zircote.com</channel>
  <summary>EvE API abstraction and access library.</summary>
@@ -13,11 +10,11 @@
   <email>zircote@zircote.com</email>
   <active>yes</active>
  </lead>
- <date>2011-02-23</date>
- <time>19:50:54</time>
+ <date>2011-03-02</date>
+ <time>20:45:32</time>
  <version>
-  <release>0.1.0</release>
-  <api>0.1.0</api>
+  <release>0.1.1</release>
+  <api>0.1.1</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -29,17 +26,18 @@ Initial Release.
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
-   <file baseinstalldir="." md5sum="19d9557265bfeb4a26ced297dcdba3cf" name="EveLib/Ccp/Api.php" role="php" />
+   <file baseinstalldir="." md5sum="4be8a115ff851e2c8105fed8eff30659" name="EveLib/Application/Resource/EveLib.php" role="php" />
+   <file baseinstalldir="." md5sum="c352e6a590bc0942d2a33e59fe2c5b9e" name="EveLib/Ccp/Api.php" role="php" />
    <file baseinstalldir="." md5sum="ac5aad0d45eb890f7d6f6b7ad7f4a1a6" name="EveLib/Ccp/Api/Connection.php" role="php" />
    <file baseinstalldir="." md5sum="f4fcc370d1c8d7b6358f865e4003d771" name="EveLib/Ccp/Api/Exception.php" role="php" />
    <file baseinstalldir="." md5sum="218ba166dca9a0829b3bf6db53f7dfa5" name="EveLib/Ccp/Api/Command/Abstract.php" role="php" />
    <file baseinstalldir="." md5sum="ed061a6f12a650d2d7217daf24167193" name="EveLib/Ccp/Api/Command/Interface.php" role="php" />
    <file baseinstalldir="." md5sum="e38cb2b1a8b2a41830288b58bc89b80a" name="EveLib/Ccp/Api/Command/Account/AccountStatus.php" role="php" />
-   <file baseinstalldir="." md5sum="45aa86a970567a5eeeb79df28ebc2a37" name="EveLib/Ccp/Api/Command/Account/Characters.php" role="php" />
+   <file baseinstalldir="." md5sum="fa73c65f5db1f8688d0a8e1d56344743" name="EveLib/Ccp/Api/Command/Account/Characters.php" role="php" />
    <file baseinstalldir="." md5sum="a5856df5ae2a34df0d654f40147f4fba" name="EveLib/Ccp/Api/Command/Char/AccountBalance.php" role="php" />
    <file baseinstalldir="." md5sum="e08a4fec821a6e3fad9f08ba329ea8e3" name="EveLib/Ccp/Api/Command/Char/AssetList.php" role="php" />
    <file baseinstalldir="." md5sum="4ef8404a1c97de14066fa1146eebca66" name="EveLib/Ccp/Api/Command/Char/CalendarEventAttendees.php" role="php" />
-   <file baseinstalldir="." md5sum="cb1bc358faead5a8e3bf18d4724a15b9" name="EveLib/Ccp/Api/Command/Char/CharacterSheet.php" role="php" />
+   <file baseinstalldir="." md5sum="2c13c6accd4d0088b226653e2d3188dc" name="EveLib/Ccp/Api/Command/Char/CharacterSheet.php" role="php" />
    <file baseinstalldir="." md5sum="51754c111d9e6cd17e405f30e202a002" name="EveLib/Ccp/Api/Command/Char/ContactList.php" role="php" />
    <file baseinstalldir="." md5sum="8900acd8fae95fe63904b803c1e7357c" name="EveLib/Ccp/Api/Command/Char/ContactNotifications.php" role="php" />
    <file baseinstalldir="." md5sum="89de1d5221adf5163b25e5a8dfaf27a4" name="EveLib/Ccp/Api/Command/Char/FacWarStats.php" role="php" />
@@ -77,14 +75,14 @@ Initial Release.
    <file baseinstalldir="." md5sum="afecc4f393da97d1e0aac2729ecc93f0" name="EveLib/Ccp/Api/Command/Corp/OutpostServiceDetail.php" role="php" />
    <file baseinstalldir="." md5sum="ee9e57081126333d635aa0aa0650f779" name="EveLib/Ccp/Api/Command/Corp/Shareholders.php" role="php" />
    <file baseinstalldir="." md5sum="e1d2fb4ac895fc6c6f1abfc59ea3d57b" name="EveLib/Ccp/Api/Command/Corp/Standings.php" role="php" />
-   <file baseinstalldir="." md5sum="f708ffc1cabd2f79904792c5e06279b1" name="EveLib/Ccp/Api/Command/Corp/StarbaseDetail.php" role="php" />
+   <file baseinstalldir="." md5sum="402f8fbee0cc17e6d3cd9acee813e3e4" name="EveLib/Ccp/Api/Command/Corp/StarbaseDetail.php" role="php" />
    <file baseinstalldir="." md5sum="2c6ba9c6e91e0388a9d06bb0d284ead7" name="EveLib/Ccp/Api/Command/Corp/StarbaseList.php" role="php" />
    <file baseinstalldir="." md5sum="eb350acc09b081052f8ec2f52464c4be" name="EveLib/Ccp/Api/Command/Corp/Titles.php" role="php" />
    <file baseinstalldir="." md5sum="dd6dea5d92324e70bd9fd3e559fb8387" name="EveLib/Ccp/Api/Command/Corp/WalletJournal.php" role="php" />
    <file baseinstalldir="." md5sum="105e53b62ad69e308a2f3a1afc070fcb" name="EveLib/Ccp/Api/Command/Corp/WalletTransactions.php" role="php" />
    <file baseinstalldir="." md5sum="be23090198e43c8154f8da4f7d0e6d93" name="EveLib/Ccp/Api/Command/Eve/AllianceList.php" role="php" />
    <file baseinstalldir="." md5sum="2c0fefc338a1a4be933387ee4f5ab841" name="EveLib/Ccp/Api/Command/Eve/CertificateTree.php" role="php" />
-   <file baseinstalldir="." md5sum="2229b7831b9e43bb4936a3a5ffffbfe3" name="EveLib/Ccp/Api/Command/Eve/CharacterID.php" role="php" />
+   <file baseinstalldir="." md5sum="b7887950f088f3e7a337ee81a8e28416" name="EveLib/Ccp/Api/Command/Eve/CharacterID.php" role="php" />
    <file baseinstalldir="." md5sum="242ec30246e839ef9369423536047818" name="EveLib/Ccp/Api/Command/Eve/CharacterInfo.php" role="php" />
    <file baseinstalldir="." md5sum="069d3d55dcd4d7608975f10a261e898e" name="EveLib/Ccp/Api/Command/Eve/CharacterName.php" role="php" />
    <file baseinstalldir="." md5sum="5256603dc3492715fd02ed7a5fa38cab" name="EveLib/Ccp/Api/Command/Eve/ConquerableStationList.php" role="php" />
@@ -181,6 +179,7 @@ Initial Release.
    <file baseinstalldir="." md5sum="39de4b25a0dd8fa8937ec31826b261a5" name="EveLib/EveCentral/Api/Result/MarketStat.php" role="php" />
    <file baseinstalldir="." md5sum="9833adf412bef67ed8f0cef3cb10b2db" name="EveLib/EveCentral/Api/Result/QuickLook.php" role="php" />
    <file baseinstalldir="." md5sum="7cb783e06f96e4468a6e04f4e446c27a" name="EveLib/EveCentral/Api/Result/UploadSuggest.php" role="php" />
+   <file baseinstalldir="." md5sum="a85565e7154a3cf4d03d8c1633110743" name="EveLib/Tool/EveLibProvider.php" role="php" />
   </dir>
  </contents>
  <dependencies>
@@ -192,17 +191,17 @@ Initial Release.
     <min>1.4.0</min>
    </pearinstaller>
    <extension>
-   	<name>curl</name>
+    <name>curl</name>
    </extension>
    <extension>
-   	<name>xml</name>
+    <name>xml</name>
    </extension>
   </required>
   <optional>
-  	<package>
-   <name>zend</name>
-   <channel>zend.googlecode.com/svn</channel>
-  </package>
+   <package>
+    <name>zend</name>
+    <channel>zend.googlecode.com/svn</channel>
+   </package>
   </optional>
  </dependencies>
  <phprelease />
@@ -216,8 +215,23 @@ Initial Release.
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2011-02-23</date>
- <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</license>
+   <date>2011-03-02</date>
+   <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</license>
+   <notes>
+Initial Release.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.1.1</release>
+    <api>0.1.1</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2011-03-02</date>
+   <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</license>
    <notes>
 Initial Release.
    </notes>
