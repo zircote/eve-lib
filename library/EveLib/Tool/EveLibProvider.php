@@ -16,13 +16,13 @@
  * limitations under the License.
  */
 /*
- * zircote@flame:~$ zf enable config.provider EveLib_Tool_EveLibProvider
- * Provider/Manifest 'EveLib_Tool_EveLibProvider' was enabled for usage with Zend Tool.
+ * 
+ * 
  */
-require_once 'Zend/Tool/Project/Provider/Abstract.php';
+require_once 'Zend/Tool/Framework/Provider/Abstract.php';
 require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
 
-class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract 
+class EveLib_Tool_EveLibProvider extends Zend_Tool_Framework_Provider_Abstract
 	implements Zend_Tool_Framework_Provider_Pretendable {
 	protected $_evelibRegistry;
 	
@@ -35,7 +35,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract
 		require_once 'Zend/Loader/Autoloader.php';
 		$autoloader = Zend_Loader_Autoloader::getInstance()
 			->registerNamespace('EveLib_');
-		parent::__construct();
+//		parent::__construct();
 	}
 	
 	private function _loadConfig() {
@@ -125,6 +125,20 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Project_Provider_Abstract
 		echo $table;
 	}
 	
+	
+	public function getApis($dsnId = null){
+		$evelib = $this->_registry->getConfig ()
+			->getConfigInstance()->toArray();
+		$table = new Zend_Text_Table(array('columnWidths' => array(10, 60), 'padding' => 1,'decorator' => 'ascii' ));
+		if($dsnId === null){
+			foreach ($evelib['eve_lib']['dsn'] as $key => $value) {
+				$table->appendRow(array($key, $value['dsn']));
+			}
+			echo $table;
+		} else {
+			echo (string) $evelib['eve_lib']['dsn'][$dsnId]['dsn'];
+		}
+	}
 	public function getDsn($dsnId = 'default'){
 		$evelib = $this->_registry->getConfig ()
 			->getConfigInstance()->toArray();
