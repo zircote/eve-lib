@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-class EveLib_Ccp_Api_Command_Misc_ImageTest 
+class EveLib_Ccp_Api_Result_Misc_ImageTest 
 	extends PHPUnit_Framework_TestCase {
 		
 	public function setup(){
