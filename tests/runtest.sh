@@ -34,15 +34,19 @@ while [ -n "$1" ] ; do
      break ;;
 
     Account|Char|Corp|Eve|Map|Misc|Server)
-     PHPUNIT_GROUPS="${PHPUNIT_GROUPS:+"$PHPUNIT_GROUPS,"}Zircote_Ccp_Api_Result_$1" 
+     PHPUNIT_GROUPS="${PHPUNIT_GROUPS:+"$PHPUNIT_GROUPS,"}EveLib_Ccp_Api_Command_$1" 
      shift ;;
 
-    Zircote#)
+    EveLib#)
      PHPUNIT_GROUPS="${PHPUNIT_GROUPS:+"$PHPUNIT_GROUPS,"}$1" 
+     shift ;;
+     
+    Api)
+     PHPUNIT_GROUPS="${PHPUNIT_GROUPS:+"$PHPUNIT_GROUPS,"}EveLib_Ccp_$1" 
      shift ;;
 
     *)
-     PHPUNIT_GROUPS="${PHPUNIT_GROUPS:+"$PHPUNIT_GROUPS,"}Zircote_$1" 
+     PHPUNIT_GROUPS="${PHPUNIT_GROUPS:+"$PHPUNIT_GROUPS,"}EveLib_$1" 
      shift ;;
   esac
 done

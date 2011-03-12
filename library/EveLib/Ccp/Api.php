@@ -146,22 +146,17 @@ class EveLib_Ccp_Api {
 	protected $_options;
 	
 	public function __construct($dsn){
-		$this->setDsn($dsn);
+		$this->set_dsn($dsn);
 	}
 	
-	public function setDsn($dsn){
-		$this->_dsn = $dsn;
-		$this->_fromDsn($this->_dsn);
-		return $this;
-	}
-	
-	public function getDsn(){
+	public function get_dsn(){
 		return $this->_dsn;
 	}
 	
-	protected function _fromDsn($dsn){
+	public function set_dsn($dsn){
+		$this->_dsn = $dsn;
 		$options = array();
-		foreach (parse_url($dsn) as $key => $value) {
+		foreach (parse_url($this->_dsn) as $key => $value) {
 			switch ($key) {
 				case 'scheme':
 					$options['Connection']['protocol'] = $value;
@@ -186,7 +181,6 @@ class EveLib_Ccp_Api {
 				break;
 			}
 		}
-		$this->_options = $options;
 		$this->setOptions($options);
 	}
 	
@@ -197,7 +191,8 @@ class EveLib_Ccp_Api {
      * @return EveLib_Ccp_Api
      */
     public function setOptions(array $options) {
-        foreach($options as $name => $value) {
+		$this->_options = $options;
+        foreach($this->_options as $name => $value) {
             if (method_exists($this, "set$name")) {
                 call_user_func(array($this, "set$name"), $value);
             } else {

@@ -14,7 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'Zend/Application/Resource/Abstract.php';
-class EveLib_Application_Resource_EveLib extends Zend_Application_Resource_Abstract {
+require_once 'Zend/Application/Resource/ResourceAbstract.php';
+class EveLib_Application_Resource_EveLib extends Zend_Application_Resource_ResourceAbstract {
 	
+	public function init(){
+		
+	}
 }

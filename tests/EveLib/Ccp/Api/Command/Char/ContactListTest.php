@@ -1,6 +1,6 @@
 <?php
 
-require_once 'library/EveLib/Ccp/Api/Command/Char/ContactList.php';
+require_once 'EveLib/Ccp/Api/Command/Char/ContactList.php';
 
 require_once 'PHPUnit/Framework/TestCase.php';
 

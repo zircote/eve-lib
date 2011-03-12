@@ -29,7 +29,10 @@ class EveLib_Ccp_Api_Command_Corp_WalletJournal extends EveLib_Ccp_Api_Command_A
 	}
 	
 	public function _getRequest(){
-		if(isset($this->_args[0])){
+		if(is_array($this->_args[0])){
+			$args = $this->_args[0];
+		}
+		elseif(isset($this->_args[0])){
 			$args['accountKey'] = $this->_args[0];
 		} else {
 			throw new EveLib_Ccp_Api_Exception('accountKey [1000..1006] is required to execute this method', 500);

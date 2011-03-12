@@ -21,7 +21,7 @@ class EveLib_Ccp_Api_Command_Misc_ImageTest extends PHPUnit_Framework_TestCase {
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Misc_ImageTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Misc_Image = new EveLib_Ccp_Api_Command_Misc_Image(/* parameters */);
+//		$this->EveLib_Ccp_Api_Command_Misc_Image = new EveLib_Ccp_Api_Command_Misc_Image(/* parameters */);
 	
 	}
 	

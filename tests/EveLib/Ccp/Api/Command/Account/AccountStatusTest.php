@@ -1,10 +1,11 @@
 <?php
 
-require_once 'library/EveLib/Ccp/Api/Command/Account/AccountStatus.php';
+require_once 'EveLib/Ccp/Api/Command/Account/AccountStatus.php';
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
 /**
+ * @group EveLib_Ccp_Api_Command_Corp
  * EveLib_Ccp_Api_Command_Account_AccountStatus test case.
  */
 class EveLib_Ccp_Api_Command_Account_AccountStatusTest extends PHPUnit_Framework_TestCase {
@@ -22,9 +23,6 @@ class EveLib_Ccp_Api_Command_Account_AccountStatusTest extends PHPUnit_Framework
 		
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Account_AccountStatusTest::setUp()
 		
-
-		$this->EveLib_Ccp_Api_Command_Account_AccountStatus = new EveLib_Ccp_Api_Command_Account_AccountStatus(/* parameters */);
-	
 	}
 	
 	/**
@@ -51,8 +49,13 @@ class EveLib_Ccp_Api_Command_Account_AccountStatusTest extends PHPUnit_Framework
 	 */
 	public function test_parseResponse() {
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Account_AccountStatusTest->test_parseResponse()
-		$this->markTestIncomplete ( "_parseResponse test not implemented" );
+//		$this->markTestIncomplete ( "_parseResponse test not implemented" );
 		
+
+		$this->EveLib_Ccp_Api_Command_Account_AccountStatus = 
+			$this->getMock('EveLib_Ccp_Api_Command_Account_AccountStatus')
+				->method('_parseResponse')
+				->will($this->returnValue(array()));
 		$this->EveLib_Ccp_Api_Command_Account_AccountStatus->_parseResponse(/* parameters */);
 	
 	}
@@ -73,8 +76,12 @@ class EveLib_Ccp_Api_Command_Account_AccountStatusTest extends PHPUnit_Framework
 	 */
 	public function testSet_cache_key() {
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Account_AccountStatusTest->testSet_cache_key()
-		$this->markTestIncomplete ( "set_cache_key test not implemented" );
+//		$this->markTestIncomplete ( "set_cache_key test not implemented" );
 		
+		$this->EveLib_Ccp_Api_Command_Account_AccountStatus = 
+			$this->getMock('EveLib_Ccp_Api_Command_Account_AccountStatus')
+				->method('set_cache_key')
+				->will($this->returnValue(array()));
 		$this->EveLib_Ccp_Api_Command_Account_AccountStatus->set_cache_key(/* parameters */);
 	
 	}

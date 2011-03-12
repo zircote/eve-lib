@@ -20,6 +20,7 @@ class EveLib_Ccp_Api_Result_Char_CalendarEventAttendeesTest
 		
 	public function setup(){
 		$this->sharedFixture =<<<EOF
+		
 EOF;
 	}
  	
