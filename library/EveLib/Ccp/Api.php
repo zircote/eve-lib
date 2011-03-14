@@ -29,7 +29,7 @@ class EveLib_Ccp_Api {
 	 * @link http://framework.zend.com/manual/en/zend.cache.cache.manager.html
 	 * @var Zend_Cache_Manager
 	 */
-	protected $cacheManager;
+	public static $cacheManager;
 	
 	/**
 	 * 
@@ -268,7 +268,10 @@ class EveLib_Ccp_Api {
      * @return Zend_Cache_Core
      */
     public function getCache(){
-    	return $this->cacheManager->getCache(self::CACHE_KEY);
+    	if(!self::$cacheManager){
+    		$this->setCache();
+    	}
+    	return self::$cacheManager->getCache(self::CACHE_KEY);
     }
     
     /**
@@ -278,31 +281,31 @@ class EveLib_Ccp_Api {
      * @return EveLib_Ccp_Api
      */
     public function setCache($backend = null){
-    	if($backend === null){
-			$backend = array (
-			    'backend' => array(
-			        'name' => 'File',
+    	if(!self::$cacheManager	){
+	    	if($backend === null){
+				$backend = array (
+				    'backend' => array(
+				        'name' => 'File',
+				        'options' => array(
+				            'cache_dir' => '/tmp'
+				        )
+				    )
+				);
+	    	}
+	    	$frontend = array(
+				'frontend' => array(
+			        'name' => 'Core',
 			        'options' => array(
-			            'cache_dir' => '/tmp'
+	    				'cache_id_prefix' => 'EveLib' . str_replace(array('-','.'),'_',$this->_options['Connection']['host']),
+			            'lifetime' => null,
+			            'automatic_serialization' => true
 			        )
 			    )
-			);
-    	}
-    	$frontend = array(
-			'frontend' => array(
-		        'name' => 'Core',
-		        'options' => array(
-    				'cache_id_prefix' => 'EveLib' . str_replace(array('-','.'),'_',$this->_options['Connection']['host']),
-		            'lifetime' => null,
-		            'automatic_serialization' => true
-		        )
-		    )
-	    );
-    	$options = array_merge($frontend, $backend);
-    	require_once 'Zend/Cache/Manager.php';
-    	$this->cacheManager = new Zend_Cache_Manager;
-    	if(!$this->cacheManager->hasCache(self::CACHE_KEY)){
-			$this->cacheManager->setCacheTemplate(self::CACHE_KEY, $options);
+		    );
+	    	$options = array_merge($frontend, $backend);
+	    	require_once 'Zend/Cache/Manager.php';
+	    	self::$cacheManager = new Zend_Cache_Manager;
+			self::$cacheManager->setCacheTemplate(self::CACHE_KEY, $options);
     	}
 		return $this;
     }
