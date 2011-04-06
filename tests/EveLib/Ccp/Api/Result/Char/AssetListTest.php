@@ -77,7 +77,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Char
  	 */
  	public function testAccountStatus(){
- 		require_once 'EveLib/Ccp/Api/Result/Char/AssetList.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Char/AssetList.php';
  		$out = new EveLib_Ccp_Api_Result_Char_AssetList($this->sharedFixture);
 // 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);

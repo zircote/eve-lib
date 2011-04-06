@@ -1,8 +1,8 @@
 <?php
 
-require_once 'EveLib/Ccp/Api/Command/Corp/OutpostList.php';
+//include_once 'EveLib/Ccp/Api/Command/Corp/OutpostList.php';
 
-require_once 'PHPUnit/Framework/TestCase.php';
+//include_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * EveLib_Ccp_Api_Command_Corp_OutpostList test case.

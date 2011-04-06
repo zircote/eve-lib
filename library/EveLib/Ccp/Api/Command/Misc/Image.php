@@ -14,8 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Interface.php';
-class EveLib_Ccp_Api_Command_Misc_Image extends EveLib_Ccp_Api_Command_Interface {
+//require_once 'EveLib/Ccp/Api/Command/Interface.php';
+class EveLib_Ccp_Api_Command_Misc_Image 
+//extends EveLib_Ccp_Api_Command_Interface 
+{
 	
     public function __construct(EveLib_Ccp_Api $api, $name, $arguments){
     	

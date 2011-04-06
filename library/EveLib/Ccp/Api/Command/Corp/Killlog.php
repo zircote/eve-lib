@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Corp_Killlog extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/corp/Killlog.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Corp_Killlog extends EveLib_Ccp_Api_Command_Abstrac
 	protected $_command = 'Killlog';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Corp/Killlog.php';
+		//require_once 'EveLib/Ccp/Api/Result/Corp/Killlog.php';
 		$response = new EveLib_Ccp_Api_Result_Corp_Killlog($response);
 		return $response;
 	}

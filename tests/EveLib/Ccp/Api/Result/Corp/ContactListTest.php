@@ -39,7 +39,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testContactList(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/ContactList.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/ContactList.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_ContactList($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

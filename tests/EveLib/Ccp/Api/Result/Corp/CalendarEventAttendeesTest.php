@@ -30,7 +30,7 @@ EOF;
  	public function testCalendarEventAttendees(){
  		$this->markTestSkipped('There is currently no documentation for this api'.
  			' call as of yet it is scheduled for TQ1.2 Patch');
- 		require_once 'EveLib/Ccp/Api/Result/Corp/CalendarEventAttendees.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/CalendarEventAttendees.php';
  		$api = new EveLib_Ccp_Api_Result_Corp_CalendarEventAttendees($this->sharedFixture);
 // 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);

@@ -51,7 +51,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Eve
  	 */
  	public function testConquerableStationList(){
- 		require_once 'EveLib/Ccp/Api/Result/Eve/ConquerableStationList.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Eve/ConquerableStationList.php';
  		$out = new EveLib_Ccp_Api_Result_Eve_ConquerableStationList($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

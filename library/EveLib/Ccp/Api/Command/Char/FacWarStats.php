@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Char_FacWarStats extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/char/FacWarStats.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Char_FacWarStats extends EveLib_Ccp_Api_Command_Abs
 	protected $_command = 'FacWarStats';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Account/FacWarStats.php';
+		//require_once 'EveLib/Ccp/Api/Result/Account/FacWarStats.php';
 		$response = new EveLib_Ccp_Api_Result_Char_($response);
 		return $response;
 	}

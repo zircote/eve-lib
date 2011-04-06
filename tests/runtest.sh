@@ -15,7 +15,7 @@
  # limitations under the License.
  #
 
-: ${PHPUNIT:="phpunit.php"}
+: ${PHPUNIT:="phpunit"}
 : ${PHPUNIT_OPTS:="--verbose"}
 : ${PHPUNIT_GROUPS:=}
 

@@ -36,7 +36,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Eve
  	 */
  	public function testCharacterName(){
- 		require_once 'EveLib/Ccp/Api/Result/Eve/CharacterName.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Eve/CharacterName.php';
  		$out = new EveLib_Ccp_Api_Result_Eve_CharacterName($this->sharedFixture);
 		$this->assertArrayHasKey('characters', $out->result['result']);
 		foreach ($out->result['result']['characters'] as $characterID => $character) {

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Corp_MemberSecurity extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/corp/MemberSecurity.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Corp_MemberSecurity extends EveLib_Ccp_Api_Command_
 	protected $_command = 'MemberSecurity';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Corp/MemberSecurity.php';
+		//require_once 'EveLib/Ccp/Api/Result/Corp/MemberSecurity.php';
 		$response = new EveLib_Ccp_Api_Result_Corp_MemberSecurity($response);
 		return $response;
 	}

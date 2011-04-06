@@ -46,7 +46,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testFacWarStats(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/FacWarStats.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/FacWarStats.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_FacWarStats($this->sharedFixture);
 // 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);

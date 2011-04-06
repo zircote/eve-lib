@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Corp_Medals extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/corp/Medals.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Corp_Medals extends EveLib_Ccp_Api_Command_Abstract
 	protected $_command = 'Medals';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Corp/Medals.php';
+		//require_once 'EveLib/Ccp/Api/Result/Corp/Medals.php';
 		$response = new EveLib_Ccp_Api_Result_Corp_Medals($response);
 		return $response;
 	}

@@ -64,7 +64,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testMarketOrders(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/MarketOrders.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/MarketOrders.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_MarketOrders($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Map_Jumps extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/map/Jumps.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Map_Jumps extends EveLib_Ccp_Api_Command_Abstract {
 	protected $_command = 'Jumps';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Map/Jumps.php';
+		//require_once 'EveLib/Ccp/Api/Result/Map/Jumps.php';
 		$response = new EveLib_Ccp_Api_Result_Map_Jumps($response);
 		return $response;
 	}

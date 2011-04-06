@@ -39,7 +39,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Map
  	 */
  	public function testFacWarSystems(){
- 		require_once 'EveLib/Ccp/Api/Result/Map/FacWarSystems.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Map/FacWarSystems.php';
  		$out = new EveLib_Ccp_Api_Result_Map_FacWarSystems($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

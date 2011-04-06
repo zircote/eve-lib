@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Eve_AllianceList extends EveLib_Ccp_Api_Command_Abstract {
 	public $path = '/eve/AllianceList.xml.aspx';
 
 	protected $_command = 'AllianceList';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Eve/AllianceList.php';
+		//require_once 'EveLib/Ccp/Api/Result/Eve/AllianceList.php';
 		$response = new EveLib_Ccp_Api_Result_Eve_AllianceList($response);
 		return $response;
 	}

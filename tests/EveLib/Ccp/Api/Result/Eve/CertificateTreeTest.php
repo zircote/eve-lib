@@ -76,7 +76,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Eve
  	 */
  	public function testCertificateTree(){
- 		require_once 'EveLib/Ccp/Api/Result/Eve/CertificateTree.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Eve/CertificateTree.php';
  		$out = new EveLib_Ccp_Api_Result_Eve_CertificateTree($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

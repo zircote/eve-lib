@@ -38,7 +38,7 @@ class EveLib_Ccp_Api_Connection {
 	public function setUri($uri){
 		require_once 'Zend/Uri.php';
 		if(!Zend_Uri::check($uri)){
-			require_once 'EveLib/Ccp/Api/Exception.php';
+			//require_once 'EveLib/Ccp/Api/Exception.php';
 			throw new EveLib_Ccp_Api_Exception("URI provided is inValid [{$url}]", 500);
 		}
 		$this->_uri = $uri;

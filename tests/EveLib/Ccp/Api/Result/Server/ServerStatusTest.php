@@ -37,7 +37,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Server
  	 */
  	public function testServerStatus(){
- 		require_once 'EveLib/Ccp/Api/Result/Server/ServerStatus.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Server/ServerStatus.php';
  		$out = new EveLib_Ccp_Api_Result_Server_ServerStatus($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

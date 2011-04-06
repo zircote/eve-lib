@@ -30,8 +30,8 @@ EOF;
  	 */
  	public function testSovereigntyStatus(){
  		$this->markTestSkipped('This API call is disabled');
- 		require_once 'EveLib/Ccp/Api.php';
- 		require_once 'EveLib/Ccp/Api/Result/Map/SovereigntyStatus.php';
+ 		//include_once 'EveLib/Ccp/Api.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Map/SovereigntyStatus.php';
  		$out = new EveLib_Ccp_Api_Result_Map_SovereigntyStatus($this->sharedFixture);
  	}
 }

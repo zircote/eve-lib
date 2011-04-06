@@ -59,7 +59,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testTitles(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/Titles.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/Titles.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_Titles($this->sharedFixture);
 // 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);

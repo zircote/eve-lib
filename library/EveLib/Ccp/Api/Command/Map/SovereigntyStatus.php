@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Map_SovereigntyStatus extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/map/SovereigntyStatus.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Map_SovereigntyStatus extends EveLib_Ccp_Api_Comman
 	protected $_command = 'SovereigntyStatus';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Map/SovereigntyStatus.php';
+		//require_once 'EveLib/Ccp/Api/Result/Map/SovereigntyStatus.php';
 		$response = new EveLib_Ccp_Api_Result_Map_SovereigntyStatus($response);
 		return $response;
 	}

@@ -46,7 +46,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testAllianceList(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/MemberTracking.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/MemberTracking.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_MemberTracking($this->sharedFixture);
 // 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);

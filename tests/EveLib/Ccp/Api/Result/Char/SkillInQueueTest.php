@@ -39,8 +39,8 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Char
  	 */
  	public function testAccountStatus(){
- 		require_once 'EveLib/Ccp/Api/Result/Char/SkillinQueue.php';
- 		$out = new EveLib_Ccp_Api_Result_Char_SkillinQueue($this->sharedFixture);
+ 		//include_once 'EveLib/Ccp/Api/Result/Char/SkillinQueue.php';
+// 		$out = new EveLib_Ccp_Api_Result_Char_SkillinQueue($this->sharedFixture);
 // 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

@@ -30,14 +30,14 @@ class EveLib_Ccp_Api_Result_Abstract {
 			$this->xml = $xml;
 			;
 			if(!$sXml = simplexml_load_string($this->xml)){
-				require_once 'EveLib/Ccp/Api/Exception.php';
+				//require_once 'EveLib/Ccp/Api/Exception.php';
 				throw new EveLib_Ccp_Api_Exception('failed to load valid XML EVE-API Endpoint may be down', 500);
 				return false;
 			}
 			$result = $this->parse($sXml);
 			if(key_exists('error',$result['eveapi'])){
 				extract($result['eveapi']['error']);
-				require_once 'EveLib/Ccp/Api/Exception.php';
+				//require_once 'EveLib/Ccp/Api/Exception.php';
 				throw new EveLib_Ccp_Api_Exception($text, $code);
 			}
 			$this->result = $result['eveapi'];

@@ -58,6 +58,7 @@ class EveLib_Ccp_Api {
 			'marketorders' => 'EveLib_Ccp_Api_Command_Char_MarketOrders',
 			'medals' => 'EveLib_Ccp_Api_Command_Char_Medals',
 			'notifications' => 'EveLib_Ccp_Api_Command_Char_Notifications',
+			'notificationtexts' => 'EveLib_Ccp_Api_Command_Char_NotificationTexts',
 			'research' => 'EveLib_Ccp_Api_Command_Char_Research',
 			'skillinqueue' => 'EveLib_Ccp_Api_Command_Char_SkillInQueue',
 			'skillintraining' => 'EveLib_Ccp_Api_Command_Char_SkillInTraining',
@@ -212,7 +213,7 @@ class EveLib_Ccp_Api {
     public function setOption($name, $value) {
     	$lowerName = '_' . strtolower($name);
         if (!property_exists($this, $lowerName)) {
-        	require_once 'EveLib/Ccp/Api/Exception.php';
+        	//require_once 'EveLib/Ccp/Api/Exception.php';
             throw new EveLib_Ccp_Api_Exception("'{$name}' is not a valid Option.");
         }
         $this->$lowerName = $value;
@@ -226,7 +227,7 @@ class EveLib_Ccp_Api {
      * @return EveLib_Ccp_Api
      */
     public function setConnection($options){
- 		require_once 'EveLib/Ccp/Api/Connection.php';
+ 		//require_once 'EveLib/Ccp/Api/Connection.php';
     	$this->_connection = new EveLib_Ccp_Api_Connection($options);
     	return $this;
     }
@@ -303,7 +304,7 @@ class EveLib_Ccp_Api {
 			    )
 		    );
 	    	$options = array_merge($frontend, $backend);
-	    	require_once 'Zend/Cache/Manager.php';
+	    	//require_once 'Zend/Cache/Manager.php';
 	    	self::$cacheManager = new Zend_Cache_Manager;
 			self::$cacheManager->setCacheTemplate(self::CACHE_KEY, $options);
     	}
@@ -330,7 +331,7 @@ class EveLib_Ccp_Api {
     	if(in_array($scope, array('eve','char','map','corp','server','account','misc'))){
     		$this->_scope = $scope;
     	} else {
-        	require_once 'EveLib/Ccp/Api/Exception.php';
+        	//require_once 'EveLib/Ccp/Api/Exception.php';
             throw new EveLib_Ccp_Api_Exception("'{$scope['scope']}' is not a valid Api scope.");
     	}
     	return $this;
@@ -356,17 +357,17 @@ class EveLib_Ccp_Api {
     public function getCommand($name, $args) {
     	$this->setCache();
     	if(!$this->getScope()){
-        	require_once 'EveLib/Ccp/Api/Exception.php';
+        	//require_once 'EveLib/Ccp/Api/Exception.php';
             throw new EveLib_Ccp_Api_Exception("Unable to determine a scope for execution.");
     	}
 		$lowerName = strtolower($name);
         if (!isset(self::$_commands[$this->getScope()][$lowerName])) {
-        	require_once 'EveLib/Ccp/Api/Exception.php';
+        	//require_once 'EveLib/Ccp/Api/Exception.php';
             throw new EveLib_Ccp_Api_Exception("Command '$name' not found");
         }
         $classParent = 'EveLib_Ccp_Api_Command_' . ucfirst($this->getScope()) . '_';
         if (strpos(self::$_commands[$this->getScope()][$lowerName],$classParent ) === 0) {
-        	require_once $file_path ='EveLib/Ccp/Api/Command/' . ucfirst($this->getScope()) .'/'. 
+        	//require_once $file_path ='EveLib/Ccp/Api/Command/' . ucfirst($this->getScope()) .'/'. 
         		substr(self::$_commands[$this->getScope()][$lowerName], strlen($classParent)) . '.php';
         }
         return new self::$_commands[$this->getScope()][$lowerName]($this, $name, $args);

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Corp_MemberSecurityLog extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/corp/MemberSecurityLog.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Corp_MemberSecurityLog extends EveLib_Ccp_Api_Comma
 	protected $_command = 'MemberSecurityLog';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Corp/MemberSecurityLog.php';
+		//require_once 'EveLib/Ccp/Api/Result/Corp/MemberSecurityLog.php';
 		$response = new EveLib_Ccp_Api_Result_Corp_MemberSecurityLog($response);
 		return $response;
 	}

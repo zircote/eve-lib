@@ -43,7 +43,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Map
  	 */
  	public function testSovereignty(){
- 		require_once 'EveLib/Ccp/Api/Result/Map/Sovereignty.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Map/Sovereignty.php';
  		$out = new EveLib_Ccp_Api_Result_Map_Sovereignty($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

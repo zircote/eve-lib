@@ -42,7 +42,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Char
  	 */
  	public function testAccountStatus(){
- 		require_once 'EveLib/Ccp/Api/Result/Char/Research.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Char/Research.php';
  		$out = new EveLib_Ccp_Api_Result_Char_Research($this->sharedFixture);
 // 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);

@@ -37,7 +37,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testMemberMedals(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/MemberMedals.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/MemberMedals.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_MemberMedals($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

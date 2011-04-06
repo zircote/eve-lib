@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-require_once 'EveLib/Ccp/Api/Result/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Result/Abstract.php';
 
 class EveLib_Ccp_Api_Result_Eve_ConquerableStationList extends EveLib_Ccp_Api_Result_Abstract {
 	

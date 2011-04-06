@@ -30,8 +30,8 @@ EOF;
  	public function testCalendarEventAttendees(){
  		$this->markTestSkipped('There is currently no documentation for this api'.
  			' call as of yet it is scheduled for TQ1.2 Patch');
- 		require_once 'EveLib/Ccp/Api.php';
- 		require_once 'EveLib/Ccp/Api/Result/Char/CalendarEventAttendees.php';
+ 		//include_once 'EveLib/Ccp/Api.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Char/CalendarEventAttendees.php';
  		$api = new EveLib_Ccp_Api(AllTests::$config);
  		$out = $api->setScope('Char')
  			->CalendarEventAttendees();

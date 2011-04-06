@@ -19,8 +19,8 @@
  * 
  * 
  */
-require_once 'Zend/Tool/Framework/Provider/Abstract.php';
-require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
+//require_once 'Zend/Tool/Framework/Provider/Abstract.php';
+//require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
 
 class EveLib_Tool_EveLibProvider extends Zend_Tool_Framework_Provider_Abstract
 	implements Zend_Tool_Framework_Provider_Pretendable {
@@ -32,7 +32,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Framework_Provider_Abstract
 	protected $_scope;
 	
 	public function __construct (){
-		require_once 'Zend/Loader/Autoloader.php';
+		//require_once 'Zend/Loader/Autoloader.php';
 		$autoloader = Zend_Loader_Autoloader::getInstance()
 			->registerNamespace('EveLib_');
 //		parent::__construct();
@@ -51,7 +51,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Framework_Provider_Abstract
 		$dsn = $this->_registry->getClient ()
 			->promptInteractiveInput ( "Provide the EvE Api Dsn in the following format:\n".
 			"http[s]://userID:apiKey@host:port/characterID\n",array('color' => 'green') );
-		require_once 'EveLib/Ccp/Api.php';
+		//require_once 'EveLib/Ccp/Api.php';
 		$api = new EveLib_Ccp_Api($dsn->getContent());
 		$options = $api->get_options();
 		$_dsn = $this->_registry->getConfig ()->getConfigInstance()->toArray();
@@ -90,7 +90,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Framework_Provider_Abstract
 	}
 
 	protected function _getChars($dsnId = 'default'){
-		require_once 'EveLib/Ccp/Api.php';
+		//require_once 'EveLib/Ccp/Api.php';
 		$api = new EveLib_Ccp_Api($this->getDsn($dsnId));
 		return $result = $api->setScope('account')->Characters();
 	}
@@ -115,7 +115,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Framework_Provider_Abstract
 				}
 			}
 		}
-		require_once 'EveLib/Ccp/Api.php';
+		//require_once 'EveLib/Ccp/Api.php';
 		$api = new EveLib_Ccp_Api($this->getDsn($dsnId));
 		$data = $api->setScope('eve')->CharacterInfo($characterID);
 		$table = new Zend_Text_Table(array('columnWidths' => array(25, 30), 'padding' => 1,'decorator' => 'ascii' ));
@@ -146,7 +146,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Framework_Provider_Abstract
 	}
 	
 	public function charSheet($characterID, $dsnId = 'default'){
-		require_once 'EveLib/Ccp/Api.php';
+		//require_once 'EveLib/Ccp/Api.php';
 		$api = new EveLib_Ccp_Api($this->getDsn($dsnId));
 		$data = $api->setScope('char')->CharacterSheet($characterID);
 		unset($data->result['result']['skills']);
@@ -162,7 +162,7 @@ class EveLib_Tool_EveLibProvider extends Zend_Tool_Framework_Provider_Abstract
 	}
 	
 	protected function _getCharId($characterName, $dsnId = 'default'){
-		require_once 'EveLib/Ccp/Api.php';
+		//require_once 'EveLib/Ccp/Api.php';
 		$api = new EveLib_Ccp_Api($this->getDsn($dsnId));
 		$characterName = explode (',',$characterName);
 		$data = $api->setScope('eve')->CharacterID($characterName);

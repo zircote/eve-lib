@@ -40,7 +40,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Account
  	 */
  	public function testAllianceList(){
- 		require_once 'EveLib/Ccp/Api/Result/Account/AccountStatus.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Account/AccountStatus.php';
  		$out = new EveLib_Ccp_Api_Result_Account_AccountStatus($this->sharedFixture);
 // 		print_r($out->result);
  		

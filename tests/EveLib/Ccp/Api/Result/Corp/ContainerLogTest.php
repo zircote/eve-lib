@@ -59,7 +59,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testContainerLog(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/ContainerLog.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/ContainerLog.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_ContainerLog($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

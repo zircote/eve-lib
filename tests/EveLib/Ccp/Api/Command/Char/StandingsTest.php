@@ -1,8 +1,8 @@
 <?php
 
-require_once 'EveLib/Ccp/Api/Command/Char/Standings.php';
-
-require_once 'PHPUnit/Framework/TestCase.php';
+////include_once 'EveLib/Ccp/Api/Command/Char/Standings.php';
+//
+////include_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * EveLib_Ccp_Api_Command_Char_Standings test case.

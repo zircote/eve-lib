@@ -14,37 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/EveCentral/Api/Command/Abstract.php';
-class EveLib_EveCentral_Api_Command_MarketStat extends EveLib_EveCentral_Api_Command_Abstract {
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+class EveLib_Ccp_Api_Command_Char_NotificationTexts extends EveLib_Ccp_Api_Command_Abstract {
 	
-	public $path = '/api/marketstat';
+	public $path = '/char/NotificationTexts.xml.aspx';
 
-	protected $_command = 'MarketStat';
+	protected $_command = 'NotificationTexts';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/EveCentral/Api/Result/MarketStat.php';
-		$response = new EveLib_EveCentral_Api_Result_MarketStat($response);
+		//require_once 'EveLib/Ccp/Api/Result/Account/Notifications.php';
+		$response = new EveLib_Ccp_Api_Result_Char_NotificationTexts($response);
 		return $response;
 	}
 	
 	public function _getRequest(){
-		if(is_array($this->_args[0] )&& array_key_exists('typeid', $this->_args[0])){
-			return $this->_args[0];
-		}
-		if(isset($this->_args[0])){
-			$args['typeid'] = $this->_args[0];
-		} else {
-			throw new EveLib_Ccp_Api_Exception('typeid [The type ID to be queried] is required', 500);
-		}
-		if(isset($this->_args[1])){
-			$args['hours'] = $this->_args[1];
-		}
-		if(isset($this->_args[2])){
-			$args['minQ'] = $this->_args[2];
-		}
-		if(isset($this->_args[3])){
-			$args['regionlimit'] = $this->_args[3];
-		}
+		$args = array('IDs' => $this->_args[0]);
+		$api = $this->_api->_api;
+		$args = array_merge($args, $api);
 		return $args;
 	}
 	

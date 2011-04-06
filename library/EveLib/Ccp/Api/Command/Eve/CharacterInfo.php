@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 
 /**
  * @todo args: characterID| apiKey, userID
@@ -28,7 +28,7 @@ class EveLib_Ccp_Api_Command_Eve_CharacterInfo extends EveLib_Ccp_Api_Command_Ab
 	protected $_command = 'CharacterInfo';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Eve/CharacterInfo.php';
+		//require_once 'EveLib/Ccp/Api/Result/Eve/CharacterInfo.php';
 		$response = new EveLib_Ccp_Api_Result_Eve_CharacterInfo($response);
 		return $response;
 	}

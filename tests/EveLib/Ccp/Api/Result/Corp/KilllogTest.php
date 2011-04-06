@@ -81,7 +81,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testKilllog(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/Killlog.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/Killlog.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_Killlog($this->sharedFixture);
 // 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);

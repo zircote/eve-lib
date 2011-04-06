@@ -36,7 +36,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Eve
  	 */
  	public function testCharacterID(){
- 		require_once 'EveLib/Ccp/Api/Result/Eve/CharacterID.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Eve/CharacterID.php';
  		$out = new EveLib_Ccp_Api_Result_Eve_CharacterID($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

@@ -71,7 +71,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testWalletJournal(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/WalletJournal.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/WalletJournal.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_WalletJournal($this->sharedFixture);
 // 		print_r($out->xml);
 		$this->assertArrayHasKey('cachedUntil', $out->result);

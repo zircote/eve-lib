@@ -43,7 +43,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testAccountBalance(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/AccountBalance.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/AccountBalance.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_AccountBalance($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Interface.php';
+//require_once 'EveLib/Ccp/Api/Command/Interface.php';
 
 abstract class EveLib_Ccp_Api_Command_Abstract implements EveLib_Ccp_Api_Command_Interface {
 	
@@ -56,7 +56,13 @@ abstract class EveLib_Ccp_Api_Command_Abstract implements EveLib_Ccp_Api_Command
 	
 	protected function isExpired($cachedValues){
 //		print_r($cachedValues);
-		return strtotime($cachedValues->result['cachedUntil']) < strtotime(gmdate('Y-m-d H:i:s')) ? true : false;
+		if(array_key_exists('cachedUntil',$cachedValues->result)){
+			return strtotime($cachedValues->result['cachedUntil']) < strtotime(gmdate('Y-m-d H:i:s')) ? true : false;
+		} elseif(array_key_exists('cachedUntil',$cachedValues->result['result'])){
+			return strtotime($cachedValues->result['result']['cachedUntil']) < strtotime(gmdate('Y-m-d H:i:s')) ? true : false;
+		} else {
+			return false;
+		}
 	}
 	
 	public function write(){
@@ -71,7 +77,7 @@ abstract class EveLib_Ccp_Api_Command_Abstract implements EveLib_Ccp_Api_Command
 		$result = $cache->load($key);
 		if(!$result || $this->isExpired($result)){
 			$result = $this->_api->getConnection()->handle($this);
-			if($result && !$this->isError($result)){
+			if($result && !$this->isError($result) && !empty($result->result['result'])){
 				$cache->save($result, $this->get_cache_key());
 			}
 		}

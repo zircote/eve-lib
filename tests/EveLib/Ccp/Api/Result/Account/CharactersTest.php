@@ -43,7 +43,7 @@ EOF;
  	 * Enter description here ...
  	 */
  	public function testAllianceList(){
- 		require_once 'EveLib/Ccp/Api/Result/Account/Characters.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Account/Characters.php';
  		$out = new EveLib_Ccp_Api_Result_Account_Characters($this->sharedFixture);
 // 		print_r($out->result);
  		

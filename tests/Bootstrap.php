@@ -20,20 +20,25 @@ error_reporting( E_ALL | E_STRICT );
 $zircRoot        = realpath(dirname(__DIR__));
 $zircCoreLibrary = "$zircRoot/library";
 $zircCoreTests   = "$zircRoot/tests";
+$zend = '/usr/local/zend/share/ZendFramework/library';
 
 $path = array(
 	$zircCoreLibrary,
 	$zircCoreTests,
+	$zend,
 	get_include_path(),
 );
 set_include_path(implode(PATH_SEPARATOR, $path));
-
+require_once 'Zend/Uri.php';
+require_once 'Zend/Cache/Manager.php';
+require_once 'Zend/Tool/Project/Provider/Abstract.php';
+require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
 include __DIR__ . '/_autoload.php';
 
 if (is_readable($zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php')) {
-	require_once $zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php';
+	//require_once $zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php';
 } else {
-	require_once $zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php.default';
+	//require_once $zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php.default';
 }
 
 if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&

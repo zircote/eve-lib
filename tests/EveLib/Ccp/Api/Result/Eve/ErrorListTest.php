@@ -104,7 +104,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Eve
  	 */
  	public function testErrorList(){
- 		require_once 'EveLib/Ccp/Api/Result/Eve/ErrorList.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Eve/ErrorList.php';
  		$out = new EveLib_Ccp_Api_Result_Eve_ErrorList($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

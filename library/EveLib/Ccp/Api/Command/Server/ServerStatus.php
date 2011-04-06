@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Server_ServerStatus extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/server/ServerStatus.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Server_ServerStatus extends EveLib_Ccp_Api_Command_
 	protected $_command = 'ServerStatus';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Server/ServerStatus.php';
+		//require_once 'EveLib/Ccp/Api/Result/Server/ServerStatus.php';
 		$response = new EveLib_Ccp_Api_Result_Server_ServerStatus($response);
 		return $response;
 	}

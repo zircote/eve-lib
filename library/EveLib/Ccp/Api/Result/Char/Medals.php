@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Result/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Result/Abstract.php';
 
 class EveLib_Ccp_Api_Result_Char_Medals extends EveLib_Ccp_Api_Result_Abstract {
 	

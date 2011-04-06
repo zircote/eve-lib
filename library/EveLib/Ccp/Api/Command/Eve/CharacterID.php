@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 
 /**
  * @todo args: names	 string	 Comma-separated list of character names to query
@@ -28,7 +28,7 @@ class EveLib_Ccp_Api_Command_Eve_CharacterID extends EveLib_Ccp_Api_Command_Abst
 	protected $_command = 'CharacterID';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Eve/CharacterID.php';
+		//require_once 'EveLib/Ccp/Api/Result/Eve/CharacterID.php';
 		$response = new EveLib_Ccp_Api_Result_Eve_CharacterID($response);
 		return $response;
 	}

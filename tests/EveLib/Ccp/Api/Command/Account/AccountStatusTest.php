@@ -1,8 +1,8 @@
 <?php
 
-require_once 'EveLib/Ccp/Api/Command/Account/AccountStatus.php';
-
-require_once 'PHPUnit/Framework/TestCase.php';
+////include_once 'EveLib/Ccp/Api/Command/Account/AccountStatus.php';
+//
+////include_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * @group EveLib_Ccp_Api_Command_Corp

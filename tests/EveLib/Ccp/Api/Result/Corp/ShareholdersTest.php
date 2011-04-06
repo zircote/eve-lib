@@ -40,7 +40,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testShareholders(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/Shareholders.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/Shareholders.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_Shareholders($this->sharedFixture);
 // 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);

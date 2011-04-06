@@ -37,8 +37,8 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Char
  	 */
  	public function testAccountStatus(){
- 		require_once 'EveLib/Ccp/Api.php';
- 		require_once 'EveLib/Ccp/Api/Result/Char/ContactList.php';
+ 		//include_once 'EveLib/Ccp/Api.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Char/ContactList.php';
  		$out = new EveLib_Ccp_Api_Result_Char_ContactList($this->sharedFixture);
 // 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);

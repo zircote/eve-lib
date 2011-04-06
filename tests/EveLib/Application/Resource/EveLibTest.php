@@ -1,8 +1,8 @@
 <?php
 
-require_once 'EveLib/Application/Resource/EveLib.php';
-
-require_once 'PHPUnit/Framework/TestCase.php';
+////include_once 'EveLib/Application/Resource/EveLib.php';
+//
+////include_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * EveLib_Application_Resource_EveLib test case.

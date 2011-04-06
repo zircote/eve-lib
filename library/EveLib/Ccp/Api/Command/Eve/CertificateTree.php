@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Eve_CertificateTree extends EveLib_Ccp_Api_Command_Abstract {
 	public $path = '/eve/CertificateTree.xml.aspx';
 
 	protected $_command = 'CertificateTree';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Eve/CertificateTree.php';
+		//require_once 'EveLib/Ccp/Api/Result/Eve/CertificateTree.php';
 		$response = new EveLib_Ccp_Api_Result_Eve_CertificateTree($response);
 		return $response;
 	}

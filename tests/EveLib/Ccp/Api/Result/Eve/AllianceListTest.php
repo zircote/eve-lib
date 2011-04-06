@@ -49,7 +49,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Eve
  	 */
  	public function testAllianceList(){
- 		require_once 'EveLib/Ccp/Api/Result/Eve/AllianceList.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Eve/AllianceList.php';
  		$out = new EveLib_Ccp_Api_Result_Eve_AllianceList($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

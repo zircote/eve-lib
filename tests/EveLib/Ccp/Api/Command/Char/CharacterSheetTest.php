@@ -1,8 +1,8 @@
 <?php
 
-require_once 'EveLib/Ccp/Api/Command/Char/CharacterSheet.php';
+//include_once 'EveLib/Ccp/Api/Command/Char/CharacterSheet.php';
 
-require_once 'PHPUnit/Framework/TestCase.php';
+//include_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * EveLib_Ccp_Api_Command_Char_CharacterSheet test case.

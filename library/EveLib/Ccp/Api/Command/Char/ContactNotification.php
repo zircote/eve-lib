@@ -14,24 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/EveCentral/Api/Command/Abstract.php';
-class EveLib_EveCentral_Api_Command_Evemon extends EveLib_EveCentral_Api_Command_Abstract {
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+class EveLib_Ccp_Api_Command_Char_ContactNotification extends EveLib_Ccp_Api_Command_Abstract {
 	
-	public $path = '/api/evemon';
+	public $path = '/char/ContactNotification.xml.aspx';
 
-	protected $_command = 'Evemon';
+	protected $_command = 'ContactNotification';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/EveCentral/Api/Result/Evemon.php';
-		$response = new EveLib_EveCentral_Api_Result_Evemon($response);
+		//require_once 'EveLib/Ccp/Api/Result/Account/ContactNotification.php';
+		$response = new EveLib_Ccp_Api_Result_Char_($response);
 		return $response;
 	}
 	
 	public function _getRequest(){
-		return null;
+		$args = array(
+			'path' => $this->path
+		);
+		$api = $this->_api->_api;
+		$args = array_merge($args, $api);
+		return $args;
 	}
 	
 	public function set_cache_key(){
-		$this->_cache_key = md5($this->_command );
+		$this->_cache_key = md5($this->_command . PATH_SEPARATOR . implode(PATH_SEPARATOR, $this->_getRequest()));
 	}
 }

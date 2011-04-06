@@ -39,8 +39,8 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Char
  	 */
  	public function testAccountStatus(){
- 		require_once 'EveLib/Ccp/Api.php';
- 		require_once 'EveLib/Ccp/Api/Result/Char/UpcomingCalendarEvents.php';
+ 		//include_once 'EveLib/Ccp/Api.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Char/UpcomingCalendarEvents.php';
  		$out = new EveLib_Ccp_Api_Result_Char_UpcomingCalendarEvents($this->sharedFixture);
 // 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);

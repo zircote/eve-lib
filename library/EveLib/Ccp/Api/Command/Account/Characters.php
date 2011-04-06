@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Account_Characters extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/account/Characters.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Account_Characters extends EveLib_Ccp_Api_Command_A
 	protected $_command = 'Characters';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Account/Characters.php';
+		//require_once 'EveLib/Ccp/Api/Result/Account/Characters.php';
 		$response = new EveLib_Ccp_Api_Result_Account_Characters($response);
 		return $response;
 	}

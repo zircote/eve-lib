@@ -47,7 +47,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Map
  	 */
  	public function testKills(){
- 		require_once 'EveLib/Ccp/Api/Result/Map/Kills.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Map/Kills.php';
  		$out = new EveLib_Ccp_Api_Result_Map_Kills($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

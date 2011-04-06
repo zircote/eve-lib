@@ -1,8 +1,8 @@
 <?php
 
-require_once 'EveLib/Ccp/Api/Command/Eve/FacWarStats.php';
+//include_once 'EveLib/Ccp/Api/Command/Eve/FacWarStats.php';
 
-require_once 'PHPUnit/Framework/TestCase.php';
+//include_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * EveLib_Ccp_Api_Command_Eve_FacWarStats test case.

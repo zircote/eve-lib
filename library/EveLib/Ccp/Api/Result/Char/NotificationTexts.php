@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @license Copyright 2010 Robert Allen
  * 
@@ -14,8 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+//require_once 'EveLib/Ccp/Api/Result/Abstract.php';
 
-
-class EveLib_Ccp_Api_Exception extends Exception {
+class EveLib_Ccp_Api_Result_Char_NotificationTexts extends EveLib_Ccp_Api_Result_Abstract {
 	
+	
+
+	
+	public function row($sXml){
+		if($sXml->count()){
+			$result = $this->attr($sXml);
+			foreach ($sXml->children() as $child){
+				$r = $this->parse($child);
+				$result = array_merge($result, $r);
+			}
+		} else {
+			$result = $this->attr($sXml);
+			if(null !== (string)$sXml){
+				$result['notificationText'] = (string)$sXml;
+			}
+		}
+		return $result;
+	}
 }

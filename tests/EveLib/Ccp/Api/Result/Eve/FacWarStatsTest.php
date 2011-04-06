@@ -57,7 +57,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Eve
  	 */
  	public function testFacWarStats(){
- 		require_once 'EveLib/Ccp/Api/Result/Eve/FacWarStats.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Eve/FacWarStats.php';
  		$out = new EveLib_Ccp_Api_Result_Eve_FacWarStats ($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

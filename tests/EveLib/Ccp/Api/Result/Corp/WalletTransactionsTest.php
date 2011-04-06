@@ -60,7 +60,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Corp
  	 */
  	public function testWalletTransactions(){
- 		require_once 'EveLib/Ccp/Api/Result/Corp/WalletTransactions.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/WalletTransactions.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_WalletTransactions($this->sharedFixture);
 // 		print_r($out->result);
 		$this->assertArrayHasKey('cachedUntil', $out->result);

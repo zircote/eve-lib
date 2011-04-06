@@ -29,7 +29,7 @@ EOF;
  	 */
  	public function testImage(){
  		$this->markTestIncomplete('code is not completed to begin using this test.');
- 		require_once 'EveLib/Ccp/Api/Result/Misc/Image.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Misc/Image.php';
  		$api = new EveLib_Ccp_Api;
  		$out = $api->setScope('Misc')
  			->Image();

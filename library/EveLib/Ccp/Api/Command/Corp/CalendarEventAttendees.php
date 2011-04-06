@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Corp_CalendarEventAttendees extends EveLib_Ccp_Api_Command_Abstract {
 	
 	public $path = '/corp/CalendarEventAttendees.xml.aspx';
@@ -22,7 +22,7 @@ class EveLib_Ccp_Api_Command_Corp_CalendarEventAttendees extends EveLib_Ccp_Api_
 	protected $_command = 'CalendarEventAttendees';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Corp/CalendarEventAttendees.php';
+		//require_once 'EveLib/Ccp/Api/Result/Corp/CalendarEventAttendees.php';
 		$response = new EveLib_Ccp_Api_Result_Corp_CalendarEventAttendees($response);
 		return $response;
 	}

@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once 'EveLib/Ccp/Api/Command/Abstract.php';
+//require_once 'EveLib/Ccp/Api/Command/Abstract.php';
 class EveLib_Ccp_Api_Command_Eve_ConquerableStationList extends EveLib_Ccp_Api_Command_Abstract {
 	public $path = '/eve/ConquerableStationList.xml.aspx';
 
 	protected $_command = 'ConquerableStationList';
 	
 	public function _parseResponse($response){
-		require_once 'EveLib/Ccp/Api/Result/Eve/ConquerableStationList.php';
+		//require_once 'EveLib/Ccp/Api/Result/Eve/ConquerableStationList.php';
 		$response = new EveLib_Ccp_Api_Result_Eve_ConquerableStationList($response);
 		return $response;
 	}

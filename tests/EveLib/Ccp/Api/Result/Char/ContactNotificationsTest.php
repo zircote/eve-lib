@@ -39,7 +39,7 @@ EOF;
  	 * @see http://wiki.eve-id.net/APIv2_Char_ContactNotifications_XML
  	 */
  	public function testAccountStatus(){
- 		require_once 'EveLib/Ccp/Api/Result/Char/ContactNotifications.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Char/ContactNotifications.php';
  		$out = new EveLib_Ccp_Api_Result_Char_ContactNotifications($this->sharedFixture);
 // 		print_r($out->result); 
 		$this->assertArrayHasKey('cachedUntil', $out->result);

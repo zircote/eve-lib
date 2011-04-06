@@ -30,7 +30,7 @@ EOF;
  	public function testOutpostList(){
  		$this->markTestSkipped('There is currently no documentation for this api'.
  			' call as of yet it is scheduled for TQ1.2 Patch');
- 		require_once 'EveLib/Ccp/Api/Result/Corp/OutpostList.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Corp/OutpostList.php';
  		$out = new EveLib_Ccp_Api_Result_Corp_OutpostList($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);

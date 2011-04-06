@@ -78,7 +78,7 @@ EOF;
  	 * @group EveLib_Ccp_Api_Result_Eve
  	 */
  	public function testSkillTree(){
- 		require_once 'EveLib/Ccp/Api/Result/Eve/SkillTree.php';
+ 		//include_once 'EveLib/Ccp/Api/Result/Eve/SkillTree.php';
  		$out = new EveLib_Ccp_Api_Result_Eve_SkillTree($this->sharedFixture);
 		$this->assertArrayHasKey('cachedUntil', $out->result);
 		$this->assertArrayHasKey('currentTime', $out->result);
