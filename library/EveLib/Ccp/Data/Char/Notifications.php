@@ -112,11 +112,11 @@ class EveLib_Ccp_Data_Char_Notifications {
     	}
     }
     
-    public function parse76($message){
-		$string = str_replace('- ', "- \n ", $message);
+    public function parse($message){
+    	$message = str_replace('-',"-\n",str_replace(' - '," -   ",$message));
 		require_once 'SymfonyComponents/YAML/sfYamlParser.php';
     	$parser = new sfYamlParser();
-    	return $data = $parser->parse($string);
+    	return $data = $parser->parse($message);
     }
     
 }

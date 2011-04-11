@@ -28,9 +28,7 @@ class EveLib_Ccp_Api_Command_Corp_AssetList extends EveLib_Ccp_Api_Command_Abstr
 	}
 	
 	public function _getRequest(){
-		$args = array(
-			'path' => $this->path
-		);
+		$args = array();
 		$args = array_merge($args, $this->_api->_api);
 		return $args;
 	}
