@@ -23,6 +23,7 @@ class EveLib_Ccp_Api {
 	 */
 	const CACHE_KEY = 'eve_lib';
 	
+	const CCP_API_HOST = 'api.eve-online.com';
 	/**
 	 * 
 	 * Zend_Cache_Manager 

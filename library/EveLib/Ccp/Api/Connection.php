@@ -22,7 +22,10 @@ class EveLib_Ccp_Api_Connection {
 	protected $_uri;
 	
 	public function __construct(array $options){
-		$uri = "{$options['protocol']}://{$options['host']}:{$options['port']}";
+		$uri = "{$options['protocol']}://{$options['host']}";
+		if(array_key_exists('port',$options)){
+			$uri .= ":{$options['port']}";
+		}
 		$this->setUri($uri); 
 	}
 	
