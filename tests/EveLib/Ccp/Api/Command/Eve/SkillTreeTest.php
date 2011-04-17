@@ -21,7 +21,7 @@ class EveLib_Ccp_Api_Command_Eve_SkillTreeTest extends PHPUnit_Framework_TestCas
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Eve_SkillTreeTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Eve_SkillTree = new EveLib_Ccp_Api_Command_Eve_SkillTree(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Eve_SkillTree;
 	
 	}
 	

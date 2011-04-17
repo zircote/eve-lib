@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_ContactNotificationTest extends PHPUnit_Framew
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_ContactNotificationTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_ContactNotification = new EveLib_Ccp_Api_Command_Char_ContactNotification(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_ContactNotification;
 	
 	}
 	

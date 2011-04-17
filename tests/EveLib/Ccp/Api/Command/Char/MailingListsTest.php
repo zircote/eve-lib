@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_MailingListsTest extends PHPUnit_Framework_Tes
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_MailingListsTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_MailingLists = new EveLib_Ccp_Api_Command_Char_MailingLists(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_MailingLists;
 	
 	}
 	

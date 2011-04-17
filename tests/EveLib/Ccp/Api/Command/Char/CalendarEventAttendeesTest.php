@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_CalendarEventAttendeesTest extends PHPUnit_Fra
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_CalendarEventAttendeesTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_CalendarEventAttendees = new EveLib_Ccp_Api_Command_Char_CalendarEventAttendees(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_CalendarEventAttendees;
 	
 	}
 	

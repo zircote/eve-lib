@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_SkillInQueueTest extends PHPUnit_Framework_Tes
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_SkillInQueueTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_SkillInQueue = new EveLib_Ccp_Api_Command_Char_SkillInQueue(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_SkillInQueue;
 	
 	}
 	

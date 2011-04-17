@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_AssetListTest extends PHPUnit_Framework_TestCa
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_AssetListTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_AssetList = new EveLib_Ccp_Api_Command_Char_AssetList(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_AssetList;
 	
 	}
 	

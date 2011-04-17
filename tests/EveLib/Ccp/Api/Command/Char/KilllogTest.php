@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_KilllogTest extends PHPUnit_Framework_TestCase
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_KilllogTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_Killlog = new EveLib_Ccp_Api_Command_Char_Killlog(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_Killlog;
 	
 	}
 	

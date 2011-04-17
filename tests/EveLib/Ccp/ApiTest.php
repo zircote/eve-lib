@@ -9,6 +9,7 @@
 class EveLib_Ccp_ApiTest extends PHPUnit_Framework_TestCase {
 	
 	/**
+	 * @group EveLib_Ccp_Api
 	 * @var EveLib_Ccp_Api
 	 */
 	private $EveLib_Ccp_Api;

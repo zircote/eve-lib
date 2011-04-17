@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_ResearchTest extends PHPUnit_Framework_TestCas
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_ResearchTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_Research = new EveLib_Ccp_Api_Command_Char_Research(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_Research;
 	
 	}
 	

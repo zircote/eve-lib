@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Corp_MarketOrdersTest extends PHPUnit_Framework_Tes
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Corp_MarketOrdersTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Corp_MarketOrders = new EveLib_Ccp_Api_Command_Corp_MarketOrders(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Corp_MarketOrders;
 	
 	}
 	

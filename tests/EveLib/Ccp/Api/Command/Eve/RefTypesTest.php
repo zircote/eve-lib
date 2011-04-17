@@ -21,7 +21,7 @@ class EveLib_Ccp_Api_Command_Eve_RefTypesTest extends PHPUnit_Framework_TestCase
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Eve_RefTypesTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Eve_RefTypes = new EveLib_Ccp_Api_Command_Eve_RefTypes(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Eve_RefTypes;
 	
 	}
 	

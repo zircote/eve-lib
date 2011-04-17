@@ -34,11 +34,11 @@ require_once 'Zend/Cache/Manager.php';
 require_once 'Zend/Tool/Project/Provider/Abstract.php';
 require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
 include __DIR__ . '/_autoload.php';
-
-if (is_readable($zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php')) {
-	//require_once $zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php';
+$testConfig = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestConfiguration.php';
+if ($testConfig) {
+	require_once $testConfig;
 } else {
-	//require_once $zircCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php.default';
+	require_once $testConfig.'.default';
 }
 
 if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&

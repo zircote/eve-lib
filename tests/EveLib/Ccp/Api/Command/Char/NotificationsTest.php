@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_NotificationsTest extends PHPUnit_Framework_Te
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_NotificationsTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_Notifications = new EveLib_Ccp_Api_Command_Char_Notifications(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_Notifications;
 	
 	}
 	

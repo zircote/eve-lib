@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Corp_MemberSecurityTest extends PHPUnit_Framework_T
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Corp_MemberSecurityTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Corp_MemberSecurity = new EveLib_Ccp_Api_Command_Corp_MemberSecurity(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Corp_MemberSecurity;
 	
 	}
 	

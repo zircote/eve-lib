@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Eve_FacWarStatsTest extends PHPUnit_Framework_TestC
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Eve_FacWarStatsTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Eve_FacWarStats = new EveLib_Ccp_Api_Command_Eve_FacWarStats(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Eve_FacWarStats;
 	
 	}
 	

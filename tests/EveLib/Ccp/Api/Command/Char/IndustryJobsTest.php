@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_IndustryJobsTest extends PHPUnit_Framework_Tes
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_IndustryJobsTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_IndustryJobs = new EveLib_Ccp_Api_Command_Char_IndustryJobs(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_IndustryJobs;
 	
 	}
 	

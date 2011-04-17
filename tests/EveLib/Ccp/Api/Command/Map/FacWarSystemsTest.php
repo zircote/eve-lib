@@ -21,7 +21,7 @@ class EveLib_Ccp_Api_Command_Map_FacWarSystemsTest extends PHPUnit_Framework_Tes
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Map_FacWarSystemsTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Map_FacWarSystems = new EveLib_Ccp_Api_Command_Map_FacWarSystems(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Map_FacWarSystems;
 	
 	}
 	

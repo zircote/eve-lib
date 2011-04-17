@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_MailBodiesTest extends PHPUnit_Framework_TestC
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_MailBodiesTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_MailBodies = new EveLib_Ccp_Api_Command_Char_MailBodies(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_MailBodies;
 	
 	}
 	

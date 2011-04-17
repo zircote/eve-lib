@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Corp_MemberMedalsTest extends PHPUnit_Framework_Tes
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Corp_MemberMedalsTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Corp_MemberMedals = new EveLib_Ccp_Api_Command_Corp_MemberMedals(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Corp_MemberMedals;
 	
 	}
 	

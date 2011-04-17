@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Map_JumpsTest extends PHPUnit_Framework_TestCase {
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Map_JumpsTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Map_Jumps = new EveLib_Ccp_Api_Command_Map_Jumps(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Map_Jumps;
 	
 	}
 	

@@ -21,10 +21,7 @@ class EveLib_Ccp_Api_Command_Account_CharactersTest extends PHPUnit_Framework_Te
 		parent::setUp ();
 		
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Account_CharactersTest::setUp()
-		
-
-		$this->EveLib_Ccp_Api_Command_Account_Characters = new EveLib_Ccp_Api_Command_Account_Characters(/* parameters */);
-	
+		$this->EveLib_Ccp_Api_Command_Account_Characters;
 	}
 	
 	/**

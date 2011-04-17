@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_AccountBalanceTest extends PHPUnit_Framework_T
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_AccountBalanceTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_AccountBalance = new EveLib_Ccp_Api_Command_Char_AccountBalance(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_AccountBalance;
 	
 	}
 	

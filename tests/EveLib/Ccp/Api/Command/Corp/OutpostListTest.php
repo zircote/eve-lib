@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Corp_OutpostListTest extends PHPUnit_Framework_Test
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Corp_OutpostListTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Corp_OutpostList = new EveLib_Ccp_Api_Command_Corp_OutpostList(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Corp_OutpostList;
 	
 	}
 	

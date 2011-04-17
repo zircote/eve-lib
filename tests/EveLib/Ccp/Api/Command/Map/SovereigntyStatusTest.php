@@ -21,7 +21,7 @@ class EveLib_Ccp_Api_Command_Map_SovereigntyStatusTest extends PHPUnit_Framework
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Map_SovereigntyStatusTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Map_SovereigntyStatus = new EveLib_Ccp_Api_Command_Map_SovereigntyStatus(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Map_SovereigntyStatus;
 	
 	}
 	

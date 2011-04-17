@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_StandingsTest extends PHPUnit_Framework_TestCa
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_StandingsTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_Standings = new EveLib_Ccp_Api_Command_Char_Standings(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_Standings;
 	
 	}
 	

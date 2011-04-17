@@ -21,7 +21,7 @@ class EveLib_Ccp_Api_Command_Server_ServerStatusTest extends PHPUnit_Framework_T
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Server_ServerStatusTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Server_ServerStatus = new EveLib_Ccp_Api_Command_Server_ServerStatus(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Server_ServerStatus;
 	
 	}
 	

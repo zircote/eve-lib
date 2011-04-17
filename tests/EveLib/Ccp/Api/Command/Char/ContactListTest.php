@@ -23,7 +23,7 @@ class EveLib_Ccp_Api_Command_Char_ContactListTest extends PHPUnit_Framework_Test
 		// TODO Auto-generated EveLib_Ccp_Api_Command_Char_ContactListTest::setUp()
 		
 
-		$this->EveLib_Ccp_Api_Command_Char_ContactList = new EveLib_Ccp_Api_Command_Char_ContactList(/* parameters */);
+		$this->EveLib_Ccp_Api_Command_Char_ContactList;
 	
 	}
 	
