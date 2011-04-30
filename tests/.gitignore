@@ -1,2 +1,3 @@
-/tests_config.xml
+.build
+.gitignore
 TestConfiguration.php

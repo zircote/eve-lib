@@ -17,22 +17,17 @@
 
 error_reporting( E_ALL | E_STRICT );
 
-$zircRoot        = realpath(dirname(__DIR__));
-$zircCoreLibrary = "$zircRoot/library";
-$zircCoreTests   = "$zircRoot/tests";
-$zend = '/usr/local/zend/share/ZendFramework/library';
+$EveLibRoot        = realpath(dirname(__DIR__));
+$EveLibCoreLibrary = "$EveLibRoot/library";
+$EveLibCoreTests   = "$EveLibRoot/tests";
 
 $path = array(
-	$zircCoreLibrary,
-	$zircCoreTests,
-	$zend,
+	$EveLibCoreLibrary,
+	$EveLibCoreTests,
 	get_include_path(),
 );
 set_include_path(implode(PATH_SEPARATOR, $path));
-require_once 'Zend/Uri.php';
-require_once 'Zend/Cache/Manager.php';
-require_once 'Zend/Tool/Project/Provider/Abstract.php';
-require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
+
 include __DIR__ . '/_autoload.php';
 $testConfig = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestConfiguration.php';
 if ($testConfig) {
@@ -44,12 +39,12 @@ if ($testConfig) {
 if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&
 			version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
 
-	PHPUnit_Util_Filter::addDirectoryToWhitelist($zircCoreLibrary);
+	PHPUnit_Util_Filter::addDirectoryToWhitelist($EveLibCoreLibrary);
 
 
-	foreach (array('.php', '.phtml', '.csv', '.inc') as $suffix) {
-		PHPUnit_Util_Filter::addDirectoryToFilter($zircCoreTests, $suffix);
+	foreach (array('.php', '.phtml','.inc') as $suffix) {
+		PHPUnit_Util_Filter::addDirectoryToFilter($EveLibCoreTests, $suffix);
 	}
 }
 
-unset($zircRoot, $zircCoreLibrary, $zircCoreTests, $path);
+unset($EveLibRoot, $EveLibCoreLibrary, $EveLibCoreTests, $path);

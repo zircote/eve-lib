@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<eveapi version="2">
+  <currentTime>2009-10-18 17:05:31</currentTime>
+  <result>
+    <rowset name="characters" key="characterID" columns="name,characterID">
+      <row name="CCP Garthagk" characterID="797400947" /> 
+    </rowset>
+  </result>
+  <cachedUntil>2009-11-18 17:05:31</cachedUntil>
+</eveapi>

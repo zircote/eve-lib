@@ -1,5 +1,6 @@
-/.project
-/.buildpath
-/.settings
-/bin
-/tests/build/
+.build
+.gitignore
+TestConfiguration.php
+.buildpath
+.project
+.settings/

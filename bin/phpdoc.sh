@@ -1,0 +1,1 @@
+phpdoc --directory ../ --target ../documentation/api --customtags type,default,constructor,chainable,class,namespace,module,group  --ignore ../documentation/, ../bin --title "eve-lib API"
