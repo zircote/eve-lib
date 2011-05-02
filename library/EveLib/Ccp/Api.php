@@ -1,7 +1,7 @@
 <?php
 require_once 'Zend/Http/Client.php';
+require_once 'Zend/Log.php';
 
-	
 /**
  * EveLib Api Request
  *
@@ -13,15 +13,16 @@ require_once 'Zend/Http/Client.php';
  * @link  
  * @since
  */
-class EveLib_Ccp_Api extends Zend_Http_Client{
+class EveLib_Ccp_Api extends Zend_Http_Client {
 	/**
 	 * 
 	 * @var Zend_Log
 	 */
 	public static $log;
+	public static $name = 'EveLib';
 	/**
 	 * 
-	 * @var Zend_Cache
+	 * @var Zend_Cache_Core
 	 */
 	public static $cache;
 	/**
@@ -29,858 +30,939 @@ class EveLib_Ccp_Api extends Zend_Http_Client{
 	 * the end point url
 	 * @var string
 	 */
-	public $url = 'https://api.eve-online.com';
+	private $_url = 'https://api.eve-online.com';
 	
 	/**
 	 * 
 	 * API Credentials apiKey, characterID, userID
 	 * @var array
 	 */
-	public $credintials = array();
-	public $params = array();
-
-	
-	public function __construct($options = null){
-		$config = array(
-		    'adapter'   => 'Zend_Http_Client_Adapter_Curl',
-		    'curloptions' => array(
-				CURLOPT_FOLLOWLOCATION => true, 
-				CURLOPT_SSL_VERIFYPEER => false),
-		);
-		parent::__construct($this->url, $config);
-	}
-	
-	public function __get($name){
-		if(array_key_exists($name, $this->params)){
-			return $this->params[$name];
-		} else {
-			return false;
+	private $_credentials = array ();
+	protected $whitelist = array ();
+	private $__param = array ();
+	protected $result;
+	public $target;
+	private function _prep($param) {
+		/* @todo errors or excepltions */
+		if (is_array ( $param )) {
+			return implode ( ',', $param );
 		}
+		return $param;
 	}
 	
-	public function __set($name, $value){
-		if(in_array($name, array('apiKey','userID', 'characterID'))){
-			$this->credintials[$name] = $value;
+	public function __construct($options = null) {
+		if (null === $options) {
+			$options = array ('adapter' => 'Zend_Http_Client_Adapter_Curl', 'curloptions' => array (CURLOPT_FOLLOWLOCATION => true, CURLOPT_SSL_VERIFYPEER => false ) );
+		}
+		parent::__construct ( $this->_url, $options );
+		$this->setMethod ( self::GET );
+	}
+	
+	public function __set($name, $value) {
+		if (in_array ( $name, array ('apiKey', 'userID', 'characterID' ) )) {
+			$this->_credentials [$name] = $value;
 		} else {
-			$this->params[$name] = $value;
+			$this->__param [$name] = $value;
 		}
 		return $this;
 	}
 	
-	public function __call($method, $args){
-		if(key_exists($method, $this->commands)){
-			$this->params = array_merge($this->credintials, $args[0]);
-		} else {
-			return false;
+	private function _mkParams($p = array()) {
+		$params = array ();
+		foreach ( $p as $argName => $argValue ) {
+			if (null !== $argValue) {
+				$params [$argName] = $argValue;
+			}
+		}
+		$this->setParams ( $params );
+		$this->__param = array_merge ( $this->_credentials, $this->__param );
+		foreach ( $this->__param as $n => $v ) {
+			if (in_array ( $n, $this->whitelist )) {
+				$this->setParameterGet ( $n, $this->_prep ( $v ) );
+			} else {
+				unset ( $this->__param [$n] );
+			}
 		}
 	}
 	
-	public function setApiParams($whitelist = array()){
-    	$this->params = array_merge($this->credintials, func_get_args());
-    	foreach ($this->params as $n => $v) {
-    		$this->setParameterGet($n,$v);
-    	}
+	public function getParams($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		return $this->__param;
 	}
 	
-	public function buildResult(){
-		$cache_key = $this->getUri(true) . '_';
-		$cache_key .= implode(':', $this->params);
-		echo md5($cache_key);
-//        $this->request();
-        
+	protected function log($message, $priority = Zend_Log::INFO, $extras = null) {
+		if (self::$log instanceof Zend_Log)
+			self::$log->log ( $message, $priority, $extras );
+		return $this;
 	}
-    /**
-     * AccountStatus
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function accountStatus()
-    {
-    	$this->setApiParams();
-        $this->setUri($this->url.'/account/AccountStatus.xml.aspx');
-        $this->setMethod(self::GET);
-        return $this->buildResult();
-    }
-
-    /**
-     * AccountCharacters
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function accountCharacters()
-    {
-        $this->setUri($this->url.'/account/Characters.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharAccountBalance
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charAccountBalance()
-    {
-        $this->setUri($this->url.'/char/AccountBalance.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharAssetList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charAssetList()
-    {
-        $this->setUri($this->url.'/char/AssetList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharCalendarEventAttendees
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charCalendarEventAttendees()
-    {
-        $this->setUri($this->url.'/char/CalendarEventAttendees.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharCharacterSheet
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charCharacterSheet()
-    {
-        $this->setUri($this->url.'/char/CharacterSheet.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharContactList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charContactList()
-    {
-        $this->setUri($this->url.'/char/ContactList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharContactNotifications
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charContactNotifications()
-    {
-        $this->setUri($this->url.'/char/ContactNotifications.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharFacWarStats
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charFacWarStats()
-    {
-        $this->setUri($this->url.'/char/FacWarStats.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharIndustryJobs
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charIndustryJobs()
-    {
-        $this->setUri($this->url.'/char/IndustryJobs.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharKilllog
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charKilllog()
-    {
-        $this->setUri($this->url.'/char/Killlog.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharMailBodies
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charMailBodies()
-    {
-        $this->setUri($this->url.'/char/MailBodies.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharMailingLists
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charMailingLists()
-    {
-        $this->setUri($this->url.'/char/MailingLists.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharMailMessages
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charMailMessages()
-    {
-        $this->setUri($this->url.'/char/MailMessages.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharMarketOrders
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charMarketOrders()
-    {
-        $this->setUri($this->url.'/char/MarketOrders.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharMedals
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charMedals()
-    {
-        $this->setUri($this->url.'/char/Medals.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharNotifications
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charNotifications()
-    {
-        $this->setUri($this->url.'/char/Notifications.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharNotificationTexts
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charNotificationTexts()
-    {
-        $this->setUri($this->url.'/char/NotificationTexts.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharResearch
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charResearch()
-    {
-        $this->setUri($this->url.'/char/Research.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharSkillInQueue
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charSkillInQueue()
-    {
-        $this->setUri($this->url.'/char/SkillInTraining.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharSkillInTraining
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charSkillInTraining()
-    {
-        $this->setUri($this->url.'/char/SkillQueue.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharStandings
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charStandings()
-    {
-        $this->setUri($this->url.'/char/Standings.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharUpcomingCalendarEvents
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charUpcomingCalendarEvents()
-    {
-        $this->setUri($this->url.'/char/UpcomingCalendarEvents.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharWalletJournal
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charWalletJournal()
-    {
-        $this->setUri($this->url.'/char/WalletJournal.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CharWalletTransactions
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function charWalletTransactions()
-    {
-        $this->setUri($this->url.'/char/WalletTransactions.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpAccountBalance
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpAccountBalance()
-    {
-        $this->setUri($this->url.'/corp/AccountBalance.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpAssetList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpAssetList()
-    {
-        $this->setUri($this->url.'/corp/AssetList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpContactList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpContactList()
-    {
-        $this->setUri($this->url.'/corp/ContactList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpContainerLog
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpContainerLog()
-    {
-        $this->setUri($this->url.'/corp/ContactList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpCorporationSheet
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpCorporationSheet()
-    {
-        $this->setUri($this->url.'/corp/CorporationSheet.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpFacWarStats
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpFacWarStats()
-    {
-        $this->setUri($this->url.'/corp/FacWarStats.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpIndustryJobs
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpIndustryJobs()
-    {
-        $this->setUri($this->url.'/corp/IndustryJobs.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpKilllog
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpKilllog()
-    {
-        $this->setUri($this->url.'/corp/Killlog.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpMarketOrders
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpMarketOrders()
-    {
-        $this->setUri($this->url.'/corp/MarketOrders.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpMedals
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpMedals()
-    {
-        $this->setUri($this->url.'/corp/Medals.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpMemberMedals
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpMemberMedals()
-    {
-        $this->setUri($this->url.'/corp/MemberMedals.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpMemberSecurity
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpMemberSecurity()
-    {
-        $this->setUri($this->url.'/corp/MemberSecurity.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpMemberSecurityLog
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpMemberSecurityLog()
-    {
-        $this->setUri($this->url.'/corp/MemberSecurityLog.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpMemberTracking
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpMemberTracking()
-    {
-        $this->setUri($this->url.'/corp/MemberTracking.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpOutpostList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpOutpostList()
-    {
-        $this->setUri($this->url.'/corp/OutpostList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpOutpostServiceDetail
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpOutpostServiceDetail()
-    {
-        $this->setUri($this->url.'/corp/OutpostServiceDetail.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpShareholders
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpShareholders()
-    {
-        $this->setUri($this->url.'/corp/Shareholders.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpStandings
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpStandings()
-    {
-        $this->setUri($this->url.'/corp/Standings.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpStarbaseDetail
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpStarbaseDetail()
-    {
-        $this->setUri($this->url.'/corp/StarbaseDetail.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpStarbaseList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpStarbaseList()
-    {
-        $this->setUri($this->url.'/corp/StarbaseList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpTitles
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpTitles()
-    {
-        $this->setUri($this->url.'/corp/Titles.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpWalletJournal
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpWalletJournal()
-    {
-        $this->setUri($this->url.'/corp/WalletJournal.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * CorpWalletTransactions
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function corpWalletTransactions()
-    {
-        $this->setUri($this->url.'/corp/WalletTransactions.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveAllianceList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveAllianceList()
-    {
-        $this->setUri($this->url.'/eve/AllianceList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveCertificateTree
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveCertificateTree()
-    {
-        $this->setUri($this->url.'/eve/CertificateTree.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveCharacterID
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveCharacterID()
-    {
-        $this->setUri($this->url.'/eve/CharacterID.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveCharacterInfo
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveCharacterInfo()
-    {
-        $this->setUri($this->url.'/eve/CharacterInfo.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveCharacterName
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveCharacterName()
-    {
-        $this->setUri($this->url.'/eve/CharacterName.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveConquerableStationList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveConquerableStationList()
-    {
-        $this->setUri($this->url.'/eve/ConquerableStationList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveErrorList
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveErrorList()
-    {
-        $this->setUri($this->url.'/eve/ErrorList.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveFacWarStats
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveFacWarStats()
-    {
-        $this->setUri($this->url.'/eve/FacWarStats.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveFacWarTopStats
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveFacWarTopStats()
-    {
-        $this->setUri($this->url.'/eve/FacWarTopStats.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveRefTypes
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveRefTypes()
-    {
-        $this->setUri($this->url.'/eve/RefTypes.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * EveSkillTree
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function eveSkillTree()
-    {
-        $this->setUri($this->url.'/eve/SkillTree.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * MapFacWarSystems
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function mapFacWarSystems()
-    {
-        $this->setUri($this->url.'/map/FacWarSystems.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * MapJumps
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function mapJumps()
-    {
-        $this->setUri($this->url.'/map/Jumps.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * MapKills
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function mapKills()
-    {
-        $this->setUri($this->url.'/map/Kills.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * MapSovereignty
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function mapSovereignty()
-    {
-        $this->setUri($this->url.'/map/Sovereignty.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * MapSovereigntyStatus
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function mapSovereigntyStatus()
-    {
-        $this->setUri($this->url.'/map/SovereigntyStatus.xml.aspx');
-        return $result;
-    }
-
-    /**
-     * MiscImage
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function miscImage()
-    {
-//        $this->setUri('SPECIAL');
-        return $result;
-    }
-
-    /**
-     * ServerStatus
-     *
-     * @param array $$params
-     * @return EveLib_Ccp_Api_Result
-     */
-    public function serverStatus()
-    {
-        $this->setUri($this->url.'/server/ServerStatus.xml.aspx');
-        return $result;
-    }
+	
+	private function _getResult($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . $this->target );
+		$cacheKey = self::$name . $this->target . '__';
+		foreach ( $this->getParams () as $key => $value ) {
+			$cacheKey .= "_{$key}_{$value}";
+		}
+		$cacheKey = ( string ) str_replace ( array ('.', '/',',' ), '_', $cacheKey );
+		$this->log ( 'REQUEST: ' . $cacheKey );
+		if (self::$cache instanceof Zend_Cache_Core) {
+			if (! $result = self::$cache->load ( $cacheKey )) {
+				$this->request ();
+				$this->result = new EveLib_Ccp_Api_Response ( $this->getLastResponse ()->getBody () );
+				$result = $this->result->getResult ();
+				require_once 'Zend/Date.php';
+				$currentTime = new Zend_Date ( $result ['eveapi'] ['currentTime'] );
+				$cachedUntil = new Zend_Date ( array_key_exists('cachedUntil',$result ['eveapi']) ?  $result ['eveapi']['cachedUntil'] : $result ['eveapi']['result']['cachedUntil'] );
+				$lifetime = $cachedUntil->getTimestamp () - $currentTime->getTimestamp ();
+				self::$cache->setLifetime ( $lifetime );
+				self::$cache->save ( $result, $cacheKey );
+			}
+		} else {
+			$this->request ();
+			$this->result = new EveLib_Ccp_Api_Response ( $this->getLastResponse ()->getBody () );
+			$result = $this->result->getResult ();
+		}
+		return $result;
+	}
+	
+	public function getResult(){
+		return $this->result;
+	}
+	
+	public function setParams(array $params) {
+		$this->__param = $params;
+	}
+	
+	public function setCredentials(array $params) {
+		$this->_credentials = $params;
+	}
+	/**
+	 * AccountStatus
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function accountStatus($apiKey = null, $userID = null) {
+		$this->whitelist = array ('apiKey', 'userID' );
+		$this->target = '/account/AccountStatus.xml.aspx';
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID ) );
+		return $this->_getResult ();
+	}
+	/**
+	 * AccountCharacters
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function accountCharacters($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/account/Characters.xml.aspx' );
+		return $this->_getResult ();
+	}
+	/**
+	 * CharAccountBalance
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charAccountBalance($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/AccountBalance.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharAssetList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charAssetList($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/AssetList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharCalendarEventAttendees
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charCalendarEventAttendees($eventIDs, $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('eventIDs','apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('eventIDs' => $eventIDs, 'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/CalendarEventAttendees.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharCharacterSheet
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charCharacterSheet($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/CharacterSheet.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharContactList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charContactList($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/ContactList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharContactNotifications
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charContactNotifications($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/ContactNotifications.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharFacWarStats
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charFacWarStats($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/FacWarStats.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharIndustryJobs
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charIndustryJobs($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/IndustryJobs.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharKilllog
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charKilllog($beforeKillID = null, $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('beforeKillID','apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('beforeKillID' => $beforeKillID, 'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/Killlog.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharMailBodies
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charMailBodies($ids,$apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/MailBodies.xml.aspx' );
+		return $this->_getResult ($apiKey = null, $userID = null, $characterID = null);
+	}
+	
+	/**
+	 * CharMailingLists
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charMailingLists($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/MailingLists.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharMailMessages
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charMailMessages($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/MailMessages.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharMarketOrders
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charMarketOrders($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/MarketOrders.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharMedals
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charMedals($apiKey = null, $userID = null, $characterID = null) {
+		$this->setUri ( $this->_url . '/char/Medals.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharNotifications
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charNotifications($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/Notifications.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharNotificationTexts
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charNotificationTexts($IDs, $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('IDs','apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('IDs' => $IDs, 'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/NotificationTexts.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharResearch
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charResearch($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/Research.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharSkillInQueue
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charSkillInQueue($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/SkillInTraining.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharSkillInTraining
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charSkillInTraining($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/SkillQueue.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharStandings
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charStandings($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/Standings.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharUpcomingCalendarEvents
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charUpcomingCalendarEvents($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/UpcomingCalendarEvents.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharWalletJournal
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charWalletJournal($fromID = null, $rowCount = null,  $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('fromID','rowCount','apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('fromID' => $fromID,'rowCount' => $rowCount,
+			'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/WalletJournal.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CharWalletTransactions
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function charWalletTransactions($fromID = null, $rowCount = null, $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('fromID','rowCount','apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('fromID' => $fromID,'rowCount' => $rowCount,
+			'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/char/WalletTransactions.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpAccountBalance
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpAccountBalance($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/AccountBalance.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpAssetList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpAssetList($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/AssetList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpContactList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpContactList($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/ContactList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpContainerLog
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpContainerLog($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/ContactList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpCorporationSheet
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpCorporationSheet($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/CorporationSheet.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpFacWarStats
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpFacWarStats($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/FacWarStats.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpIndustryJobs
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpIndustryJobs($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/IndustryJobs.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpKilllog
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpKilllog($beforeKillID = null, $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('beforeKillID','apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('beforeKillID' => $beforeKillID, 'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/Killlog.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpMarketOrders
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpMarketOrders($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/MarketOrders.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpMedals
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpMedals($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/Medals.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpMemberMedals
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpMemberMedals($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/MemberMedals.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpMemberSecurity
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpMemberSecurity($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/MemberSecurity.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpMemberSecurityLog
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpMemberSecurityLog($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/MemberSecurityLog.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpMemberTracking
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpMemberTracking($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/MemberTracking.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpOutpostList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpOutpostList($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/OutpostList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpOutpostServiceDetail
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpOutpostServiceDetail($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/OutpostServiceDetail.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpShareholders
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpShareholders($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/Shareholders.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpStandings
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpStandings($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/Standings.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpStarbaseDetail
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpStarbaseDetail($itemID, $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('itemID', 'apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('itemID' => $itemID, 'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/StarbaseDetail.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpStarbaseList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpStarbaseList($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/StarbaseList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpTitles
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpTitles($apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/Titles.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpWalletJournal
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpWalletJournal($fromID = null, $rowCount = null, $accountKey = null, $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('fromID','rowCount','accountKey','apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('fromID' => $fromID,'rowCount' => $rowCount,'accountKey' => $accountKey,
+			'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/WalletJournal.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * CorpWalletTransactions
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function corpWalletTransactions($fromID = null, $rowCount = null, $accountKey = null, $apiKey = null, $userID = null, $characterID = null) {
+		$this->whitelist = array ('fromID','rowCount','accountKey','apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('fromID' => $fromID,'rowCount' => $rowCount,'accountKey' => $accountKey,
+			'apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/corp/WalletTransactions.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveAllianceList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveAllianceList() {
+		$this->setUri ( $this->_url . '/eve/AllianceList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveCertificateTree
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveCertificateTree() {
+		$this->setUri ( $this->_url . '/eve/CertificateTree.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveCharacterID
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveCharacterID($names) {
+		$this->whitelist = array ('names');
+		$this->_mkParams ( array ('names' => $names) );
+		$this->setUri ( $this->_url . '/eve/CharacterID.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveCharacterInfo
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveCharacterInfo($characterID = null, $apiKey = null, $userID = null) {
+		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+		$this->setUri ( $this->_url . '/eve/CharacterInfo.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveCharacterName
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveCharacterName($ids) {
+		$this->whitelist = array ('ids');
+		$this->_mkParams ( array ('ids' => $ids) );
+		$this->setUri ( $this->_url . '/eve/CharacterName.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveConquerableStationList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveConquerableStationList() {
+		$this->setUri ( $this->_url . '/eve/ConquerableStationList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveErrorList
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveErrorList() {
+		$this->setUri ( $this->_url . '/eve/ErrorList.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveFacWarStats
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveFacWarStats() {
+		$this->setUri ( $this->_url . '/eve/FacWarStats.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveFacWarTopStats
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveFacWarTopStats() {
+		$this->setUri ( $this->_url . '/eve/FacWarTopStats.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveRefTypes
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveRefTypes() {
+		$this->setUri ( $this->_url . '/eve/RefTypes.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * EveSkillTree
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function eveSkillTree() {
+		$this->setUri ( $this->_url . '/eve/SkillTree.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * MapFacWarSystems
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function mapFacWarSystems() {
+		$this->setUri ( $this->_url . '/map/FacWarSystems.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * MapJumps
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function mapJumps() {
+		$this->setUri ( $this->_url . '/map/Jumps.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * MapKills
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function mapKills() {
+		$this->setUri ( $this->_url . '/map/Kills.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * MapSovereignty
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function mapSovereignty() {
+		$this->setUri ( $this->_url . '/map/Sovereignty.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * MapSovereigntyStatus
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function mapSovereigntyStatus() {
+		$this->setUri ( $this->_url . '/map/SovereigntyStatus.xml.aspx' );
+		return $this->_getResult ();
+	}
+	
+	/**
+	 * MiscImage
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function miscImage() {
+		//        $this->setUri('SPECIAL');
+	}
+	
+	/**
+	 * ServerStatus
+	 *
+	 * @param array $$params
+	 * @return EveLib_Ccp_Api_Result
+	 */
+	public function serverStatus() {
+		$this->setUri ( $this->_url . '/server/ServerStatus.xml.aspx' );
+		return $this->_getResult ();
+	}
 }
 

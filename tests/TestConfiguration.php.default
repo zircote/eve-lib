@@ -1,6 +1,9 @@
 <?php
 
 define('TESTS_GENERATE_REPORT', true);
-define('TESTS_EVELIB_DSN','http://userID:apiKey@api-test.eve-online.com:80/characterID');
 
 
+
+define ('TEST_API_KEY', '_APIKEY_');
+define ('TEST_USERID','_USERID_');
+define('TEST_CHARACTERID','_CHARACTERID_');
