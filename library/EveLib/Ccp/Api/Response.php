@@ -11,13 +11,40 @@ class EveLib_Ccp_Api_Response {
 	 * @var SimpleXMLElement
 	 */
 	public $xml;
+	/**
+	 * 
+	 * Enter description here ...
+	 * @var string|xml
+	 */
+	private $_raw;
+	
 	public function __construct($data) {
+		$this->_raw = $data;
 		$this->xml = simplexml_load_string ( $data );
 		$this->result = $this->process ( $this->xml );
 	}
 	
 	public function getResult() {
 		return $this->result;
+	}
+	
+	public function getXml($as_string = false) {
+		if($as_string){
+			return $this->_raw;
+		}
+		return $this->xml;
+	}
+	
+	public function __toString() {
+		return ( string ) $this->xml;
+	}
+	
+	public function __sleep() {
+		return array ('_raw', 'result' );
+	}
+	
+	public function __wakeup() {
+		$this->xml = simplexml_load_string ( $this->_raw );
 	}
 	
 	public function process(SimpleXMLElement $xml) {

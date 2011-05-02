@@ -58,6 +58,22 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
      *
      * @group Account
      */
+    public function testAccountCharactersToString()
+    {
+        $migration = $this->sharedFixture['account']['AccountCharacters'];
+        $res = new EveLib_Ccp_Api_Response(file_get_contents($migration));
+        $array = $res->getResult();
+        $this->assertArrayHasKey('cachedUntil', $array['eveapi']);
+        $this->assertArrayHasKey('currentTime', $array['eveapi']);
+        $this->assertArrayHasKey('result', $array['eveapi']);
+        $string = (string) $res;
+    }
+	
+    /**
+     * Test AccountCharacters
+     *
+     * @group Account
+     */
     public function testAccountCharacters()
     {
         $migration = $this->sharedFixture['account']['AccountCharacters'];

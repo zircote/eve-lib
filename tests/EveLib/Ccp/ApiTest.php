@@ -98,6 +98,18 @@ class EveLib_Ccp_ApiTest extends PHPUnit_Framework_TestCase {
 		$data = $this->EveLib_Ccp_Api->AccountStatus();
 	}
 	
+	/**
+	 * Tests EveLib_Ccp_Api->__call()
+	 * @group AccountStatus
+	 */
+	public function testAccountStatusCacheDisabled() {
+		EveLib_Ccp_Api::$cache = null;
+        $migration = $this->sharedFixture['account']['AccountStatus'];
+		$this->EveLib_Ccp_Api->getAdapter()->setResponse($this->responseHeader . file_get_contents($migration));
+		$this->EveLib_Ccp_Api->setCredentials($this->credentials);
+		$data = $this->EveLib_Ccp_Api->AccountStatus();
+	}
+	
     /**
      * Test accountCharacters
      *
@@ -349,7 +361,7 @@ class EveLib_Ccp_ApiTest extends PHPUnit_Framework_TestCase {
         $this->EveLib_Ccp_Api->getAdapter()->setResponse($this->responseHeader . file_get_contents($migration));
         $this->EveLib_Ccp_Api->setCredentials($this->credentials);
         $data = $this->EveLib_Ccp_Api->CharNotificationTexts('098765432');
-        $this->assertArrayHasKey('cachedUntil', $data['eveapi']);
+        $this->assertArrayHasKey('cachedUntil', $data['eveapi']['result']);
 //		print_r($data);
     }
 
@@ -843,7 +855,7 @@ class EveLib_Ccp_ApiTest extends PHPUnit_Framework_TestCase {
         $migration = $this->sharedFixture['eve']['EveCharacterInfoFull'];
         $this->EveLib_Ccp_Api->getAdapter()->setResponse($this->responseHeader . file_get_contents($migration));
         $this->EveLib_Ccp_Api->setCredentials($this->credentials);
-        $data = $this->EveLib_Ccp_Api->EveCharacterInfo('12345,123456');
+        $data = $this->EveLib_Ccp_Api->EveCharacterInfo(array('12345','123456'));
         $this->assertArrayHasKey('cachedUntil', $data['eveapi']);
         //print_r($data);
     }

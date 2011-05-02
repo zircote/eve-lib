@@ -4,3 +4,4 @@ TestConfiguration.php
 .buildpath
 .project
 .settings/
+tests/build*

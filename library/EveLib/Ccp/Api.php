@@ -30,7 +30,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 	 * the end point url
 	 * @var string
 	 */
-	private $_url = 'https://api.eve-online.com';
+	private $_url = 'https://api.eve-online.com:443';
 	
 	/**
 	 * 
@@ -58,26 +58,17 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 		$this->setMethod ( self::GET );
 	}
 	
-	public function __set($name, $value) {
-		if (in_array ( $name, array ('apiKey', 'userID', 'characterID' ) )) {
-			$this->_credentials [$name] = $value;
-		} else {
-			$this->__param [$name] = $value;
-		}
-		return $this;
-	}
-	
 	private function _mkParams($p = array()) {
 		$params = array ();
 		foreach ( $p as $argName => $argValue ) {
 			if (null !== $argValue) {
-				$params [$argName] = $argValue;
+				$params [$argName] = $this->_prep ( $argValue);
 			}
 		}
 		$this->setParams ( $params );
 		$this->__param = array_merge ( $this->_credentials, $this->__param );
 		foreach ( $this->__param as $n => $v ) {
-			if (in_array ( $n, $this->whitelist )) {
+			if (in_array ( $n, $this->whitelist ) ) {
 				$this->setParameterGet ( $n, $this->_prep ( $v ) );
 			} else {
 				unset ( $this->__param [$n] );
@@ -86,8 +77,6 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 	}
 	
 	public function getParams($apiKey = null, $userID = null, $characterID = null) {
-		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
-		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
 		return $this->__param;
 	}
 	
@@ -98,33 +87,32 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 	}
 	
 	private function _getResult($apiKey = null, $userID = null, $characterID = null) {
-		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
-		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
-		$this->setUri ( $this->_url . $this->target );
-		$cacheKey = self::$name . $this->target . '__';
+		$cacheKey = self::$name . str_replace($this->_url, '', $this->getUri(true));
 		foreach ( $this->getParams () as $key => $value ) {
 			$cacheKey .= "_{$key}_{$value}";
 		}
-		$cacheKey = ( string ) str_replace ( array ('.', '/',',' ), '_', $cacheKey );
-		$this->log ( 'REQUEST: ' . $cacheKey );
+		$cacheKey = ( string ) str_replace ( array ('.', '/',',',':','-','___' ), '_', $cacheKey );
 		if (self::$cache instanceof Zend_Cache_Core) {
-			if (! $result = self::$cache->load ( $cacheKey )) {
+			if (! $this->result = self::$cache->load ( $cacheKey )) {
+				$this->log ( 'REQUEST [NOTCACHED]: ' . $cacheKey );
 				$this->request ();
 				$this->result = new EveLib_Ccp_Api_Response ( $this->getLastResponse ()->getBody () );
-				$result = $this->result->getResult ();
+				$result = $this->result->getResult();
 				require_once 'Zend/Date.php';
 				$currentTime = new Zend_Date ( $result ['eveapi'] ['currentTime'] );
 				$cachedUntil = new Zend_Date ( array_key_exists('cachedUntil',$result ['eveapi']) ?  $result ['eveapi']['cachedUntil'] : $result ['eveapi']['result']['cachedUntil'] );
 				$lifetime = $cachedUntil->getTimestamp () - $currentTime->getTimestamp ();
 				self::$cache->setLifetime ( $lifetime );
-				self::$cache->save ( $result, $cacheKey );
+				self::$cache->save ( $this->result, $cacheKey );
+			} else {
+				$this->log ( 'REQUEST [CACHED]: ' . $cacheKey );
 			}
 		} else {
+			$this->log ( 'REQUEST [CACHE DISABLED]: ' . $cacheKey );
 			$this->request ();
 			$this->result = new EveLib_Ccp_Api_Response ( $this->getLastResponse ()->getBody () );
-			$result = $this->result->getResult ();
 		}
-		return $result;
+		return $this->result->getResult();
 	}
 	
 	public function getResult(){
@@ -156,9 +144,9 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 	 * @param array $$params
 	 * @return EveLib_Ccp_Api_Result
 	 */
-	public function accountCharacters($apiKey = null, $userID = null, $characterID = null) {
-		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
-		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+	public function accountCharacters($apiKey = null, $userID = null) {
+		$this->whitelist = array ('apiKey', 'userID');
+		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID ) );
 		$this->setUri ( $this->_url . '/account/Characters.xml.aspx' );
 		return $this->_getResult ();
 	}
@@ -649,12 +637,12 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 	 * @param array $$params
 	 * @return EveLib_Ccp_Api_Result
 	 */
-	public function corpOutpostList($apiKey = null, $userID = null, $characterID = null) {
-		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
-		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
-		$this->setUri ( $this->_url . '/corp/OutpostList.xml.aspx' );
-		return $this->_getResult ();
-	}
+//	public function corpOutpostList($apiKey = null, $userID = null, $characterID = null) {
+//		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+//		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+//		$this->setUri ( $this->_url . '/corp/OutpostList.xml.aspx' );
+//		return $this->_getResult ();
+//	}
 	
 	/**
 	 * CorpOutpostServiceDetail
@@ -662,12 +650,12 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 	 * @param array $$params
 	 * @return EveLib_Ccp_Api_Result
 	 */
-	public function corpOutpostServiceDetail($apiKey = null, $userID = null, $characterID = null) {
-		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
-		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
-		$this->setUri ( $this->_url . '/corp/OutpostServiceDetail.xml.aspx' );
-		return $this->_getResult ();
-	}
+//	public function corpOutpostServiceDetail($apiKey = null, $userID = null, $characterID = null) {
+//		$this->whitelist = array ('apiKey', 'userID', 'characterID' );
+//		$this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
+//		$this->setUri ( $this->_url . '/corp/OutpostServiceDetail.xml.aspx' );
+//		return $this->_getResult ();
+//	}
 	
 	/**
 	 * CorpShareholders
@@ -939,10 +927,10 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 	 * @param array $$params
 	 * @return EveLib_Ccp_Api_Result
 	 */
-	public function mapSovereigntyStatus() {
-		$this->setUri ( $this->_url . '/map/SovereigntyStatus.xml.aspx' );
-		return $this->_getResult ();
-	}
+//	public function mapSovereigntyStatus() {
+//		$this->setUri ( $this->_url . '/map/SovereigntyStatus.xml.aspx' );
+//		return $this->_getResult ();
+//	}
 	
 	/**
 	 * MiscImage
@@ -950,9 +938,9 @@ class EveLib_Ccp_Api extends Zend_Http_Client {
 	 * @param array $$params
 	 * @return EveLib_Ccp_Api_Result
 	 */
-	public function miscImage() {
-		//        $this->setUri('SPECIAL');
-	}
+//	public function miscImage() {
+//		//        $this->setUri('SPECIAL');
+//	}
 	
 	/**
 	 * ServerStatus
