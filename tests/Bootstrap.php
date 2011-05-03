@@ -22,29 +22,29 @@ $EveLibCoreLibrary = "$EveLibRoot/library";
 $EveLibCoreTests   = "$EveLibRoot/tests";
 
 $path = array(
-	$EveLibCoreLibrary,
-	$EveLibCoreTests,
-	get_include_path(),
+    $EveLibCoreLibrary,
+    $EveLibCoreTests,
+    get_include_path(),
 );
 set_include_path(implode(PATH_SEPARATOR, $path));
 
 include __DIR__ . '/_autoload.php';
 $testConfig = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestConfiguration.php';
 if ($testConfig) {
-	require_once $testConfig;
+    require_once $testConfig;
 } else {
-	require_once $testConfig.'.default';
+    require_once $testConfig.'.default';
 }
 
 if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&
-			version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
+            version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
 
-	PHPUnit_Util_Filter::addDirectoryToWhitelist($EveLibCoreLibrary);
+    PHPUnit_Util_Filter::addDirectoryToWhitelist($EveLibCoreLibrary);
 
 
-	foreach (array('.php', '.phtml','.inc') as $suffix) {
-		PHPUnit_Util_Filter::addDirectoryToFilter($EveLibCoreTests, $suffix);
-	}
+    foreach (array('.php', '.phtml','.inc') as $suffix) {
+        PHPUnit_Util_Filter::addDirectoryToFilter($EveLibCoreTests, $suffix);
+    }
 }
 
 unset($EveLibRoot, $EveLibCoreLibrary, $EveLibCoreTests, $path);

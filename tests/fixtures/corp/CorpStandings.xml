@@ -5,29 +5,29 @@
     <corporationNPCStandings>
     <standingsFrom>
       <rowset name="agents" key="fromID" columns="fromID,fromName,standing">
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
       </rowset>
       <rowset name="NPCCorporations" key="fromID" columns="fromID,fromName,standing">
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
       </rowset>
       <rowset name="factions" key="fromID" columns="fromID,fromName,standing">
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
-      	<row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
+          <row fromID="fromID" fromName="fromName" standing="standing" />
       </rowset>
       </standingsFrom>
     </corporationNPCStandings>

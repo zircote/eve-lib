@@ -9,107 +9,107 @@ require_once 'PHPUnit/Framework/TestCase.php';
  */
 class EveLib_Ccp_ApiTest extends PHPUnit_Framework_TestCase {
 
-	/**
-	 * @var EveLib_Ccp_Api
-	 */
-	private $EveLib_Ccp_Api;
-	private $credentials;
-	
-	/**
-	 * Prepares the environment before running a test.
-	 */
-	protected function setUp() {	
-		$frontendOptions = array(
-		   'lifetime' => 0, 
-		   'automatic_serialization' => true
-		);
-		 
-		$backendOptions = array(
-		    'cache_dir' => '/tmp/' // Directory where to put the cache files
-		);
-		require_once 'Zend/Cache.php';
-		EveLib_Ccp_Api::$cache = Zend_Cache::factory('Core',
+    /**
+     * @var EveLib_Ccp_Api
+     */
+    private $EveLib_Ccp_Api;
+    private $credentials;
+    
+    /**
+     * Prepares the environment before running a test.
+     */
+    protected function setUp() {    
+        $frontendOptions = array(
+           'lifetime' => 0, 
+           'automatic_serialization' => true
+        );
+         
+        $backendOptions = array(
+            'cache_dir' => '/tmp/' // Directory where to put the cache files
+        );
+        require_once 'Zend/Cache.php';
+        EveLib_Ccp_Api::$cache = Zend_Cache::factory('Core',
                              'File',
                              $frontendOptions,
                              $backendOptions);
-		$this->responseHeader =
-			"HTTP/1.1 200 OK"        . "\r\n" .
-			"Content-type: text/xml" . "\r\n" .
-			"\r\n";
+        $this->responseHeader =
+            "HTTP/1.1 200 OK"        . "\r\n" .
+            "Content-type: text/xml" . "\r\n" .
+            "\r\n";
 
-		/** Log **/
-		$logger = new Zend_Log();
-		require_once 'Zend/Log/Writer/Mock.php';
-		$writer = new Zend_Log_Writer_Mock();
-		 
-		$logger->addWriter($writer);
-		EveLib_Ccp_Api::$log = $logger;
-		$this->sharedFixture = $this->getFixtures( TEST_FIXTURES_PATH );
-		require_once 'Zend/Http/Client/Adapter/Test.php';
-		$this->EveLib_Ccp_Api = new EveLib_Ccp_Api();
-		$this->credentials = array (
-			'apiKey' => TEST_API_KEY_S,
-			'userID' => TEST_USERID_S,
-			'characterID' => TEST_CHARACTERID_S
-		);
-		$this->EveLib_Ccp_Api->setAdapter(new Zend_Http_Client_Adapter_Test );
-		parent::setUp ();
-	}
-	
-	protected function getFixtures($path){
-		$dir = new DirectoryIterator($path);
-		$files = array();
-		$dirs = array();
-		foreach ($dir as $item) {
-			if($item->isDir() && !$item->isDot() ){
-				$l = $path . DIRECTORY_SEPARATOR . $item->getFilename();
-				$dirs[$item->getFilename()] = $this->getFixtures($l);
-				
-			} elseif(!$item->isDot()){
-				array_push($files, $path . DIRECTORY_SEPARATOR . $item->getFilename());
-				$_filename =  $path . DIRECTORY_SEPARATOR . $item->getFilename();
-				$files[str_replace('.xml','',basename($_filename))] = $_filename;
-			}
-		}
-		if(count($files)){
-			return $files;
-		} elseif(count($dirs)){
-			return $dirs;
-		}
-		
-	}
-	
-	/**
-	 * Cleans up the environment after running a test.
-	 */
-	protected function tearDown() {
-		$this->EveLib_Ccp_Api = null;
-		parent::tearDown ();
-	}
-	
-	/**
-	 * Tests EveLib_Ccp_Api->__call()
-	 * @group AccountStatus
-	 */
-	public function testAccountStatus() {
+        /** Log **/
+        $logger = new Zend_Log();
+        require_once 'Zend/Log/Writer/Mock.php';
+        $writer = new Zend_Log_Writer_Mock();
+         
+        $logger->addWriter($writer);
+        EveLib_Ccp_Api::$log = $logger;
+        $this->sharedFixture = $this->getFixtures( TEST_FIXTURES_PATH );
+        require_once 'Zend/Http/Client/Adapter/Test.php';
+        $this->EveLib_Ccp_Api = new EveLib_Ccp_Api();
+        $this->credentials = array (
+            'apiKey' => TEST_API_KEY_S,
+            'userID' => TEST_USERID_S,
+            'characterID' => TEST_CHARACTERID_S
+        );
+        $this->EveLib_Ccp_Api->setAdapter(new Zend_Http_Client_Adapter_Test );
+        parent::setUp ();
+    }
+    
+    protected function getFixtures($path){
+        $dir = new DirectoryIterator($path);
+        $files = array();
+        $dirs = array();
+        foreach ($dir as $item) {
+            if($item->isDir() && !$item->isDot() ){
+                $l = $path . DIRECTORY_SEPARATOR . $item->getFilename();
+                $dirs[$item->getFilename()] = $this->getFixtures($l);
+                
+            } elseif(!$item->isDot()){
+                array_push($files, $path . DIRECTORY_SEPARATOR . $item->getFilename());
+                $_filename =  $path . DIRECTORY_SEPARATOR . $item->getFilename();
+                $files[str_replace('.xml','',basename($_filename))] = $_filename;
+            }
+        }
+        if(count($files)){
+            return $files;
+        } elseif(count($dirs)){
+            return $dirs;
+        }
+        
+    }
+    
+    /**
+     * Cleans up the environment after running a test.
+     */
+    protected function tearDown() {
+        $this->EveLib_Ccp_Api = null;
+        parent::tearDown ();
+    }
+    
+    /**
+     * Tests EveLib_Ccp_Api->__call()
+     * @group AccountStatus
+     */
+    public function testAccountStatus() {
         $migration = $this->sharedFixture['account']['AccountStatus'];
-		$this->EveLib_Ccp_Api->getAdapter()->setResponse($this->responseHeader . file_get_contents($migration));
-		$this->EveLib_Ccp_Api->setCredentials($this->credentials);
-		$data = $this->EveLib_Ccp_Api->AccountStatus();
-	}
-	
-	/**
-	 * Tests EveLib_Ccp_Api->__call()
-	 * @group AccountStatus
-	 */
-	public function testAccountStatusCacheDisabled() {
-		EveLib_Ccp_Api::$cache = null;
+        $this->EveLib_Ccp_Api->getAdapter()->setResponse($this->responseHeader . file_get_contents($migration));
+        $this->EveLib_Ccp_Api->setCredentials($this->credentials);
+        $data = $this->EveLib_Ccp_Api->AccountStatus();
+    }
+    
+    /**
+     * Tests EveLib_Ccp_Api->__call()
+     * @group AccountStatus
+     */
+    public function testAccountStatusCacheDisabled() {
+        EveLib_Ccp_Api::$cache = null;
         $migration = $this->sharedFixture['account']['AccountStatus'];
-		$this->EveLib_Ccp_Api->getAdapter()->setResponse($this->responseHeader . file_get_contents($migration));
-		$this->EveLib_Ccp_Api->setCredentials($this->credentials);
-		$data = $this->EveLib_Ccp_Api->AccountStatus();
-	}
-	
+        $this->EveLib_Ccp_Api->getAdapter()->setResponse($this->responseHeader . file_get_contents($migration));
+        $this->EveLib_Ccp_Api->setCredentials($this->credentials);
+        $data = $this->EveLib_Ccp_Api->AccountStatus();
+    }
+    
     /**
      * Test accountCharacters
      *
@@ -362,7 +362,7 @@ class EveLib_Ccp_ApiTest extends PHPUnit_Framework_TestCase {
         $this->EveLib_Ccp_Api->setCredentials($this->credentials);
         $data = $this->EveLib_Ccp_Api->CharNotificationTexts('098765432');
         $this->assertArrayHasKey('cachedUntil', $data['eveapi']['result']);
-//		print_r($data);
+//        print_r($data);
     }
 
     /**
@@ -1055,5 +1055,5 @@ class EveLib_Ccp_ApiTest extends PHPUnit_Framework_TestCase {
         //print_r($data);
     }
 
-	
+    
 }

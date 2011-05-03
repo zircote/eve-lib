@@ -8,51 +8,51 @@ require_once 'PHPUnit/Framework/TestCase.php';
  * EveLib_Ccp_Api_Response test case.
  */
 class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
-	
-	protected $fixPath;
-	/**
-	 * @var EveLib_Ccp_Api_Response
-	 */
-	private $EveLib_Ccp_Api_Response;
-	
-	/**
-	 * Prepares the environment before running a test.
-	 */
-	protected function setUp() {
-		$this->sharedFixture = $this->getFixtures( TEST_FIXTURES_PATH );
-		parent::setUp ();
+    
+    protected $fixPath;
+    /**
+     * @var EveLib_Ccp_Api_Response
+     */
+    private $EveLib_Ccp_Api_Response;
+    
+    /**
+     * Prepares the environment before running a test.
+     */
+    protected function setUp() {
+        $this->sharedFixture = $this->getFixtures( TEST_FIXTURES_PATH );
+        parent::setUp ();
 
-	}
-	/**
-	 * Cleans up the environment after running a test.
-	 */
-	protected function tearDown() {
-		parent::tearDown ();
-	}
-	
-	protected function getFixtures($path){
-		$dir = new DirectoryIterator($path);
-		$files = array();
-		$dirs = array();
-		foreach ($dir as $item) {
-			if($item->isDir() && !$item->isDot() ){
-				$l = $path . DIRECTORY_SEPARATOR . $item->getFilename();
-				$dirs[$item->getFilename()] = $this->getFixtures($l);
-				
-			} elseif(!$item->isDot()){
-				array_push($files, $path . DIRECTORY_SEPARATOR . $item->getFilename());
-				$_filename =  $path . DIRECTORY_SEPARATOR . $item->getFilename();
-				$files[str_replace('.xml','',basename($_filename))] = $_filename;
-			}
-		}
-		if(count($files)){
-			return $files;
-		} elseif(count($dirs)){
-			return $dirs;
-		}
-		
-	}
-	
+    }
+    /**
+     * Cleans up the environment after running a test.
+     */
+    protected function tearDown() {
+        parent::tearDown ();
+    }
+    
+    protected function getFixtures($path){
+        $dir = new DirectoryIterator($path);
+        $files = array();
+        $dirs = array();
+        foreach ($dir as $item) {
+            if($item->isDir() && !$item->isDot() ){
+                $l = $path . DIRECTORY_SEPARATOR . $item->getFilename();
+                $dirs[$item->getFilename()] = $this->getFixtures($l);
+                
+            } elseif(!$item->isDot()){
+                array_push($files, $path . DIRECTORY_SEPARATOR . $item->getFilename());
+                $_filename =  $path . DIRECTORY_SEPARATOR . $item->getFilename();
+                $files[str_replace('.xml','',basename($_filename))] = $_filename;
+            }
+        }
+        if(count($files)){
+            return $files;
+        } elseif(count($dirs)){
+            return $dirs;
+        }
+        
+    }
+    
     /**
      * Test AccountCharacters
      *
@@ -68,7 +68,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('result', $array['eveapi']);
         $string = (string) $res;
     }
-	
+    
     /**
      * Test AccountCharacters
      *
@@ -638,7 +638,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'changeTime,characterID,issuerID,roleLocationType') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['roleHistory']['2008-08-07 17:57:00']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['roleHistory']['2008-08-07 17:57:00']);
         }
     }
 
@@ -656,7 +656,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'characterID,name,startDateTime,baseID,base,title,logonDateTime,logoffDateTime,locationID,location,shipTypeID,shipType,roles,grantableRoles') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['members']['150336922']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['members']['150336922']);
         }
     }
 
@@ -674,10 +674,10 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'shareholderID,shareholderName,shareholderCorporationID,shareholderCorporationName,shares') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['characters']['126891489']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['characters']['126891489']);
         }
         foreach (explode(',', 'shareholderID,shareholderName,shares') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['corporations']['126891489']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['corporations']['126891489']);
         }
     }
 
@@ -695,13 +695,13 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'fromID,fromName,standing') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['corporationNPCStandings']['standingsFrom']['agents']['fromID']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['corporationNPCStandings']['standingsFrom']['agents']['fromID']);
         }
         foreach (explode(',', 'fromID,fromName,standing') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['corporationNPCStandings']['standingsFrom']['factions']['fromID']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['corporationNPCStandings']['standingsFrom']['factions']['fromID']);
         }
         foreach (explode(',', 'fromID,fromName,standing') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['corporationNPCStandings']['standingsFrom']['NPCCorporations']['fromID']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['corporationNPCStandings']['standingsFrom']['NPCCorporations']['fromID']);
         }
     }
 
@@ -719,10 +719,10 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'useStandingsFrom,onStandingDrop,onStatusDrop,onAggression,onCorporationWar') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['combatSettings']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['combatSettings']);
         }
         foreach (explode(',', 'typeID,quantity') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['fuel']['16275']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['fuel']['16275']);
         }
     }
 
@@ -740,7 +740,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'itemID,typeID,locationID,moonID,state,stateTimestamp,onlineTimestamp') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['starbases']['150354725']);
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['starbases']['150354725']);
         }
     }
 
@@ -758,10 +758,10 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'titleID,titleName') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['titles']['1']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['titles']['1']);;
         }
         foreach (explode(',', 'roleID,roleName,roleDescription') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['titles']['1']['rolesAtHQ']['8192']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['titles']['1']['rolesAtHQ']['8192']);;
         }
     }
 
@@ -779,8 +779,8 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'date,refID,refTypeID,ownerName1,ownerID1,ownerName2,ownerID2,argName1,'.
-        	'argID1,amount,balance,reason,taxReceiverID,taxAmount') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['transactions']['1578932679']);;
+            'argID1,amount,balance,reason,taxReceiverID,taxAmount') as $testItem) {
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['transactions']['1578932679']);;
         }
     }
 
@@ -798,7 +798,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('currentTime', $array['eveapi']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'transactionDateTime,transactionID,quantity,typeName,typeID,price,clientID,clientName,stationID,stationName,transactionType,transactionFor') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['transactions']['1309776438']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['transactions']['1309776438']);;
         }
     }
 
@@ -818,7 +818,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('2007-12-02 19:37:55', $array['eveapi']['currentTime']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'name,shortName,allianceID,executorCorpID,memberCount,startDate') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['alliances']['150382481']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['alliances']['150382481']);;
         }
     }
 
@@ -838,10 +838,10 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('2008-11-13 20:21:45', $array['eveapi']['currentTime']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'categoryID,categoryName') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['categories']['3']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['categories']['3']);;
         }
         foreach (explode(',', 'classID,className') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['categories']['3']['classes']['2']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['categories']['3']['classes']['2']);;
         }
     }
 
@@ -861,7 +861,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('2009-10-18 17:05:31', $array['eveapi']['currentTime']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'name,characterID') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['characters']['797400947']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['characters']['797400947']);;
         }
     }
 
@@ -882,7 +882,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'characterID,characterName,race,bloodline,'
         .'corporationID,corporation,corporationDate,allianceID,alliance,alliancenDate,securityStatus') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']);;
         }
     }
 
@@ -903,7 +903,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'characterID,characterName,race,bloodline,skillPoints,shipName,shipTypeID,shipTypeName,'
         .'corporationID,corporation,corporationDate,allianceID,alliance,alliancenDate,securityStatus,lastKnownLocation') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']);;
         }
     }
 
@@ -924,7 +924,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'characterID,characterName,race,bloodline,skillPoints,shipName,shipTypeID,shipTypeName,'
         .'corporationID,corporation,corporationDate,allianceID,alliance,alliancenDate,securityStatus') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']);;
         }
     }
 
@@ -944,7 +944,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('2011-03-02 15:00:07', $array['eveapi']['currentTime']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'name,characterID') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['characters']['797400947']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['characters']['797400947']);;
         }
     }
 
@@ -964,7 +964,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('2007-12-02 19:55:38', $array['eveapi']['currentTime']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'stationID,stationName,stationTypeID,solarSystemID,corporationID,corporationName') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['outposts']['60014862']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['outposts']['60014862']);;
         }
     }
 
@@ -984,7 +984,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('2011-04-07 11:53:13', $array['eveapi']['currentTime']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'errorCode,errorText') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['errors']['512']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['errors']['512']);;
         }
     }
 
@@ -1004,13 +1004,13 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('2009-10-25 12:37:01', $array['eveapi']['currentTime']);
         $this->assertArrayHasKey('result', $array['eveapi']);
         foreach (explode(',', 'killsYesterday,killsLastWeek,killsTotal,victoryPointsYesterday,victoryPointsLastWeek,victoryPointsTotal') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['totals']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['totals']);;
         }
         foreach (explode(',', 'factionID,factionName,pilots,systemsControlled,killsYesterday,killsLastWeek,killsTotal,victoryPointsYesterday,victoryPointsLastWeek,victoryPointsTotal') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['factions']['500001']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['factions']['500001']);;
         }
         foreach (explode(',', 'factionID,factionName,againstID,againstName') as $testItem) {
-        	$this->assertArrayHasKey($testItem, $array['eveapi']['result']['factionWars']['500001']);;
+            $this->assertArrayHasKey($testItem, $array['eveapi']['result']['factionWars']['500001']);;
         }
     }
 
@@ -1242,7 +1242,7 @@ class EveLib_Ccp_Api_ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('38102', $array['eveapi']['result']['onlinePlayers']);
         $this->assertArrayHasKey('result', $array['eveapi']);
     }
-	
-	
+    
+    
 }
 
