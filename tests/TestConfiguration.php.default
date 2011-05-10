@@ -3,9 +3,13 @@
 define('TESTS_GENERATE_REPORT', true);
 
 
+
 define('TEST_FIXTURES_PATH', realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fixtures'));
 
 
 define ('TEST_API_KEY_S', '_APIKEY_');
 define ('TEST_USERID_S','_USERID_');
 define('TEST_CHARACTERID_S','_CHARACTERID_');
+define ('TEST_API_KEY', '_APIKEY_');
+define ('TEST_USERID','_USERID_');
+define('TEST_CHARACTERID','_CHARACTERID_');
