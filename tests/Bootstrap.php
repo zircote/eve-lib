@@ -27,11 +27,4 @@ if (file_exists($testConfig)) {
 } else {
     require_once $testConfig . '.default';
 }
-if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&
- version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
-    PHPUnit_Util_Filter::addDirectoryToWhitelist($EveLibCoreLibrary);
-    foreach (array('.php', '.phtml', '.inc') as $suffix) {
-        PHPUnit_Util_Filter::addDirectoryToFilter($EveLibCoreTests, $suffix);
-    }
-}
 unset($EveLibRoot, $EveLibCoreLibrary, $EveLibCoreTests, $path);
