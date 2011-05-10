@@ -77,36 +77,44 @@ class EveLib_Ccp_Api extends Zend_Http_Client
             }
         }
     }
-    public function getParams ($apiKey = null, $userID = null, $characterID = null)
+    public function getParams ($apiKey = null, $userID = null,
+    $characterID = null)
     {
         return $this->_param;
     }
-    protected function log ($message, $priority = Zend_Log::INFO, $extras = null)
+    protected function log ($message, $priority = Zend_Log::INFO,
+    $extras = null)
     {
         if (self::$log instanceof Zend_Log)
             self::$log->log($message, $priority, $extras);
         return $this;
     }
-    private function _getResult ($apiKey = null, $userID = null, $characterID = null)
+    private function _getResult ($apiKey = null, $userID = null,
+    $characterID = null)
     {
         $cacheKey = self::$name .
          str_replace($this->_url, '', $this->getUri(true));
         foreach ($this->getParams() as $key => $value) {
             $cacheKey .= "_{$key}_{$value}";
         }
-        $cacheKey = (string) str_replace(array('.', '/', ',', ':', '-', '___'),
-        '_', $cacheKey);
+        $cacheKey = (string) str_replace(
+            array('.', '/', ',', ':', '-', '___'), '_', $cacheKey
+        );
         if (self::$cache instanceof Zend_Cache_Core) {
             if (! $this->_result = self::$cache->load($cacheKey)) {
                 $this->log('REQUEST [NOTCACHED]: ' . $cacheKey);
                 $this->request();
                 $this->_result = new EveLib_Ccp_Api_Response(
-                $this->getLastResponse()->getBody());
+                    $this->getLastResponse()->getBody()
+                );
                 $result = $this->_result->getResult();
                 require_once 'Zend/Date.php';
                 $currentTime = new Zend_Date($result['eveapi']['currentTime']);
                 $cachedUntil = new Zend_Date(
-                array_key_exists('cachedUntil', $result['eveapi']) ? $result['eveapi']['cachedUntil'] : $result['eveapi']['result']['cachedUntil']);
+                    array_key_exists('cachedUntil', $result['eveapi']) ?
+                    $result['eveapi']['cachedUntil'] :
+                    $result['eveapi']['result']['cachedUntil']
+                );
                 $lifetime = $cachedUntil->getTimestamp() -
                  $currentTime->getTimestamp();
                 self::$cache->setLifetime($lifetime);
@@ -118,7 +126,8 @@ class EveLib_Ccp_Api extends Zend_Http_Client
             $this->log('REQUEST [CACHE DISABLED]: ' . $cacheKey);
             $this->request();
             $this->_result = new EveLib_Ccp_Api_Response(
-            $this->getLastResponse()->getBody());
+                $this->getLastResponse()->getBody()
+            );
         }
         return $this->_result->getResult();
     }
@@ -203,7 +212,9 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     public function charCalendarEventAttendees ($eventIDs, $apiKey = null,
     $userID = null, $characterID = null)
     {
-        $this->_whitelist = array('eventIDs', 'apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('eventIDs', 'apiKey', 'userID',
+            'characterID'
+        );
         $this->_mkParams(
             array('eventIDs' => $eventIDs, 'apiKey' => $apiKey,
             'userID' => $userID, 'characterID' => $characterID)
@@ -329,8 +340,9 @@ class EveLib_Ccp_Api extends Zend_Http_Client
             'characterID' => $characterID, 'ids' => $ids)
         );
         $this->setUri($this->_url . '/char/MailBodies.xml.aspx');
-        return $this->_getResult($apiKey = null, $userID = null,
-        $characterID = null);
+        return $this->_getResult(
+            $apiKey = null, $userID = null, $characterID = null
+        );
     }
     /**
      * CharMailingLists
@@ -419,12 +431,12 @@ class EveLib_Ccp_Api extends Zend_Http_Client
      * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charNotificationTexts ($IDs, $apiKey = null, $userID = null,
+    public function charNotificationTexts ($ids, $apiKey = null, $userID = null,
     $characterID = null)
     {
         $this->_whitelist = array('IDs', 'apiKey', 'userID', 'characterID');
         $this->_mkParams(
-            array('IDs' => $IDs, 'apiKey' => $apiKey, 'userID' => $userID,
+            array('IDs' => $ids, 'apiKey' => $apiKey, 'userID' => $userID,
             'characterID' => $characterID)
         );
         $this->setUri($this->_url . '/char/NotificationTexts.xml.aspx');
@@ -527,8 +539,9 @@ class EveLib_Ccp_Api extends Zend_Http_Client
         $this->_whitelist = array('fromID', 'rowCount', 'apiKey', 'userID',
         'characterID');
         $this->_mkParams(
-            array('fromID' => $fromID, 'rowCount' => $rowCount, 'apiKey' => $apiKey,
-            'userID' => $userID, 'characterID' => $characterID)
+            array('fromID' => $fromID, 'rowCount' => $rowCount,
+            'apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
         );
         $this->setUri($this->_url . '/char/WalletJournal.xml.aspx');
         return $this->_getResult();
@@ -545,8 +558,9 @@ class EveLib_Ccp_Api extends Zend_Http_Client
         $this->_whitelist = array('fromID', 'rowCount', 'apiKey', 'userID',
         'characterID');
         $this->_mkParams(
-            array('fromID' => $fromID, 'rowCount' => $rowCount, 'apiKey' => $apiKey,
-            'userID' => $userID, 'characterID' => $characterID)
+            array('fromID' => $fromID, 'rowCount' => $rowCount,
+            'apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
         );
         $this->setUri($this->_url . '/char/WalletTransactions.xml.aspx');
         return $this->_getResult();
@@ -796,11 +810,9 @@ class EveLib_Ccp_Api extends Zend_Http_Client
      * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    //    public function corpOutpostList($apiKey = null, $userID = null, $characterID = null) {
-    //        $this->whitelist = array ('apiKey', 'userID', 'characterID' );
-    //        $this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
-    //        $this->setUri ( $this->_url . '/corp/OutpostList.xml.aspx' );
-    //        return $this->_getResult ();
+    //    public function corpOutpostList($apiKey = null, $userID = null,
+//          $characterID = null)
+//          {
     //    }
     /**
      * CorpOutpostServiceDetail
@@ -808,11 +820,8 @@ class EveLib_Ccp_Api extends Zend_Http_Client
      * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    //    public function corpOutpostServiceDetail($apiKey = null, $userID = null, $characterID = null) {
-    //        $this->whitelist = array ('apiKey', 'userID', 'characterID' );
-    //        $this->_mkParams ( array ('apiKey' => $apiKey, 'userID' => $userID, 'characterID' => $characterID ) );
-    //        $this->setUri ( $this->_url . '/corp/OutpostServiceDetail.xml.aspx' );
-    //        return $this->_getResult ();
+    //    public function corpOutpostServiceDetail($apiKey = null,
+    //        $userID = null, $characterID = null) {
     //    }
     /**
      * CorpShareholders
@@ -837,7 +846,8 @@ class EveLib_Ccp_Api extends Zend_Http_Client
      * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function corpStandings ($apiKey = null, $userID = null, $characterID = null)
+    public function corpStandings ($apiKey = null, $userID = null,
+    $characterID = null)
     {
         $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
