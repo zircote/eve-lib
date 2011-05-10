@@ -36,10 +36,10 @@ class EveLib_Ccp_Api extends Zend_Http_Client
      * API Credentials apiKey, characterID, userID
      * @var array
      */
-    private $_credentials = array();
-    protected $whitelist = array();
-    private $__param = array();
-    protected $result;
+    protected $_credentials = array();
+    protected $_whitelist = array();
+    protected $_param = array();
+    protected $_result;
     public $target;
     private function _prep ($param)
     {
@@ -68,18 +68,18 @@ class EveLib_Ccp_Api extends Zend_Http_Client
             }
         }
         $this->setParams($params);
-        $this->__param = array_merge($this->_credentials, $this->__param);
-        foreach ($this->__param as $n => $v) {
-            if (in_array($n, $this->whitelist)) {
+        $this->_param = array_merge($this->_credentials, $this->_param);
+        foreach ($this->_param as $n => $v) {
+            if (in_array($n, $this->_whitelist)) {
                 $this->setParameterGet($n, $this->_prep($v));
             } else {
-                unset($this->__param[$n]);
+                unset($this->_param[$n]);
             }
         }
     }
     public function getParams ($apiKey = null, $userID = null, $characterID = null)
     {
-        return $this->__param;
+        return $this->_param;
     }
     protected function log ($message, $priority = Zend_Log::INFO, $extras = null)
     {
@@ -97,12 +97,12 @@ class EveLib_Ccp_Api extends Zend_Http_Client
         $cacheKey = (string) str_replace(array('.', '/', ',', ':', '-', '___'),
         '_', $cacheKey);
         if (self::$cache instanceof Zend_Cache_Core) {
-            if (! $this->result = self::$cache->load($cacheKey)) {
+            if (! $this->_result = self::$cache->load($cacheKey)) {
                 $this->log('REQUEST [NOTCACHED]: ' . $cacheKey);
                 $this->request();
-                $this->result = new EveLib_Ccp_Api_Response(
+                $this->_result = new EveLib_Ccp_Api_Response(
                 $this->getLastResponse()->getBody());
-                $result = $this->result->getResult();
+                $result = $this->_result->getResult();
                 require_once 'Zend/Date.php';
                 $currentTime = new Zend_Date($result['eveapi']['currentTime']);
                 $cachedUntil = new Zend_Date(
@@ -110,25 +110,25 @@ class EveLib_Ccp_Api extends Zend_Http_Client
                 $lifetime = $cachedUntil->getTimestamp() -
                  $currentTime->getTimestamp();
                 self::$cache->setLifetime($lifetime);
-                self::$cache->save($this->result, $cacheKey);
+                self::$cache->save($this->_result, $cacheKey);
             } else {
                 $this->log('REQUEST [CACHED]: ' . $cacheKey);
             }
         } else {
             $this->log('REQUEST [CACHE DISABLED]: ' . $cacheKey);
             $this->request();
-            $this->result = new EveLib_Ccp_Api_Response(
+            $this->_result = new EveLib_Ccp_Api_Response(
             $this->getLastResponse()->getBody());
         }
-        return $this->result->getResult();
+        return $this->_result->getResult();
     }
     public function getResult ()
     {
-        return $this->result;
+        return $this->_result;
     }
     public function setParams (array $params)
     {
-        $this->__param = $params;
+        $this->_param = $params;
     }
     public function setCredentials (array $params)
     {
@@ -137,12 +137,12 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * AccountStatus
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function accountStatus ($apiKey = null, $userID = null)
     {
-        $this->whitelist = array('apiKey', 'userID');
+        $this->_whitelist = array('apiKey', 'userID');
         $this->target = '/account/AccountStatus.xml.aspx';
         $this->_mkParams(array('apiKey' => $apiKey, 'userID' => $userID));
         return $this->_getResult();
@@ -150,12 +150,12 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * AccountCharacters
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function accountCharacters ($apiKey = null, $userID = null)
     {
-        $this->whitelist = array('apiKey', 'userID');
+        $this->_whitelist = array('apiKey', 'userID');
         $this->_mkParams(array('apiKey' => $apiKey, 'userID' => $userID));
         $this->setUri($this->_url . '/account/Characters.xml.aspx');
         return $this->_getResult();
@@ -163,158 +163,171 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * CharAccountBalance
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charAccountBalance ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/AccountBalance.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharAssetList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charAssetList ($apiKey = null, $userID = null, $characterID = null)
+    public function charAssetList ($apiKey = null, $userID = null,
+        $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/AssetList.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharCalendarEventAttendees
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charCalendarEventAttendees ($eventIDs, $apiKey = null,
     $userID = null, $characterID = null)
     {
-        $this->whitelist = array('eventIDs', 'apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('eventIDs', 'apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('eventIDs' => $eventIDs, 'apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('eventIDs' => $eventIDs, 'apiKey' => $apiKey,
+            'userID' => $userID, 'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/CalendarEventAttendees.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharCharacterSheet
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charCharacterSheet ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/CharacterSheet.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharContactList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charContactList ($apiKey = null, $userID = null, $characterID = null)
+    public function charContactList ($apiKey = null, $userID = null,
+        $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/ContactList.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharContactNotifications
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charContactNotifications ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/ContactNotifications.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharFacWarStats
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charFacWarStats ($apiKey = null, $userID = null, $characterID = null)
+    public function charFacWarStats ($apiKey = null, $userID = null,
+        $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/FacWarStats.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharIndustryJobs
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charIndustryJobs ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/IndustryJobs.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharKilllog
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charKilllog ($beforeKillID = null, $apiKey = null, $userID = null,
-    $characterID = null)
+    public function charKilllog ($beforeKillID = null, $apiKey = null,
+        $userID = null, $characterID = null)
     {
-        $this->whitelist = array('beforeKillID', 'apiKey', 'userID',
+        $this->_whitelist = array('beforeKillID', 'apiKey', 'userID',
         'characterID');
         $this->_mkParams(
-        array('beforeKillID' => $beforeKillID, 'apiKey' => $apiKey,
-        'userID' => $userID, 'characterID' => $characterID));
+            array('beforeKillID' => $beforeKillID, 'apiKey' => $apiKey,
+            'userID' => $userID, 'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/Killlog.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharMailBodies
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charMailBodies ($ids, $apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID', 'ids');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID, 'ids' => $ids)
+        );
         $this->setUri($this->_url . '/char/MailBodies.xml.aspx');
         return $this->_getResult($apiKey = null, $userID = null,
         $characterID = null);
@@ -322,58 +335,63 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * CharMailingLists
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charMailingLists ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/MailingLists.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharMailMessages
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charMailMessages ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/MailMessages.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharMarketOrders
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charMarketOrders ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/MarketOrders.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharMedals
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charMedals ($apiKey = null, $userID = null, $characterID = null)
+    public function charMedals ($apiKey = null, $userID = null,
+        $characterID = null
+    )
     {
         $this->setUri($this->_url . '/char/Medals.xml.aspx');
         return $this->_getResult();
@@ -381,372 +399,401 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * CharNotifications
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charNotifications ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/Notifications.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharNotificationTexts
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charNotificationTexts ($IDs, $apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('IDs', 'apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('IDs', 'apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('IDs' => $IDs, 'apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('IDs' => $IDs, 'apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/NotificationTexts.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharResearch
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charResearch ($apiKey = null, $userID = null, $characterID = null)
+    public function charResearch ($apiKey = null, $userID = null,
+    $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/Research.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharSkillInQueue
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charSkillInQueue ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/SkillInTraining.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharSkillInTraining
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charSkillInTraining ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/SkillQueue.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharStandings
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charStandings ($apiKey = null, $userID = null, $characterID = null)
+    public function charStandings ($apiKey = null, $userID = null,
+    $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/Standings.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharUpcomingCalendarEvents
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charUpcomingCalendarEvents ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/UpcomingCalendarEvents.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharWalletJournal
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function charWalletJournal ($fromID = null, $rowCount = null, $apiKey = null,
-    $userID = null, $characterID = null)
+    public function charWalletJournal ($fromID = null, $rowCount = null,
+    $apiKey = null, $userID = null, $characterID = null)
     {
-        $this->whitelist = array('fromID', 'rowCount', 'apiKey', 'userID',
+        $this->_whitelist = array('fromID', 'rowCount', 'apiKey', 'userID',
         'characterID');
         $this->_mkParams(
-        array('fromID' => $fromID, 'rowCount' => $rowCount, 'apiKey' => $apiKey,
-        'userID' => $userID, 'characterID' => $characterID));
+            array('fromID' => $fromID, 'rowCount' => $rowCount, 'apiKey' => $apiKey,
+            'userID' => $userID, 'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/WalletJournal.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CharWalletTransactions
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function charWalletTransactions ($fromID = null, $rowCount = null,
     $apiKey = null, $userID = null, $characterID = null)
     {
-        $this->whitelist = array('fromID', 'rowCount', 'apiKey', 'userID',
+        $this->_whitelist = array('fromID', 'rowCount', 'apiKey', 'userID',
         'characterID');
         $this->_mkParams(
-        array('fromID' => $fromID, 'rowCount' => $rowCount, 'apiKey' => $apiKey,
-        'userID' => $userID, 'characterID' => $characterID));
+            array('fromID' => $fromID, 'rowCount' => $rowCount, 'apiKey' => $apiKey,
+            'userID' => $userID, 'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/char/WalletTransactions.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpAccountBalance
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpAccountBalance ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/AccountBalance.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpAssetList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function corpAssetList ($apiKey = null, $userID = null, $characterID = null)
+    public function corpAssetList ($apiKey = null, $userID = null,
+    $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/AssetList.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpContactList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function corpContactList ($apiKey = null, $userID = null, $characterID = null)
+    public function corpContactList ($apiKey = null, $userID = null,
+    $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/ContactList.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpContainerLog
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpContainerLog ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/ContactList.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpCorporationSheet
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpCorporationSheet ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/CorporationSheet.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpFacWarStats
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function corpFacWarStats ($apiKey = null, $userID = null, $characterID = null)
+    public function corpFacWarStats ($apiKey = null, $userID = null,
+    $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/FacWarStats.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpIndustryJobs
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpIndustryJobs ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/IndustryJobs.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpKilllog
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function corpKilllog ($beforeKillID = null, $apiKey = null, $userID = null,
-    $characterID = null)
+    public function corpKilllog ($beforeKillID = null, $apiKey = null,
+    $userID = null, $characterID = null)
     {
-        $this->whitelist = array('beforeKillID', 'apiKey', 'userID',
+        $this->_whitelist = array('beforeKillID', 'apiKey', 'userID',
         'characterID');
         $this->_mkParams(
-        array('beforeKillID' => $beforeKillID, 'apiKey' => $apiKey,
-        'userID' => $userID, 'characterID' => $characterID));
+            array('beforeKillID' => $beforeKillID, 'apiKey' => $apiKey,
+            'userID' => $userID, 'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/Killlog.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpMarketOrders
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpMarketOrders ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/MarketOrders.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpMedals
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function corpMedals ($apiKey = null, $userID = null, $characterID = null)
+    public function corpMedals ($apiKey = null, $userID = null,
+    $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/Medals.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpMemberMedals
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpMemberMedals ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/MemberMedals.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpMemberSecurity
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpMemberSecurity ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/MemberSecurity.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpMemberSecurityLog
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpMemberSecurityLog ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/MemberSecurityLog.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpMemberTracking
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpMemberTracking ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/MemberTracking.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpOutpostList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     //    public function corpOutpostList($apiKey = null, $userID = null, $characterID = null) {
@@ -758,7 +805,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * CorpOutpostServiceDetail
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     //    public function corpOutpostServiceDetail($apiKey = null, $userID = null, $characterID = null) {
@@ -770,121 +817,129 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * CorpShareholders
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpShareholders ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/Shareholders.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpStandings
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpStandings ($apiKey = null, $userID = null, $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/Standings.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpStarbaseDetail
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpStarbaseDetail ($itemID, $apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('itemID', 'apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('itemID', 'apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('itemID' => $itemID, 'apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('itemID' => $itemID, 'apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/StarbaseDetail.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpStarbaseList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpStarbaseList ($apiKey = null, $userID = null,
     $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/StarbaseList.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpTitles
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
-    public function corpTitles ($apiKey = null, $userID = null, $characterID = null)
+    public function corpTitles ($apiKey = null, $userID = null,
+    $characterID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/Titles.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpWalletJournal
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpWalletJournal ($fromID = null, $rowCount = null,
     $accountKey = null, $apiKey = null, $userID = null, $characterID = null)
     {
-        $this->whitelist = array('fromID', 'rowCount', 'accountKey', 'apiKey',
+        $this->_whitelist = array('fromID', 'rowCount', 'accountKey', 'apiKey',
         'userID', 'characterID');
         $this->_mkParams(
-        array('fromID' => $fromID, 'rowCount' => $rowCount,
-        'accountKey' => $accountKey, 'apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('fromID' => $fromID, 'rowCount' => $rowCount,
+            'accountKey' => $accountKey, 'apiKey' => $apiKey,
+            'userID' => $userID, 'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/WalletJournal.xml.aspx');
         return $this->_getResult();
     }
     /**
      * CorpWalletTransactions
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function corpWalletTransactions ($fromID = null, $rowCount = null,
     $accountKey = null, $apiKey = null, $userID = null, $characterID = null)
     {
-        $this->whitelist = array('fromID', 'rowCount', 'accountKey', 'apiKey',
+        $this->_whitelist = array('fromID', 'rowCount', 'accountKey', 'apiKey',
         'userID', 'characterID');
         $this->_mkParams(
-        array('fromID' => $fromID, 'rowCount' => $rowCount,
-        'accountKey' => $accountKey, 'apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('fromID' => $fromID, 'rowCount' => $rowCount,
+            'accountKey' => $accountKey, 'apiKey' => $apiKey,
+            'userID' => $userID, 'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/corp/WalletTransactions.xml.aspx');
         return $this->_getResult();
     }
     /**
      * EveAllianceList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveAllianceList ()
@@ -895,7 +950,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveCertificateTree
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveCertificateTree ()
@@ -906,12 +961,12 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveCharacterID
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveCharacterID ($names)
     {
-        $this->whitelist = array('names');
+        $this->_whitelist = array('names');
         $this->_mkParams(array('names' => $names));
         $this->setUri($this->_url . '/eve/CharacterID.xml.aspx');
         return $this->_getResult();
@@ -919,28 +974,29 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveCharacterInfo
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveCharacterInfo ($characterID = null, $apiKey = null,
     $userID = null)
     {
-        $this->whitelist = array('apiKey', 'userID', 'characterID');
+        $this->_whitelist = array('apiKey', 'userID', 'characterID');
         $this->_mkParams(
-        array('apiKey' => $apiKey, 'userID' => $userID,
-        'characterID' => $characterID));
+            array('apiKey' => $apiKey, 'userID' => $userID,
+            'characterID' => $characterID)
+        );
         $this->setUri($this->_url . '/eve/CharacterInfo.xml.aspx');
         return $this->_getResult();
     }
     /**
      * EveCharacterName
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveCharacterName ($ids)
     {
-        $this->whitelist = array('ids');
+        $this->_whitelist = array('ids');
         $this->_mkParams(array('ids' => $ids));
         $this->setUri($this->_url . '/eve/CharacterName.xml.aspx');
         return $this->_getResult();
@@ -948,7 +1004,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveConquerableStationList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveConquerableStationList ()
@@ -959,7 +1015,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveErrorList
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveErrorList ()
@@ -970,7 +1026,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveFacWarStats
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveFacWarStats ()
@@ -981,7 +1037,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveFacWarTopStats
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveFacWarTopStats ()
@@ -992,7 +1048,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveRefTypes
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveRefTypes ()
@@ -1003,7 +1059,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * EveSkillTree
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function eveSkillTree ()
@@ -1014,7 +1070,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * MapFacWarSystems
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function mapFacWarSystems ()
@@ -1025,7 +1081,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * MapJumps
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function mapJumps ()
@@ -1036,7 +1092,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * MapKills
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function mapKills ()
@@ -1047,7 +1103,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * MapSovereignty
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function mapSovereignty ()
@@ -1058,7 +1114,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * MapSovereigntyStatus
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     //    public function mapSovereigntyStatus() {
@@ -1068,7 +1124,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * MiscImage
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     //    public function miscImage() {
@@ -1077,7 +1133,7 @@ class EveLib_Ccp_Api extends Zend_Http_Client
     /**
      * ServerStatus
      *
-     * @param array $$params
+     * @param array $params
      * @return EveLib_Ccp_Api_Result
      */
     public function serverStatus ()

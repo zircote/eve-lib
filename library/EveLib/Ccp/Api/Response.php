@@ -27,9 +27,9 @@ class EveLib_Ccp_Api_Response
     {
         return $this->result;
     }
-    public function getXml ($as_string = false)
+    public function getXml ($asString = false)
     {
-        if ($as_string) {
+        if ($asString) {
             return $this->_raw;
         }
         return $this->xml;
