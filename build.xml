@@ -30,8 +30,8 @@
         <parallel threadCount="2">
             <sequential>
                 <antcall target="pdepend" />
-                <antcall target="phpmd" />
             </sequential>
+            <antcall target="phpmd" />
             <antcall target="phpcpd" />
             <antcall target="phpcs" />
             <antcall target="docblox" />
