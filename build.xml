@@ -26,7 +26,7 @@
     </target>
 
     <target name="parallelTasks"
-        description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks in parallel using a maximum of 2 threads.">
+        description="Run the pdepend, phpmd, phpcpd, phpcs, docblox and phploc tasks in parallel using a maximum of 2 threads.">
         <parallel threadCount="2">
             <sequential>
                 <antcall target="pdepend" />
@@ -34,7 +34,7 @@
             </sequential>
             <antcall target="phpcpd" />
             <antcall target="phpcs" />
-            <antcall target="phpdoc" />
+            <antcall target="docblox" />
             <antcall target="phploc" />
             <antcall target="phpcb" />
         </parallel>
@@ -83,9 +83,9 @@
         </exec>
     </target>
 
-    <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
-        <exec executable="phpdoc">
-            <arg line="-d ${source} -t ${basedir}/build/api" />
+    <target name="docblox" description="Generate API documentation using DocBlox">
+        <exec executable="docblox">
+            <arg line="run -d ${source} -t ${basedir}/build/api -q" />
         </exec>
     </target>
 
