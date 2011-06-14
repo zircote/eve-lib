@@ -57,19 +57,20 @@
                 line="${source}
               xml
               tests/build/phpmd.xml
+              --ignore ${basedir}/tests/*
               --reportfile ${basedir}/build/logs/pmd.xml" />
         </exec>
     </target>
 
     <target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
         <exec executable="phpcpd">
-            <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml ${source}" />
+            <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml --exclude ${basedir}/tests/* ${source} " />
         </exec>
     </target>
 
     <target name="phploc" description="Generate phploc.csv">
         <exec executable="phploc">
-            <arg line="--log-csv ${basedir}/build/logs/phploc.csv ${source}" />
+            <arg line="--log-csv ${basedir}/build/logs/phploc.csv ${source} --exclude ${basedir}/tests/ " />
         </exec>
     </target>
 
@@ -79,13 +80,14 @@
                 line="--report=checkstyle
               --report-file=${basedir}/build/logs/checkstyle.xml
               --standard=tests/build/phpcs.xml
+              --exclude ${basedir}/tests/*
               ${source}" />
         </exec>
     </target>
 
     <target name="docblox" description="Generate API documentation using DocBlox">
         <exec executable="docblox">
-            <arg line="run -d ${source} -t ${basedir}/build/api -q" />
+            <arg line="run -d ${source} -t ${basedir}/build/api -q --ignore *tests* " />
         </exec>
     </target>
 
@@ -94,6 +96,7 @@
             <arg
                 line="--log    ${basedir}/build/logs
               --source ${source}
+              --exclude ${basedir}/tests/*
               --output ${basedir}/build/code-browser" />
         </exec>
     </target>
