@@ -80,7 +80,7 @@
                 line="--report=checkstyle
               --report-file=${basedir}/build/logs/checkstyle.xml
               --standard=tests/build/phpcs.xml
-              --ignore *tests*
+              --ignore=*tests*
               ${source}" />
         </exec>
     </target>
